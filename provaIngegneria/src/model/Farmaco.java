@@ -12,4 +12,12 @@ package model;
 public class Farmaco {
     private String nome;
     private double prezzo;
+    
+    public String getNome(){
+        return nome;
+    }
+    
+    public double getPrezzo(){
+        return prezzo;
+    }
 }
