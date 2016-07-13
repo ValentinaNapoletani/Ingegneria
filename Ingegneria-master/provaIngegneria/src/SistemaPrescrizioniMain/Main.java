@@ -4,12 +4,16 @@
  * and open the template in the editor.
  */
 package SistemaPrescrizioniMain;
+import View.MedicoView;
+import View.MedicoView2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import controller.*;
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import model.Medico;
+import model.Segreteria;
 
 public class Main {
     
@@ -29,7 +33,7 @@ public class Main {
          
             try {
             Class.forName("org.postgresql.Driver");
-            c=DriverManager.getConnection("jdbc:postgresql://192.168.1.11:5432/Ingegneria","postgres","123");
+            c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
             }    
             catch (Exception e) {
             e.printStackTrace();
@@ -50,19 +54,22 @@ public class Main {
             public void run() {
                 
                 creaConnessione();
-                Segreteria segreteria=new Segreteria(c);  
+                
+                MedicoView2  medicoView=new MedicoView2();
+                medicoView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                medicoView.setVisible(true);
+                
+                Segreteria segreteria=new Segreteria(c,"111"); 
+                SegreteriaController segreteriaController=new SegreteriaController(c,segreteria);  
                 Medico medico=new Medico(c,"1","10maco");
                 MedicoController mc=new MedicoController(c,medico);
-                boolean risultato = mc.autenticazione("1", "10maco");
-                System.out.println("Risultato autenticazione: "+risultato);
                 ArrayList<String> f=new ArrayList<>();
                 f.add("Oki");
                 f.add("Aspirina");
-                segreteria.inviaRichiestaPrescrizione("NPLVNT94D43F861Q",f);
-                Farmacia farmacia = new Farmacia(c, "via Mazzini","37100");
-                farmacia.compraFarmaco("NPLVNT94D43F861Q","1", 1, "Aspirina");
-               // mc.effettuaPrescrizioneConVisita("NPLVNT94D43F861Q", f);
-               // mc.effettuaPrescrizioneSuRichiesta("2");
+                segreteriaController.inviaRichiestaPrescrizione("NPLVNT94D43F861Q",f);
+                mc.effettuaPrescrizioneConVisita("NPLVNT94D43F861Q", f);
+                mc.effettuaPrescrizioneSuRichiesta("1");
+                
                 
                 
                
