@@ -50,6 +50,26 @@ public class Farmacia {
     }
     
     public void ordinaFarmaco(String farmaco, int quantita){
+        int pezzi = numeroPezziFarmacoDisponibili(farmaco);
+        try {
+            String sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
+            pst.setString(2, indirizzo);
+            pst.setString(3, cap);
+            pst.setString(4, farmaco);
+            pst.setInt(1, pezzi+quantita);
+            pst. executeUpdate ();
+        } catch (SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        
+    }
+    
+    /*
+    public void ordinaFarmaco(String farmaco, int quantita){
         int ordinato = 0;
         int quantitaNelDb = 0;
         try {
@@ -61,6 +81,7 @@ public class Farmacia {
             pst.setString(2, cap);
             pst.setString(3, farmaco);
             ResultSet rs=pst. executeQuery ();
+            rs.next();
             ordinato = rs.getInt("num");
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
@@ -75,12 +96,14 @@ public class Farmacia {
                 pst.setString(2, cap);
                 pst.setString(3, farmaco);
                 ResultSet rs=pst. executeQuery ();
+                rs.next();
                 quantitaNelDb = rs.getInt("quantita");
                 sql = "UPDATE \"FarmacoOrdinato\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
                 pst = c.prepareStatement ( sql );
                 pst.clearParameters();
                 pst.setInt(1, quantita+quantitaNelDb);
                 rs=pst.executeQuery ();
+                
             } catch (SQLException e) {
                 System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
             }
@@ -101,30 +124,71 @@ public class Farmacia {
             }
         }
     }
+    */
     
-    public void compraFarmaco(String farmaco, int quantita){
-        int numPezziFarmacoInFarmacia;
-        if(controlloPresenzaFarmaco(farmaco,quantita)){
-            numPezziFarmacoInFarmacia = numeroPezziFarmacoDisponibili(farmaco);
-            try {
-                String sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
-                PreparedStatement pst;
-                pst = c.prepareStatement ( sql );
-                pst.clearParameters();
-                //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
-                pst.setString(2, indirizzo);
-                pst.setString(3, cap);
-                pst.setString(4, farmaco);
-                pst.setInt(1, numPezziFarmacoInFarmacia-quantita);
-                ResultSet rs=pst. executeQuery ();
-            } catch (SQLException e) {
-                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+    public void compraFarmaco(String codiceFiscale, String codicePrescrizione, int quantita, String farmaco){
+        System.out.println("Il paziente richiede il farmaco");
+        //controllare prescrizione per persona
+        boolean ok = false;
+        try {
+            String sql = "SELECT count(*) AS num FROM \"Prescrizione\" WHERE \"paziente\"=? AND \"codice\"=? AND \"Prescrizione\".\"CodiceRichiesta\" IS NULL";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, codiceFiscale);
+            pst.setString(2, codicePrescrizione);
+                //pst.setString(3, cap);
+                //pst.setString(4, farmaco);
+                
+            ResultSet rs=pst. executeQuery ();
+            rs.next();
+            int ris = rs.getInt("num");
+            if (ris > 0){
+                ok = true;
+                System.out.println("Il paziente può comprare il farmaco");
             }
+        } catch (SQLException e) {
+                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
-        else{
-            System.out.println("Farmaco non presente nella farmacia oppure non ci sono abbastanza confezioni a disposizione, eseguo l'ordine");
-            //potrei calcolare la quantità da ordinare cosi: farmaciDaComprare - farmaciNellaFarmacia
-            ordinaFarmaco(farmaco, quantita);
+        if(ok){
+            int numPezziFarmacoInFarmacia;
+            if(controlloPresenzaFarmaco(farmaco ,quantita)){
+                System.out.println("Il farmaco è presente nella farmacia");
+                numPezziFarmacoInFarmacia = numeroPezziFarmacoDisponibili(farmaco);
+                try {
+                    String sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+                    PreparedStatement pst;
+                    pst = c.prepareStatement ( sql );
+                    pst.clearParameters();
+                    //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
+                    pst.setString(2, indirizzo);
+                    pst.setString(3, cap);
+                    pst.setString(4, farmaco);
+                    pst.setInt(1, numPezziFarmacoInFarmacia-quantita);
+                    pst. executeUpdate ();
+                } catch (SQLException e) {
+                    System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+                }
+                
+                //QUI imposto la prescrizione come usata
+                try {
+                    String sql = "UPDATE \"Prescrizione\" SET \"usata\"= ? WHERE \"codice\"=?";
+                    PreparedStatement pst;
+                    pst = c.prepareStatement ( sql );
+                    pst.clearParameters();
+                    pst.setBoolean(1, true);
+                    pst.setString(2, codicePrescrizione);
+                    pst. executeUpdate ();
+                } catch (SQLException e) {
+                    System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+                }
+
+            }
+            else{
+                System.out.println("Farmaco non presente nella farmacia oppure non ci sono abbastanza confezioni a disposizione, eseguo l'ordine");
+                //potrei calcolare la quantità da ordinare cosi: farmaciDaComprare - farmaciNellaFarmacia
+                ordinaFarmaco(farmaco, quantita);
+            }
         }
     }
     
