@@ -20,7 +20,7 @@ public class ProvaIngegneria {
       Connection c = null;
       try {
          Class.forName("org.postgresql.Driver");
-         c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
+         c=DriverManager.getConnection("jdbc:postgresql://192.168.1.11:5432/Ingegneria","postgres","123");
       } catch (Exception e) {
          e.printStackTrace();
          System.err.println(e.getClass().getName()+": "+e.getMessage());

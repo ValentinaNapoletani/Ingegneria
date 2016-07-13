@@ -20,4 +20,9 @@ public class Farmaco {
     public double getPrezzo(){
         return prezzo;
     }
+    
+    public Farmaco(String nome, double prezzo){
+        this.nome = nome;
+        this.prezzo = prezzo;
+    }
 }
