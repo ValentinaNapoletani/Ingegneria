@@ -51,7 +51,13 @@ public class Segreteria {
             PreparedStatement stmt2;
             stmt = c.prepareStatement("INSERT INTO \"Richiesta\" (paziente,farmaco) VALUES (?, ?)");
           
-            System.out.println(medicoDelPaziente(codiceFiscale));
+            //System.out.println(medicoDelPaziente(codiceFiscale).getCodiceRegionale());
+            
+            if(!((medicoDelPaziente(codiceFiscale).listaPazienti()).isEmpty()))
+                 for(String s: (medicoDelPaziente(codiceFiscale)).listaPazienti())
+                    System.out.println(s);
+            else System.out.println("vuota");
+                
             if(((medicoDelPaziente(codiceFiscale)).listaPazienti()).contains(codiceFiscale)) {
                 for(String f :farmaci) {
                     stmt.clearParameters();

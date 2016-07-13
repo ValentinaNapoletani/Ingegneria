@@ -36,8 +36,8 @@ public class Medico{
       this.codiceRegionale=codiceRegionale;           
   }
   
-  public void getCodiceRegionale(String codiceRegionale) { 
-      this.codiceRegionale=codiceRegionale;           
+  public String getCodiceRegionale() { 
+      return codiceRegionale;           
   }
   
  public ArrayList<String> listaPazienti(){
