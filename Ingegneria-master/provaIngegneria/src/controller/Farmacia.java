@@ -50,6 +50,26 @@ public class Farmacia {
     }
     
     public void ordinaFarmaco(String farmaco, int quantita){
+        int pezzi = numeroPezziFarmacoDisponibili(farmaco);
+        try {
+            String sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
+            pst.setString(2, indirizzo);
+            pst.setString(3, cap);
+            pst.setString(4, farmaco);
+            pst.setInt(1, pezzi+quantita);
+            pst. executeUpdate ();
+        } catch (SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        
+    }
+    
+    /*
+    public void ordinaFarmaco(String farmaco, int quantita){
         int ordinato = 0;
         int quantitaNelDb = 0;
         try {
@@ -101,6 +121,7 @@ public class Farmacia {
             }
         }
     }
+    */
     
     public void compraFarmaco(String farmaco, int quantita){
         int numPezziFarmacoInFarmacia;
