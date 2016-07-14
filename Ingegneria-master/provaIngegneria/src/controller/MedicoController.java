@@ -108,21 +108,67 @@ public class MedicoController {
       
     }
     		
-	public Prescrizione getPrescrizionenonusata() {
+    public Prescrizione getPrescrizionenonusata() {     
 	 	 return null; 
-	}
+    }
 
-	public ArrayList<String> pazientiPerFarmaco(String farmaco) { 
-		return null;
-	 }
+    public ArrayList<String> pazientiPerFarmaco(String farmaco) { 
+        ArrayList<String> listaPazienti = new ArrayList<String>();
+        try {
+            String sql = "SELECT DISTINCT \"nome\" FROM \"FarmacoInRicetta\" JOIN \"Prescrizione\" ON \"FarmacoInRicetta\".\"codiceprescrizione\"=\"Prescrizione\".\"codice\" WHERE \"nomefarmaco\"=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, farmaco);
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                listaPazienti.add(rs.getString("nome"));
+            }
+        } catch (SQLException e) {
+            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+        } 
+	return listaPazienti;
+    }
 
-	public String reazioniAvverse() { 
-		return null;
-	 }
+    public ArrayList<String> reazioniAvverse() { 
+        ArrayList<String> listaReazioni = new ArrayList<String>();
+        try {
+            String sql = "SELECT DISTINCT \"nome\" FROM \"Reazione\"";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                listaReazioni.add(rs.getString("nome"));
+            }
+        } catch (SQLException e) {
+            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return listaReazioni;
+    }
 
-	public Prescrizione verificaUsoPrescrizione() { 
+    public Prescrizione verificaUsoPrescrizione() { 
+        
 		return null;
-	 }
+    }
+    
+    public ArrayList<String> listaPrescrizioniNonUsate(){
+        ArrayList<String> listaPrescrizioni = new ArrayList<String>();
+        try {
+            String sql = "SELECT \"codice\" FROM \"Prescrizione\" WHERE \"usata\"=false";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                listaPrescrizioni.add(rs.getString("codice"));
+            }
+        } catch (SQLException e) {
+            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return listaPrescrizioni;
+        
+    }
 
     public ArrayList<Farmaco> listaFarmaci() {
         ArrayList<Farmaco> listaFarmaci = new ArrayList<Farmaco>();
