@@ -37,6 +37,10 @@ public class Medico{
       this.codiceRegionale=codiceRegionale;           
   }
   
+  public  void setPassword(String password) { 
+      this.password=password;           
+  }
+  
   public String getCodiceRegionale() { 
       return codiceRegionale;          
   }

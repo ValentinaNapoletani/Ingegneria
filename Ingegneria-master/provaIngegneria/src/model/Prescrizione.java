@@ -9,15 +9,16 @@ package model;
  *
  * @author Valentina
  */
-public class PrescrizioneNonUsata {
+public class Prescrizione {
     
     private String codicePaziente=null;
     private String codicePrescrizione=null;
+    private boolean usata=false;
     
-    //public PrescrizioneNonUsata(codicePaziente,codicePrescrizione){
-     //   this.codicePaziente=codicePaziente;
-      //  this.codicePrescrizione=codicePrescrizione;
-    //}
+    public Prescrizione(String codicePaziente,String codicePrescrizione){
+        this.codicePaziente=codicePaziente;
+        this.codicePrescrizione=codicePrescrizione;
+    }
     
     
 }

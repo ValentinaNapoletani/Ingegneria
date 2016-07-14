@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import view.*;
+import View.*;
 import model.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -25,26 +25,27 @@ public class MedicoController {
     
     
     private Connection c=null;
-    //private MedicoView medicoview;
+    private LoginMedico login;
     private Medico medico;
+    private MedicoView mv;
 
     
-    public MedicoController(Connection c,Medico m){
+    public MedicoController(Connection c,Medico m,LoginMedico login){
         this.c=c;
         this.medico=m; 
+        this.login=login;
     }
     
-	/*public MedicoView getMedicoview() {
-	 	 return medicoview; 
-	}
+    public LoginMedico getMedicoView() {
+        return login; 
+    }
 
-	public void setMedicoview(MedicoView medicoview) { 
-		 this.medicoview = medicoview;            
-	}*/
+    //public void setMedicoview(MedicoView medicoView) { 
+     //   this.medicoView = medicoView;            
+   // }
        
-        
-        
-    public boolean autenticazione(String codiceRegione, String password){
+      
+    private boolean autenticazione(String codiceRegione, String password){
         try {
             int occorrenze;
             String sql = "SELECT count(*) as num FROM \"Medico\" WHERE \"CodiceRegione\"=? AND \"Password\"=?";
@@ -67,19 +68,47 @@ public class MedicoController {
         } 
         return false;
     }   
-		/*String whiteGamer = hiFrame.getWhite().getText();
-		String blackGamer = hiFrame.getBlack().getText();
-		view.getFrame().setLabel(whiteGamer,blackGamer);
-		
-		model.setConfiguration(new ChessBoard(1));
-		MedicoView2.dispose();
-
-	*/
-            
+    
+    public void autentica(){
         
-                
-       
-	public PrescrizioneNonUsata getPrescrizionenonusata() {
+        String user = login.getUser().getText();
+        String password = login.getPassword().getText();
+        ArrayList<Richiesta> richieste=new ArrayList<>();
+        
+        if(autenticazione(user,password)){
+           login.setMedico();
+              System .out. println (" Autenticato" );
+           // model.setConfiguration(new ChessBoard(1));
+  
+           for (String r: listaRichieste()){
+               richieste.add(richiestaConAnagraficaEFarmaco(r));
+           }
+           
+           mv=new MedicoView(richieste,this);
+           mv.setVisible(true);
+          // mv.setConfiguration();
+           login.dispose();  }
+    }
+    
+    public String oggettoSelezionato(int i,ArrayList<String> s){
+       System .out. println (" indice elem selezionato : " + i );
+       String richiesta=null;
+        if(i>0){         
+           if(s.get(i).substring(1,2)=="0" || s.get(i).substring(1,2)=="1" || s.get(i).substring(1,2)=="2" || s.get(i).substring(1,2)=="3" || s.get(i).substring(1,2)=="4" || s.get(i).substring(1,2)=="5" || s.get(i).substring(1,2)=="6" || s.get(i).substring(1,2)=="7" || s.get(i).substring(1,2)=="8" || s.get(i).substring(1,2)=="9"){
+                richiesta=s.get(i).substring(0, 2);       
+                System .out. println (" elem selezionato : " + richiesta );
+           }
+           else {
+               richiesta=s.get(i).substring(0, 1);       
+               System .out. println (" elem selezionato : " + richiesta );
+           }
+        }
+          
+       return richiesta; 
+      
+    }
+    		
+	public Prescrizione getPrescrizionenonusata() {
 	 	 return null; 
 	}
 
@@ -91,7 +120,7 @@ public class MedicoController {
 		return null;
 	 }
 
-	public PrescrizioneNonUsata verificaUsoPrescrizione() { 
+	public Prescrizione verificaUsoPrescrizione() { 
 		return null;
 	 }
 
@@ -256,80 +285,81 @@ public class MedicoController {
         return n+1;
     }
     
-	public String effettuaPrescrizioneConVisita(String codiceFiscale, ArrayList<String> farmaci){ 
+	public void effettuaPrescrizioneConVisita(String codiceFiscale, ArrayList<String> farmaci){ 
                 
             String n=numeroPrescrizioni() + "";
             ArrayList<String> l=new ArrayList<>(); 
 
-        try {
-            PreparedStatement stmt;
-            PreparedStatement stmt2;
-            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
-            stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco,tipoacquisto) VALUES (?, ?, ?)");
+            try {
+             PreparedStatement stmt;
+             PreparedStatement stmt2;
+                stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
+                stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco,tipoacquisto) VALUES (?, ?, ?)");
             
                       
-            if(medico.listaPazienti().contains(codiceFiscale)) {
+                if(medico.listaPazienti().contains(codiceFiscale)) {
                
-                stmt.clearParameters(); 
-                stmt.setString(1, n);
-                stmt.setString(2, codiceFiscale);
-                stmt.setString(3, medico.getCodiceRegionale());        
-                stmt.executeUpdate();
+                    stmt.clearParameters(); 
+                    stmt.setString(1, n);
+                    stmt.setString(2, codiceFiscale);
+                    stmt.setString(3, medico.getCodiceRegionale());        
+                    stmt.executeUpdate();
 
-                for(String f :farmaci) {
-                    stmt2.clearParameters(); 
-                    stmt2.setString(1, n);
-                    stmt2.setString(2, f );
-                    stmt2.setString(3, null);
-                    stmt2.executeUpdate();
+                    for(String f :farmaci) {
+                      stmt2.clearParameters(); 
+                      stmt2.setString(1, n);
+                      stmt2.setString(2, f );
+                      stmt2.setString(3, null);
+                      stmt2.executeUpdate();
+                    }   
+                    System.out.println("Prescrizione effettuata");
                 }
-                System.out.println("Prescrizione effettuata");
-            }
-            else {
-                System.out.println("Paziente non presente");
-            }
+                else {
+                   System.out.println("Paziente non presente");
+                }
             
-            stmt.close();
+                stmt.close();
             
-        } catch (SQLException e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-        }
+            } catch (SQLException e) {
+                System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+                System.exit(0);
+            }
+                  
+            
+	}
         
-        return null;
-                                      
-	 }
         
-        
-        private String[] ricavaDatiRichiesta(String codiceRichiesta){
-            String[] s=new String[2];
+        private Richiesta ricavaDatiRichiesta(String codiceRichiesta){
+            
+           Richiesta r=new Richiesta(null,codiceRichiesta,null,null,null,new ArrayList<String>());
            
             try {
-                PreparedStatement pst = c.prepareStatement ( "SELECT \"paziente\",\"nomefarmaco\" FROM \"Richiesta\" join \"farmacoInRichiesta\" on codice=codicerichiesta WHERE codice=?"); 
+                PreparedStatement pst = c.prepareStatement ( "SELECT \"paziente\",\"nomefarmaco\",\"codice\" FROM \"Richiesta\" join \"farmacoInRichiesta\" on codice=codicerichiesta WHERE codice=?"); 
 
                 pst.clearParameters(); 
                 pst.setString(1, codiceRichiesta);
            
-                ResultSet rs=pst.executeQuery ();      
+                ResultSet rs=pst.executeQuery ();                  
                 while(rs.next()){
-                    s[0]=rs.getString("paziente"); 
-                    s[1]=rs.getString("nomefarmaco"); 
+                    r.setPaziente(rs.getString("paziente"));
+                    r.aggiungiAListaFarmaci(rs.getString("nomefarmaco"));
                     }  
             }
         
             catch ( SQLException e) {
                 System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
-        }
-            return s;
+            }
+            return r;
         }
         
-       
-        public String effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
+       //modfica richiesta modello per ri settere modello lista dopo che il medico fa prescrizione(ma non è ancore tolta da ricieste) nuova lista basata sul modello non su query
+        public void effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
              
             String n=numeroPrescrizioni() + "";
-            ArrayList<String> farmaci=new ArrayList<>(); 
-            farmaci.add(ricavaDatiRichiesta(codiceRichiesta)[1]);
-            String codiceFiscale=ricavaDatiRichiesta(codiceRichiesta)[0];
+            ArrayList<String> farmaci=null; 
+  
+            farmaci=(ricavaDatiRichiesta(codiceRichiesta).getFarmaci());
+            String codiceFiscale=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
  
         try {
             PreparedStatement stmt;
@@ -363,10 +393,64 @@ public class MedicoController {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
         }
+        //rimuovi dalla lista l'elemento selezionato
+       //mv.setLista(mv.getLista().remove
+        //(mv.getLista().getSelectedIndex()));
+                    
+	}
         
-        return null;
-                                      
-	 }
+        public ArrayList<String> listaRichieste(){
+            
+            ArrayList<String> lista=new ArrayList<>();
+            
+            try {
+                PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" "); 
+
+                pst.clearParameters(); 
+          
+                ResultSet rs=pst.executeQuery ();      
+                while(rs.next()){
+                    lista.add(rs.getString("codice")); 
+                    }  
+            }
+        
+            catch ( SQLException e) {
+                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+            
+            return lista;
+        }
+        
+        public Richiesta richiestaConAnagraficaEFarmaco(String codiceRichiesta){
+            
+
+            ArrayList<String> farmaci=null; 
+       
+            String paziente=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
+            farmaci=ricavaDatiRichiesta(codiceRichiesta).getFarmaci();
+            
+            Richiesta r=new Richiesta(paziente,codiceRichiesta,null,null,null,farmaci);
+             
+              try {
+                PreparedStatement pst = c.prepareStatement ( "SELECT \"Cognome\",\"Nome\",\"DataNascita\" FROM \"Paziente\"  WHERE \"CodiceSanitario\"=?"); 
+
+                pst.clearParameters(); 
+                pst.setString(1, paziente);
+           
+                ResultSet rs=pst.executeQuery ();      
+                while(rs.next()){
+                     r.setNomePaziente(rs.getString("Nome"));
+                     r.setCognomePaziente(rs.getString("Cognome"));
+                     r.setDataNascitaPaziente(rs.getString("DataNascita"));
+                    }  
+            }
+        
+            catch ( SQLException e) {
+                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+            }
+             
+            return r;
+        }
         
      	
 

@@ -5,26 +5,34 @@
  */
 package View;
 
-import controller.MedicoController;
+import controller.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.*;
+import java.sql.Connection;
 import javax.swing.*;
-import model.Medico;
+import model.*;
 
 /**
  *
  * @author Valentina
  */
-public class MedicoView2 extends javax.swing.JFrame  {
+public class LoginMedico extends javax.swing.JFrame  {
     
     private Medico medico=null;
     private JTextField user;
     private JTextField password;
+    private MedicoController mc=null;
+    private static Connection c;
         
-    public MedicoView2()  {
+    public LoginMedico(Connection c) {
+        
+        this.c=c; 
+        medico=new Medico(c,null,null);
+        this.medico=medico;
+        mc=new MedicoController(c,medico,this);
         initComponents();
         pack();
     }
@@ -79,27 +87,30 @@ public class MedicoView2 extends javax.swing.JFrame  {
     	JButton autentica=new JButton("Accedi");
     	southPanel.add(autentica);
     	
-    	autentica.addActionListener(event -> medicoController.autenticazione());
+    	autentica.addActionListener(event -> mc.autentica());
         
     	autentica.setBorder(BorderFactory.createMatteBorder(2,2,2,2,new Color(255, 117, 24)));
     	autentica.setPreferredSize(new Dimension(60,30));
     	autentica.setFont(new Font("Purisa",Font.BOLD,15));
-    	
-        this.user= new JTextField();
-    	this.password = new JTextField();
-          
+    	        
     }
     
     public JTextField getUser(){
-		return user;
+	return user;
 	}
 	
     public JTextField getPassword(){
 	return password;
     }
 
-  
+    public Medico getMedico(){
+        return medico;
+    }
     
+    public void setMedico(){
+        medico.setCodiceRegionale(user.getText());
+        medico.setPassword(password.getText());
+    }
     
     
 }
