@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 import java.sql.Connection;
 import java.sql.Date;
@@ -307,7 +302,7 @@ public class MedicoController {
         return listaFarmaci;
     }
         
-        //numero da assegnare al ocdice della prescrizione
+    //numero da assegnare al ocdice della prescrizione
     private int numeroPrescrizioni(){
         
         String nPres=null;
@@ -331,81 +326,78 @@ public class MedicoController {
         return n+1;
     }
     
-	public void effettuaPrescrizioneConVisita(String codiceFiscale, ArrayList<String> farmaci){ 
+    public void effettuaPrescrizioneConVisita(String codiceFiscale, ArrayList<String> farmaci){ 
                 
-            String n=numeroPrescrizioni() + "";
-            ArrayList<String> l=new ArrayList<>(); 
+        String n=numeroPrescrizioni() + "";
+        ArrayList<String> l=new ArrayList<>(); 
 
-            try {
-             PreparedStatement stmt;
-             PreparedStatement stmt2;
-                stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
-                stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco,tipoacquisto) VALUES (?, ?, ?)");
-            
+        try {
+            PreparedStatement stmt;
+            PreparedStatement stmt2;
+            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
+            stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco,tipoacquisto) VALUES (?, ?, ?)");
                       
-                if(medico.listaPazienti().contains(codiceFiscale)) {
+            if(medico.listaPazienti().contains(codiceFiscale)) {
                
-                    stmt.clearParameters(); 
-                    stmt.setString(1, n);
-                    stmt.setString(2, codiceFiscale);
-                    stmt.setString(3, medico.getCodiceRegionale());        
-                    stmt.executeUpdate();
+                stmt.clearParameters(); 
+                stmt.setString(1, n);
+                stmt.setString(2, codiceFiscale);
+                stmt.setString(3, medico.getCodiceRegionale());        
+                stmt.executeUpdate();
 
-                    for(String f :farmaci) {
-                      stmt2.clearParameters(); 
-                      stmt2.setString(1, n);
-                      stmt2.setString(2, f );
-                      stmt2.setString(3, null);
-                      stmt2.executeUpdate();
-                    }   
-                    System.out.println("Prescrizione effettuata");
-                }
-                else {
-                   System.out.println("Paziente non presente");
-                }
-            
-                stmt.close();
-            
-            } catch (SQLException e) {
-                System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-                System.exit(0);
+                for(String f :farmaci) {
+                    stmt2.clearParameters(); 
+                    stmt2.setString(1, n);
+                    stmt2.setString(2, f );
+                    stmt2.setString(3, null);
+                    stmt2.executeUpdate();
+                }   
+                System.out.println("Prescrizione effettuata");
             }
-                  
-            
-	}
-        
-        
-        private Richiesta ricavaDatiRichiesta(String codiceRichiesta){
-            
-           Richiesta r=new Richiesta(null,codiceRichiesta,null,null,null,new ArrayList<String>());
-           
-            try {
-                PreparedStatement pst = c.prepareStatement ( "SELECT \"paziente\",\"nomefarmaco\",\"codice\" FROM \"Richiesta\" join \"farmacoInRichiesta\" on codice=codicerichiesta WHERE codice=?"); 
-
-                pst.clearParameters(); 
-                pst.setString(1, codiceRichiesta);
-           
-                ResultSet rs=pst.executeQuery ();                  
-                while(rs.next()){
-                    r.setPaziente(rs.getString("paziente"));
-                    r.aggiungiAListaFarmaci(rs.getString("nomefarmaco"));
-                    }  
+            else {
+                System.out.println("Paziente non presente");
             }
-        
-            catch ( SQLException e) {
-                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
-            }
-            return r;
+            
+            stmt.close();
+            
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
         }
+                  
+    }
         
-       //modfica richiesta modello per ri settere modello lista dopo che il medico fa prescrizione(ma non è ancore tolta da ricieste) nuova lista basata sul modello non su query
-        public void effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
+        
+    private Richiesta ricavaDatiRichiesta(String codiceRichiesta){
+            
+        Richiesta r=new Richiesta(null,codiceRichiesta,null,null,null,new ArrayList<String>());
+           
+        try {
+            PreparedStatement pst = c.prepareStatement ( "SELECT \"paziente\",\"nomefarmaco\",\"codice\" FROM \"Richiesta\" join \"farmacoInRichiesta\" on codice=codicerichiesta WHERE codice=?"); 
+
+            pst.clearParameters(); 
+            pst.setString(1, codiceRichiesta);
+           
+            ResultSet rs=pst.executeQuery ();                  
+            while(rs.next()){
+                r.setPaziente(rs.getString("paziente"));
+                r.aggiungiAListaFarmaci(rs.getString("nomefarmaco"));
+            }  
+        }
+        catch ( SQLException e) {
+                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return r;
+    }
+        
+    //modfica richiesta modello per ri settere modello lista dopo che il medico fa prescrizione(ma non è ancore tolta da ricieste) nuova lista basata sul modello non su query
+    public void effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
              
-            String n=numeroPrescrizioni() + "";
-            ArrayList<String> farmaci=null; 
+        String n=numeroPrescrizioni() + "";
+        ArrayList<String> farmaci=null; 
   
-            farmaci=(ricavaDatiRichiesta(codiceRichiesta).getFarmaci());
-            String codiceFiscale=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
+        farmaci=(ricavaDatiRichiesta(codiceRichiesta).getFarmaci());
+        String codiceFiscale=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
  
         try {
             PreparedStatement stmt;
@@ -440,66 +432,54 @@ public class MedicoController {
             System.exit(0);
         }
         //rimuovi dalla lista l'elemento selezionato
-       //mv.setLista(mv.getLista().remove
+        //mv.setLista(mv.getLista().remove
         //(mv.getLista().getSelectedIndex()));
-                    
-	}
+    }
         
-        public ArrayList<String> listaRichieste(){
+    public ArrayList<String> listaRichieste(){
             
-            ArrayList<String> lista=new ArrayList<>();
-            
-            try {
-                PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" "); 
-
-                pst.clearParameters(); 
+        ArrayList<String> lista=new ArrayList<>(); 
+        try {
+            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" "); 
+            pst.clearParameters(); 
           
-                ResultSet rs=pst.executeQuery ();      
-                while(rs.next()){
-                    lista.add(rs.getString("codice")); 
-                    }  
-            }
-        
-            catch ( SQLException e) {
-                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                lista.add(rs.getString("codice")); 
+            }  
         }
-            
-            return lista;
+        catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
+        return lista;
+    }
         
-        public Richiesta richiestaConAnagraficaEFarmaco(String codiceRichiesta){
+    public Richiesta richiestaConAnagraficaEFarmaco(String codiceRichiesta){
             
 
-            ArrayList<String> farmaci=null; 
+        ArrayList<String> farmaci=null; 
        
-            String paziente=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
-            farmaci=ricavaDatiRichiesta(codiceRichiesta).getFarmaci();
+        String paziente=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
+        farmaci=ricavaDatiRichiesta(codiceRichiesta).getFarmaci();
             
-            Richiesta r=new Richiesta(paziente,codiceRichiesta,null,null,null,farmaci);
+        Richiesta r=new Richiesta(paziente,codiceRichiesta,null,null,null,farmaci);
              
-              try {
-                PreparedStatement pst = c.prepareStatement ( "SELECT \"Cognome\",\"Nome\",\"DataNascita\" FROM \"Paziente\"  WHERE \"CodiceSanitario\"=?"); 
+        try {
+            PreparedStatement pst = c.prepareStatement ( "SELECT \"Cognome\",\"Nome\",\"DataNascita\" FROM \"Paziente\"  WHERE \"CodiceSanitario\"=?"); 
 
-                pst.clearParameters(); 
-                pst.setString(1, paziente);
+            pst.clearParameters(); 
+            pst.setString(1, paziente);
            
-                ResultSet rs=pst.executeQuery ();      
-                while(rs.next()){
-                     r.setNomePaziente(rs.getString("Nome"));
-                     r.setCognomePaziente(rs.getString("Cognome"));
-                     r.setDataNascitaPaziente(rs.getString("DataNascita"));
-                    }  
-            }
-        
-            catch ( SQLException e) {
-                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
-            }
-             
-            return r;
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                r.setNomePaziente(rs.getString("Nome"));
+                r.setCognomePaziente(rs.getString("Cognome"));
+                r.setDataNascitaPaziente(rs.getString("DataNascita"));
+            }  
         }
-        
-     	
-
-
-
+        catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return r;
+    }
 }

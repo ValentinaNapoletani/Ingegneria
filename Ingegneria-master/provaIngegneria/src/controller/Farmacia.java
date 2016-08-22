@@ -56,7 +56,6 @@ public class Farmacia {
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
-            //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
             pst.setString(2, indirizzo);
             pst.setString(3, cap);
             pst.setString(4, farmaco);

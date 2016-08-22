@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 import java.sql.Connection;
 import java.sql.Date;
@@ -104,7 +99,7 @@ public class SegreteriaController {
         }
     }
     //controllo se la la richesta è stat prescritta e se il medico è di questa segreteria
-    //FAI: imposta il le richieste del medicoview
+    //FAI: imposta le richieste del medicoview
     public ArrayList<String> prescrizioniDaConsengare(){
         
         ArrayList<String> prescrizioni=new ArrayList<>();
