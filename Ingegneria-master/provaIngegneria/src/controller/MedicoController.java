@@ -86,7 +86,7 @@ public class MedicoController {
            login.dispose();  }
     }
     
-    public String oggettoSelezionato(int i,ArrayList<String> s){
+    public static String oggettoSelezionato(int i,ArrayList<String> s){
        System .out. println (" indice elem selezionato : " + i );
        String richiesta=null;
       richiesta= s.get(i).substring(1,2);
@@ -306,7 +306,7 @@ public class MedicoController {
     }
         
     //numero da assegnare al ocdice della prescrizione
-    private int numeroPrescrizioni(){
+    public static int numeroPrescrizioni(Connection c){
         
         String nPres=null;
         int n=0;
@@ -331,7 +331,7 @@ public class MedicoController {
     
     public void effettuaPrescrizioneConVisita(String codiceFiscale, ArrayList<String> farmaci){ 
                 
-        String n=numeroPrescrizioni() + "";
+        String n=numeroPrescrizioni(c) + "";
         ArrayList<String> l=new ArrayList<>(); 
 
         try {
@@ -371,7 +371,7 @@ public class MedicoController {
     }
         
         
-    private Richiesta ricavaDatiRichiesta(String codiceRichiesta){
+    public static Richiesta ricavaDatiRichiesta(String codiceRichiesta, Connection c){
             
         Richiesta r=new Richiesta(null,codiceRichiesta,null,null,null,new ArrayList<String>());
            
@@ -396,11 +396,11 @@ public class MedicoController {
     //modfica richiesta modello per ri settere modello lista dopo che il medico fa prescrizione(ma non è ancore tolta da ricieste) nuova lista basata sul modello non su query
     public void effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
              
-        String n=numeroPrescrizioni() + "";
+        String n=numeroPrescrizioni(c) + "";
         ArrayList<String> farmaci=null; 
   
-        farmaci=(ricavaDatiRichiesta(codiceRichiesta).getFarmaci());
-        String codiceFiscale=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
+        farmaci=(ricavaDatiRichiesta(codiceRichiesta,c).getFarmaci());
+        String codiceFiscale=ricavaDatiRichiesta(codiceRichiesta,c).getPaziente();
  
         try {
             PreparedStatement stmt;
@@ -446,8 +446,8 @@ public class MedicoController {
             public int getSize() { return mv.getRichiesteNonPrescritte().size(); }
             public String getElementAt(int i) { return mv.getRichiesteNonPrescritte().get(i); }
         });
-        
-        mv.configChange();
+        //è comparso questo errore dopo il merge
+        //mv.configChange();
         mv.getLista().repaint();
         
     }
@@ -470,7 +470,7 @@ public class MedicoController {
         return lista;
     }
     
-    public ArrayList<String> listaRichiestePrescritte(){
+    public static ArrayList<String> listaRichiestePrescritte(Connection c){
             
         ArrayList<String> lista=new ArrayList<>(); 
         try {
@@ -493,8 +493,8 @@ public class MedicoController {
 
         ArrayList<String> farmaci=null; 
        
-        String paziente=ricavaDatiRichiesta(codiceRichiesta).getPaziente();
-        farmaci=ricavaDatiRichiesta(codiceRichiesta).getFarmaci();
+        String paziente=ricavaDatiRichiesta(codiceRichiesta,c).getPaziente();
+        farmaci=ricavaDatiRichiesta(codiceRichiesta,c).getFarmaci();
             
         Richiesta r=new Richiesta(paziente,codiceRichiesta,null,null,null,farmaci);
              

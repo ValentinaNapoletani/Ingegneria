@@ -1,4 +1,5 @@
 package controller;
+import static controller.MedicoController.numeroPrescrizioni;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -175,5 +176,37 @@ public class SegreteriaController {
          
        return null; 
     }*/
+    
+    public void effettuaConsegnaPrescrizione(String codiceRichiesta){ 
+             
+        String n=numeroPrescrizioni(c) + "";
+        ArrayList<String> farmaci=null; 
+        try {
+            PreparedStatement stmt;
+            PreparedStatement stmt2;
+            PreparedStatement stmt3;
+            stmt3 = c.prepareStatement("DELETE FROM \"Richiesta\" WHERE codice = ? ");
+            stmt3.setString(1, codiceRichiesta);
+            stmt3.executeUpdate();
+            System.out.println("Consegna effettuata");
+            stmt3.close();
+            
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+      
+          /*
+        mv.getLista().setModel(new javax.swing.AbstractListModel<String>() {
+             
+            public int getSize() { return mv.getRichiesteNonPrescritte().size(); }
+            public String getElementAt(int i) { return mv.getRichiesteNonPrescritte().get(i); }
+        });
+        //è comparso questo errore dopo il merge
+        mv.configChange();
+        mv.getLista().repaint();
+        */
+        
+    }
     
 }

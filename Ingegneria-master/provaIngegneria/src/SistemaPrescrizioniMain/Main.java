@@ -63,7 +63,7 @@ public class Main {
                 login.setVisible(true);
                 LoginSegreteria loginSeg = new LoginSegreteria(c);
                 loginSeg.setVisible(true);
-                SegreteriaView2 segreteriaV = new SegreteriaView2();
+                SegreteriaView2 segreteriaV = new SegreteriaView2(c);
                 segreteriaV.setVisible(true);
                 
                 Segreteria segreteria=new Segreteria(c,"111"); 
