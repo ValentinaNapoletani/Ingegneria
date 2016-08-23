@@ -402,13 +402,15 @@ public class MedicoController {
         try {
             PreparedStatement stmt;
             PreparedStatement stmt2;
-            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
+            PreparedStatement stmt3;
+            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data,\"CodiceRichiesta\") VALUES (?, ?, ?,CURRENT_DATE,?)");
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco,tipoacquisto) VALUES (?, ?, ?)");
-            
-            stmt.clearParameters(); 
+            stmt3 = c.prepareStatement("UPDATE \"Richiesta\" SET prescritta=true WHERE paziente = ? AND codice = ? ");
+            stmt.clearParameters();
             stmt.setString(1, n);
             stmt.setString(2, codiceFiscale);
-            stmt.setString(3, medico.getCodiceRegionale());          
+            stmt.setString(3, medico.getCodiceRegionale());  
+            stmt.setString(4, codiceRichiesta);
             if(medico.listaPazienti().contains(codiceFiscale)) {
                 stmt.executeUpdate();
             
@@ -419,6 +421,9 @@ public class MedicoController {
                     stmt2.setString(3, null);
                     stmt2.executeUpdate();
                 }
+                stmt3.setString(1, codiceFiscale);
+                stmt3.setString(2, codiceRichiesta);
+                stmt3.executeUpdate();
                 System.out.println("Prescrizione su richiesta effettuata");
             }
             else {
