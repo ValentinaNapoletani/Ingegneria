@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View;
 
 import controller.MedicoController;
@@ -18,7 +13,7 @@ import model.Richiesta;
  *
  * @author Valentina
  */
-public class MedicoView extends javax.swing.JFrame {
+public class SegreteriaView extends javax.swing.JFrame {
     
     private javax.swing.JButton jButton1;
     private javax.swing.JList<String> jList1;
@@ -32,16 +27,11 @@ public class MedicoView extends javax.swing.JFrame {
     private ArrayList<String> strings= new ArrayList<>();
 
     
-    public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
-        this.richieste=richieste;
-        this.medicoController=medicoController;
-        initComponents();       
-    }
-    
     public ArrayList<String> getRichiesteNonPrescritte(){
         return strings;
     }
      
+    
     public void impostaStringaRichiesta(){
         
         ArrayList<String> codric=new ArrayList<>();
@@ -59,6 +49,7 @@ public class MedicoView extends javax.swing.JFrame {
             strings=codric;
         }
     }
+    
     
     /*public void valueChanged(ListSelectionEvent e) {
          if (e.getValueIsAdjusting() == false) {
@@ -91,9 +82,9 @@ public class MedicoView extends javax.swing.JFrame {
     
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   
-        impostaStringaRichiesta();
+       impostaStringaRichiesta();
         
-        jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jList1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jList1.setFont(new java.awt.Font("Corbel", 0, 14)); 
         
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -107,10 +98,12 @@ public class MedicoView extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jList1);
 
-        jButton1.setText("Effettua Prescrizione");
+        jButton1.setText("Consegna prescrizione");
+        //QUI modificare effettua prescrizione su richiesta in consegna prescrizione
         jButton1.addActionListener(event -> medicoController.effettuaPrescrizioneSuRichiesta(medicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings)));
-        jButton1.addActionListener(event -> initComponents());
+        //jButton1.addActionListener(event -> initComponents());
        
+        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,27 +123,28 @@ public class MedicoView extends javax.swing.JFrame {
                 .addContainerGap())
         );
        
+       
        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
                 .addGap(0, 10, Short.MAX_VALUE))
         );
-       jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+       jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
-        jTabbedPane1.addTab("tab2", jPanel2);
+        jTabbedPane1.addTab("Invio Richiesta Prescrizione", jPanel1);
+        jTabbedPane1.addTab("Consegna Prescrizione", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

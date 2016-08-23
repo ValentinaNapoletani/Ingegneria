@@ -32,12 +32,11 @@ public class Main {
          
             try {
             Class.forName("org.postgresql.Driver");
-<<<<<<< HEAD
-            c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
-=======
+
+            //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
             //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
             c=DriverManager.getConnection("jdbc:postgresql://192.168.1.12:5432/Ingegneria","postgres","123");
->>>>>>> origin/master
+
             }    
             catch (Exception e) {
                 e.printStackTrace();
@@ -64,6 +63,8 @@ public class Main {
                 login.setVisible(true);
                 LoginSegreteria loginSeg = new LoginSegreteria(c);
                 loginSeg.setVisible(true);
+                SegreteriaView2 segreteriaV = new SegreteriaView2();
+                segreteriaV.setVisible(true);
                 
                 Segreteria segreteria=new Segreteria(c,"111"); 
                 SegreteriaController segreteriaController=new SegreteriaController(c,segreteria);  

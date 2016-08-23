@@ -18,7 +18,7 @@ import model.Richiesta;
  *
  * @author Valentina
  */
-public class MedicoView extends javax.swing.JFrame {
+public class SegreteriaView2 extends javax.swing.JFrame {
     
     private javax.swing.JButton jButton1;
     private javax.swing.JList<String> jList1;
@@ -27,15 +27,19 @@ public class MedicoView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     
-    private MedicoController medicoController;
-    private ArrayList<Richiesta> richieste;
+    //private MedicoController medicoController;
+    private ArrayList<Richiesta> prescrizioni;
     private ArrayList<String> strings= new ArrayList<>();
 
     
-    public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
-        this.richieste=richieste;
-        this.medicoController=medicoController;
+    public SegreteriaView2(ArrayList<Richiesta> prescrizioni, MedicoController medicoController) {
+        this.prescrizioni=prescrizioni;
+        //this.medicoController=medicoController;
         initComponents();       
+    }
+    
+    public SegreteriaView2(){
+        initComponents(); 
     }
     
     public ArrayList<String> getRichiesteNonPrescritte(){
@@ -48,7 +52,7 @@ public class MedicoView extends javax.swing.JFrame {
         
         String stringaFarmaci="";
         
-        for(Richiesta r: richieste){
+        for(Richiesta r: prescrizioni){
             for(String s:r.getFarmaci()) {
                 stringaFarmaci+= "\n "
                         + "•" + s; 

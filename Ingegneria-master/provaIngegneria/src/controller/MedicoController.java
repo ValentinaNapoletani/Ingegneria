@@ -466,6 +466,24 @@ public class MedicoController {
         }
         return lista;
     }
+    
+    public ArrayList<String> listaRichiestePrescritte(){
+            
+        ArrayList<String> lista=new ArrayList<>(); 
+        try {
+            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=true " ); 
+            pst.clearParameters(); 
+          
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                lista.add(rs.getString("codice")); 
+            }  
+        }
+        catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return lista;
+    }
         
     public Richiesta richiestaConAnagraficaEFarmaco(String codiceRichiesta){
             
