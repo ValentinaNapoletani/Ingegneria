@@ -9,6 +9,7 @@ import controller.MedicoController;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -77,15 +78,19 @@ public class MedicoView extends javax.swing.JFrame {
     public JList<String> getLista(){
         return jList1;
     }
-        
     
-     private void initComponents() {
+      public void setLista(JList<String> jList1){
+          this.jList1=jList1;
+    }
+        
+      
+     public void initComponents() {
    
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jList1 = new javax.swing.JList<String>();
         jButton1 = new javax.swing.JButton();
         
     
@@ -109,8 +114,7 @@ public class MedicoView extends javax.swing.JFrame {
 
         jButton1.setText("Effettua Prescrizione");
         jButton1.addActionListener(event -> medicoController.effettuaPrescrizioneSuRichiesta(medicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings)));
-        jButton1.addActionListener(event -> initComponents());
-       
+      
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -165,5 +169,9 @@ public class MedicoView extends javax.swing.JFrame {
        
 
         pack();
+    }
+     
+    public void configChange(){ 
+    jScrollPane1.setViewportView(jList1);
     }
 }

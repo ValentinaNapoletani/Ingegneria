@@ -32,12 +32,12 @@ public class Main {
          
             try {
             Class.forName("org.postgresql.Driver");
-<<<<<<< HEAD
+
             c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
-=======
+
             //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
-            c=DriverManager.getConnection("jdbc:postgresql://192.168.1.12:5432/Ingegneria","postgres","123");
->>>>>>> origin/master
+           // c=DriverManager.getConnection("jdbc:postgresql://192.168.1.12:5432/Ingegneria","postgres","123");
+            
             }    
             catch (Exception e) {
                 e.printStackTrace();
