@@ -11,6 +11,7 @@ import View.*;
 import model.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import javax.swing.JList;
 
 /**
  *
@@ -88,11 +89,13 @@ public class MedicoController {
     public String oggettoSelezionato(int i,ArrayList<String> s){
        System .out. println (" indice elem selezionato : " + i );
        String richiesta=null;
+      richiesta= s.get(i).substring(1,2);
         if(i>0){         
-           if(s.get(i).substring(1,2)=="0" || s.get(i).substring(1,2)=="1" || s.get(i).substring(1,2)=="2" || s.get(i).substring(1,2)=="3" || s.get(i).substring(1,2)=="4" || s.get(i).substring(1,2)=="5" || s.get(i).substring(1,2)=="6" || s.get(i).substring(1,2)=="7" || s.get(i).substring(1,2)=="8" || s.get(i).substring(1,2)=="9"){
+           if(s.get(i).substring(1,2).equals("0") || s.get(i).substring(1,2).equals("1") || s.get(i).substring(1,2).equals("2") || s.get(i).substring(1,2).equals("3") || s.get(i).substring(1,2).equals("4") || s.get(i).substring(1,2).equals("5") || s.get(i).substring(1,2).equals("6")|| s.get(i).substring(1,2).equals("7") || s.get(i).substring(1,2).equals("8") || s.get(i).substring(1,2).equals("9")){
                 richiesta=s.get(i).substring(0, 2);       
                 System .out. println (" elem selezionato : " + richiesta );
            }
+           
            else {
                richiesta=s.get(i).substring(0, 1);       
                System .out. println (" elem selezionato : " + richiesta );
@@ -436,16 +439,16 @@ public class MedicoController {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
         }
-        //rimuovi dalla lista l'elemento selezionato
-        //mv.setLista(mv.getLista().remove
-        //(mv.getLista().getSelectedIndex()));
-        
-         mv.getLista().setModel(new javax.swing.AbstractListModel<String>() {
+      
+          
+        mv.getLista().setModel(new javax.swing.AbstractListModel<String>() {
              
             public int getSize() { return mv.getRichiesteNonPrescritte().size(); }
             public String getElementAt(int i) { return mv.getRichiesteNonPrescritte().get(i); }
         });
         
+        mv.configChange();
+        mv.getLista().repaint();
         
     }
         
@@ -514,6 +517,4 @@ public class MedicoController {
         return r;
     }
     
-    public void configurationChange(){
-    }
 }
