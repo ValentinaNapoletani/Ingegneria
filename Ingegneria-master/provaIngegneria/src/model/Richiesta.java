@@ -20,6 +20,7 @@ public class Richiesta {
     private String cognomePaziente=null;
     private String dataNascitaPaziente;
     private ArrayList<String> farmaci=null;
+
  
     public Richiesta(String codicePaziente,String codiceRichiesta,String nomePaziente,String cognomePaziente,String dataNascitaPaziente,ArrayList<String> farmaci){
         this.codicePaziente=codicePaziente;
@@ -46,7 +47,7 @@ public class Richiesta {
        public void setDataNascitaPaziente(String dataNascitaPaziente){
         this.dataNascitaPaziente=dataNascitaPaziente;
     }
-    
+       
     
     public void aggiungiAListaFarmaci(String farmaco){
         farmaci.add(farmaco);

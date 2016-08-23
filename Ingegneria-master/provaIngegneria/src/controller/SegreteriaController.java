@@ -99,7 +99,7 @@ public class SegreteriaController {
         }
     }
     //controllo se la la richesta è stat prescritta e se il medico è di questa segreteria
-    //FAI: imposta le richieste del medicoview
+    //FAI: imposta le richieste del medicoview //modifica con prescritta
     public ArrayList<String> prescrizioniDaConsengare(){
         
         ArrayList<String> prescrizioni=new ArrayList<>();

@@ -434,13 +434,21 @@ public class MedicoController {
         //rimuovi dalla lista l'elemento selezionato
         //mv.setLista(mv.getLista().remove
         //(mv.getLista().getSelectedIndex()));
+        
+         mv.getLista().setModel(new javax.swing.AbstractListModel<String>() {
+             
+            public int getSize() { return mv.getRichiesteNonPrescritte().size(); }
+            public String getElementAt(int i) { return mv.getRichiesteNonPrescritte().get(i); }
+        });
+        
+        
     }
         
     public ArrayList<String> listaRichieste(){
             
         ArrayList<String> lista=new ArrayList<>(); 
         try {
-            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" "); 
+            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false " ); 
             pst.clearParameters(); 
           
             ResultSet rs=pst.executeQuery ();      
@@ -481,5 +489,8 @@ public class MedicoController {
             System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
         return r;
+    }
+    
+    public void configurationChange(){
     }
 }

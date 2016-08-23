@@ -28,6 +28,7 @@ public class MedicoView extends javax.swing.JFrame {
     
     private MedicoController medicoController;
     private ArrayList<Richiesta> richieste;
+    private ArrayList<String> strings= new ArrayList<>();
 
     
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
@@ -36,7 +37,11 @@ public class MedicoView extends javax.swing.JFrame {
         initComponents();       
     }
     
-    public ArrayList<String> impostaStringaRichiesta(){
+    public ArrayList<String> getRichiesteNonPrescritte(){
+        return strings;
+    }
+     
+    public void impostaStringaRichiesta(){
         
         ArrayList<String> codric=new ArrayList<>();
         
@@ -49,9 +54,9 @@ public class MedicoView extends javax.swing.JFrame {
             }
             codric.add(r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() +"\n\t"+ stringaFarmaci);
             stringaFarmaci="";
+            
+            strings=codric;
         }
-        
-        return codric;
     }
     
     /*public void valueChanged(ListSelectionEvent e) {
@@ -84,7 +89,7 @@ public class MedicoView extends javax.swing.JFrame {
     
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   
-        ArrayList<String> strings= impostaStringaRichiesta();
+        impostaStringaRichiesta();
         
         jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jList1.setFont(new java.awt.Font("Corbel", 0, 14)); 
@@ -102,7 +107,7 @@ public class MedicoView extends javax.swing.JFrame {
 
         jButton1.setText("Effettua Prescrizione");
         jButton1.addActionListener(event -> medicoController.effettuaPrescrizioneSuRichiesta(medicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings)));
-
+        jButton1.addActionListener(event -> initComponents());
        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
