@@ -19,7 +19,7 @@ public class Main {
     public Medico medico;
     
     private static Connection c = null;
-
+        /*
 	public Medico getMedico() {
 	 	 return medico; 
 	}
@@ -27,15 +27,16 @@ public class Main {
 	public void setMedico(Medico medico) { 
 		 this.medico = medico; 
         }
-        
+        */
         public static void creaConnessione(){
          
             try {
-            Class.forName("org.postgresql.Driver");
+                Class.forName("org.postgresql.Driver");
 
-            //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
-            //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
-            c=DriverManager.getConnection("jdbc:postgresql://192.168.1.12:5432/Ingegneria","postgres","123");
+                //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
+                //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
+                //c=DriverManager.getConnection("jdbc:postgresql://192.168.1.12:5432/Ingegneria","postgres","123");
+                c=DriverManager.getConnection("jdbc:postgresql://2.37.155.139:5432/Ingegneria","postgres","123");
 
             }    
             catch (Exception e) {
@@ -44,7 +45,7 @@ public class Main {
                 System.exit(0);
             }
             System.out.println("Opened database successfully");
-         }
+        }
         
         public Connection getConnessione(){       
             return c;
@@ -63,8 +64,8 @@ public class Main {
                 login.setVisible(true);
                 LoginSegreteria loginSeg = new LoginSegreteria(c);
                 loginSeg.setVisible(true);
-                SegreteriaView2 segreteriaV = new SegreteriaView2(c);
-                segreteriaV.setVisible(true);
+                LoginSegreteria loginSegreteria = new LoginSegreteria(c);
+
                 
                 Segreteria segreteria=new Segreteria(c,"111"); 
                 SegreteriaController segreteriaController=new SegreteriaController(c,segreteria);  
@@ -74,7 +75,7 @@ public class Main {
                 f.add("Oki");
                 f.add("Aspirina");
                 segreteriaController.inviaRichiestaPrescrizione("NPLVNT94D43F861Q",f);
-               // mc.effettuaPrescrizioneConVisita("NPLVNT94D43F861Q", f);
+                //mc.effettuaPrescrizioneConVisita("NPLVNT94D43F861Q", f);
                 //mc.effettuaPrescrizioneSuRichiesta("1");               
                 
                 

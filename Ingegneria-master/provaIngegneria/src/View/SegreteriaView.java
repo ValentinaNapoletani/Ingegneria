@@ -16,117 +16,52 @@ import javafx.scene.control.CheckBox;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import model.Prescrizione;
 import model.Richiesta;
 
 /**
  *
  * @author Valentina
  */
-public class SegreteriaView2 extends javax.swing.JFrame {
+public class SegreteriaView extends javax.swing.JFrame {
     
     private javax.swing.JButton jButton1;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<Checkbox> jList2;
+    private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     
     private SegreteriaController segreteriaController;
-    private ArrayList<Richiesta> prescrizioni;
+    private ArrayList<Prescrizione> prescrizioni;
     private ArrayList<String> strings= new ArrayList<>();
     private ArrayList<String> strings2= new ArrayList<>();
     private Connection c;
+    private SegreteriaController sc;
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginSegreteria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginSegreteria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginSegreteria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginSegreteria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SegreteriaView2(null).setVisible(true);
-            }
-        });
-    }
     
     
 
     
-    public SegreteriaView2(ArrayList<Richiesta> prescrizioni, SegreteriaController segreteriaController) {
+    public SegreteriaView(ArrayList<Prescrizione> prescrizioni, SegreteriaController segreteriaController) {
         this.prescrizioni=prescrizioni;
         this.segreteriaController=segreteriaController;
         initComponents();       
     }
     
-    public SegreteriaView2(Connection c){
+    public SegreteriaView(SegreteriaController s, Connection c){
         this.c=c;
+        prescrizioni = s.prescrizioniDaConsegnareComePrescrizione();
         initComponents(); 
+        sc=s;
+        
     }
     
     public ArrayList<String> getRichiesteNonPrescritte(){
         return strings;
     }
-     /*
-    public void impostaStringaRichiesta(){
-        
-        ArrayList<String> codric=new ArrayList<>();
-        
-        String stringaFarmaci="";
-        if(prescrizioni != null){
-            for(Richiesta r: prescrizioni){
-                for(String s:r.getFarmaci()) {
-                    stringaFarmaci+= "\n "
-                        + "•" + s; 
-                }
-                codric.add(r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() +"\n\t"+ stringaFarmaci);
-                stringaFarmaci="";
-            
-                strings=codric;
-            }
-        }
-    }*/
     
-    /*public void valueChanged(ListSelectionEvent e) {
-         if (e.getValueIsAdjusting() == false) {
-
-        if (jList1.getSelectedIndex() == -1) {
-        //No selection, disable fire button.
-            jButton1.setEnabled(false);
-
-        } else {
-        //Selection, enable the fire button.
-             jButton1.setEnabled(true);
-        }
-    }
-    }*/
     
-    public JList<String> getLista(){
-        return jList1;
-    }
         
     
      private void initComponents() {
@@ -135,16 +70,16 @@ public class SegreteriaView2 extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<String>();
-        jList2 = new javax.swing.JList<Checkbox>();
+        //jList1 = new javax.swing.JList<String>();
+        jList2 = new javax.swing.JList<String>();
         jButton1 = new javax.swing.JButton();
         if(c != null)
             strings2 = MedicoController.listaRichiestePrescritte(c);
                 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   
-        //impostaStringaRichiesta();
-        
+        impostaStringaPrescrizione();
+        /*
         jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jList1.setFont(new java.awt.Font("Corbel", 0, 14)); 
         
@@ -153,30 +88,33 @@ public class SegreteriaView2 extends javax.swing.JFrame {
 
             public int getSize() { return strings.size(); }
             public String getElementAt(int i) { return strings.get(i); }
-        });
+        });*/
         
-        jList2.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
-        jList2.setModel(new javax.swing.AbstractListModel<Checkbox>() {
+        jList2.setModel(new javax.swing.AbstractListModel<String>() {
             //ArrayList<String> strings= impostaStringaRichiesta();
+            
 
             public int getSize() { return strings2.size(); }
 
             @Override
-            public Checkbox getElementAt(int index) {
-                return new Checkbox(strings2.get(index));
+            public String getElementAt(int index) {
+                System.out.println(strings2.get(index));
+                //return new Checkbox(strings2.get(index)).setLabel(label);
+                return strings2.get(index);
             }
             
         });
         
-        jList1.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings));
-        jList2.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings2));
+        //jList1.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings));
+        jList2.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList2.getSelectedIndex(),strings2));
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(jList2);
 
         jButton1.setText("Consegna Prescrizione");
-        jButton1.addActionListener(event -> segreteriaController.effettuaConsegnaPrescrizione(MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings)));
-        jButton1.addActionListener(event -> initComponents());
+        jButton1.addActionListener(event -> segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionato(jList2.getSelectedIndex(),strings2)));
+        //jButton1.addActionListener(event -> initComponents());
        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -232,6 +170,24 @@ public class SegreteriaView2 extends javax.swing.JFrame {
        
 
         pack();
+    }
+     
+    public void impostaStringaPrescrizione(){
+        
+        ArrayList<String> codric=new ArrayList<>();
+        
+        String stringaFarmaci="";
+
+        for(Prescrizione r: prescrizioni){
+            for(String s:r.getFarmaci(c)) {
+                stringaFarmaci+= "\n "
+                        + "•" + s; 
+            }
+            codric.add(r.getCodicePrescrizione()+ " " + r.getCognomePaziente(c) + " " + r.getNomePaziente(c) + " " + r.getPaziente() +"\n\t"+ stringaFarmaci);
+            stringaFarmaci="";
+            
+            strings=codric;
+        }
     }
      
     

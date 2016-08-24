@@ -1,4 +1,7 @@
 package controller;
+import View.LoginSegreteria;
+import View.MedicoView;
+import View.SegreteriaView;
 import static controller.MedicoController.numeroPrescrizioni;
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Medico;
+import model.Prescrizione;
 import model.Segreteria;
 /**
  *
@@ -16,13 +20,16 @@ public class SegreteriaController {
     
     private Connection c=null;
     private Segreteria segreteria=null;
+    private SegreteriaView sv;
+    private LoginSegreteria login;
+
     
     public SegreteriaController(Connection c,Segreteria segreteria){
         this.c=c;
         this.segreteria=segreteria;
     }
     
-    public Medico medicoDelPaziente(String codiceFiscale){
+    public static Medico medicoDelPaziente(String codiceFiscale, Connection c){
         
         Medico m=new Medico(c,"0001","10maco");
         
@@ -74,8 +81,8 @@ public class SegreteriaController {
             stmt = c.prepareStatement("INSERT INTO \"Richiesta\" (paziente,codice) VALUES (?, ? )");
             stmt2 = c.prepareStatement("INSERT INTO \"farmacoInRichiesta\" (codicerichiesta,nomefarmaco) VALUES (?, ?)");
           
-            System.out.println(medicoDelPaziente(codiceFiscale));
-            if(((medicoDelPaziente(codiceFiscale)).listaPazienti()).contains(codiceFiscale)) {
+            System.out.println(SegreteriaController.medicoDelPaziente(codiceFiscale,c));
+            if(((SegreteriaController.medicoDelPaziente(codiceFiscale,c)).listaPazienti()).contains(codiceFiscale)) {
                 
                 stmt.clearParameters();
                 stmt.setString(1, codiceFiscale);        
@@ -101,19 +108,43 @@ public class SegreteriaController {
     }
     //controllo se la la richesta è stat prescritta e se il medico è di questa segreteria
     //FAI: imposta le richieste del medicoview //modifica con prescritta
-    public ArrayList<String> prescrizioniDaConsengare(){
+    public ArrayList<String> prescrizioniDaConsegnare(){
         
         ArrayList<String> prescrizioni=new ArrayList<>();
          try {
            
            PreparedStatement stmt;
-           stmt = c.prepareStatement(" SELECT \"codice\" FROM \"Richiesta\" join \"Prescrizione\" on \"Richiesta.codice\"=\"CodicePrescrizione\" join \"Medico\" on \"CodiceRegione\"=\"medico\" join \"Segreteria\" on \"codicesegreteria\"=\"codice\" WHERE \"codice\"=? ");
+           stmt = c.prepareStatement(" SELECT \"Richiesta.codice\" FROM \"Richiesta\" join \"Prescrizione\" on \"Richiesta.codice\"=\"CodicePrescrizione\" join \"Medico\" on \"CodiceRegione\"=\"medico\" join \"Segreteria\" on \"codicesegreteria\"=\"Segreteria.codice\" WHERE \"codice\"=? ");
            stmt.clearParameters();
            stmt.setString(1, segreteria.getCodiceSegreteria()); 
            
            ResultSet rs=stmt.executeQuery ();      
-            while(rs.next()){
+           while(rs.next()){
                 prescrizioni.add(rs.getString("codice"));
+           }     
+           stmt.close();   
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        
+        return prescrizioni;
+    }
+    
+    public ArrayList<Prescrizione> prescrizioniDaConsegnareComePrescrizione(){
+        
+        ArrayList<Prescrizione> prescrizioni=new ArrayList<>();
+        try {
+           
+           PreparedStatement stmt;
+           stmt = c.prepareStatement("SELECT codice, \"paziente\" FROM \"Richiesta\"  WHERE \"prescritta\"=true ");//and segreteria giusta...
+           stmt.clearParameters();
+           //stmt.setString(1, segreteria.getCodiceSegreteria()); 
+           
+           ResultSet rs=stmt.executeQuery ();      
+            while(rs.next()){
+                //System.out.println(rs.getString("paziente")+" "+rs.getString("codice"));
+                prescrizioni.add(new Prescrizione(rs.getString("paziente"),rs.getString("codice")));
             }     
            stmt.close();   
         } catch (SQLException e) {
@@ -123,6 +154,7 @@ public class SegreteriaController {
         
         return prescrizioni;
     }
+    
 
     
     //ok
@@ -177,36 +209,6 @@ public class SegreteriaController {
        return null; 
     }*/
     
-    public void effettuaConsegnaPrescrizione(String codiceRichiesta){ 
-             
-        String n=numeroPrescrizioni(c) + "";
-        ArrayList<String> farmaci=null; 
-        try {
-            PreparedStatement stmt;
-            PreparedStatement stmt2;
-            PreparedStatement stmt3;
-            stmt3 = c.prepareStatement("DELETE FROM \"Richiesta\" WHERE codice = ? ");
-            stmt3.setString(1, codiceRichiesta);
-            stmt3.executeUpdate();
-            System.out.println("Consegna effettuata");
-            stmt3.close();
-            
-        } catch (SQLException e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-        }
-      
-          /*
-        mv.getLista().setModel(new javax.swing.AbstractListModel<String>() {
-             
-            public int getSize() { return mv.getRichiesteNonPrescritte().size(); }
-            public String getElementAt(int i) { return mv.getRichiesteNonPrescritte().get(i); }
-        });
-        //è comparso questo errore dopo il merge
-        mv.configChange();
-        mv.getLista().repaint();
-        */
-        
-    }
+    
     
 }

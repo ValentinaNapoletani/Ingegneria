@@ -5,10 +5,12 @@
  */
 package View;
 
+import controller.SegreteriaController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Segreteria;
 
 /**
  *
@@ -112,6 +114,10 @@ public class LoginSegreteria extends javax.swing.JFrame {
         }
         if(numRisultati == 1){
             //QUI aprire la finestra della segreteria
+            Segreteria segreteria = new Segreteria(c,codice);
+            SegreteriaController controller = new SegreteriaController(c,segreteria);
+            SegreteriaView segreteriaView = new SegreteriaView(controller, c);
+            segreteriaView.setVisible(true);
         }
         else{
             System.err.println("Codice segreteria non trovato");
