@@ -50,3 +50,5 @@ Ingegneria-master/provaIngegneria/build/classes/controller/MedicoController.clas
 *.class
 Ingegneria-master/provaIngegneria/build/classes/controller/MedicoController.class
 /Ingegneria-master/provaIngegneria/dist/
+*.properties
+*.class
