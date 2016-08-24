@@ -448,7 +448,7 @@ public class MedicoController {
         });
         //è comparso questo errore dopo il merge
         //mv.configChange();
-        mv.getLista().repaint();
+        
         
     }
         
