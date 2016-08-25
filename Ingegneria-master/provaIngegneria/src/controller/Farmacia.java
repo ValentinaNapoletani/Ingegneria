@@ -24,17 +24,19 @@ public class Farmacia {
     private Connection c=null;
     String indirizzo;
     String cap;
+    String citta;
     
-    public Farmacia(Connection c,String indirizzo, String cap){
+    public Farmacia(Connection c,String indirizzo, String cap, String citta){
         this.c = c;
         this.indirizzo=indirizzo;
         this.cap=cap;
+        this.citta=citta;
     }
     
     public boolean controlloPresenzaFarmaco(String farmaco){
         int quantita;
         quantita=numeroPezziFarmacoDisponibili(farmaco);
-        if (quantita > 0)
+        if(quantita > 0)
             return true;
         else
             return false;
@@ -156,13 +158,14 @@ public class Farmacia {
     private int numeroPezziFarmacoDisponibili(String farmaco){
         int quantita=0;
         try {
-            String sql = "SELECT \"quantita\" FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+            String sql = "SELECT \"quantita\" FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=? AND \"citta\" =?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
             pst.setString(1, indirizzo);        
             pst.setString(2, cap);
             pst.setString(3, farmaco);
+            pst.setString(4, citta);
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
                 quantita=rs.getInt("quantita");
@@ -171,5 +174,53 @@ public class Farmacia {
             System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
         return quantita;
+    }
+    
+    public static boolean controlloPresenzaFarmacia(Connection c,String citta, String indirizzo, String cap){
+        int risultato=0;
+        try {
+            String sql = "SELECT count(*) as cont FROM \"Farmacia\" WHERE \"citta\"=? AND \"indirizzo\"=? AND \"cap\"=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, citta);
+            pst.setString(2, indirizzo);
+            pst.setString(3, cap);
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                risultato=rs.getInt("cont");
+            }
+        } catch (SQLException e) {
+            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+        } 
+        if(risultato>0)
+            return true;
+        else
+            return false;
+    }
+
+    public static boolean controlloPrescrizione(Connection c, String codiceSanitario, String codicePrescrizione){
+        int quantita=0;
+        try {
+            String sql = "SELECT count(*) as cont FROM \"Prescrizione\" WHERE \"codice\"=? AND \"paziente\"=? ";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, codicePrescrizione);        
+            pst.setString(2, codiceSanitario);
+
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                quantita=rs.getInt("cont");
+            }
+        } catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e.getMessage () );
+        }
+        if(quantita>0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

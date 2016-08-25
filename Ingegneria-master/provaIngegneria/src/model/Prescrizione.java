@@ -79,4 +79,25 @@ public class Prescrizione {
         }
         return risultato;
     }
+    
+    public static ArrayList<String> getFarmaci(String codicePrescrizione, Connection c){
+        ArrayList<String> farmaci=new ArrayList<>();
+         try {
+           
+           PreparedStatement stmt;
+           stmt = c.prepareStatement(" SELECT \"nomefarmaco\" FROM \"FarmacoInRicetta\" WHERE \"codiceprescrizione\"= ? ");
+           stmt.clearParameters();
+           stmt.setString(1, codicePrescrizione); 
+           
+           ResultSet rs=stmt.executeQuery ();      
+            while(rs.next()){
+                farmaci.add(rs.getString("nomefarmaco"));
+            }     
+           stmt.close();   
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        return farmaci;
+    }
 }
