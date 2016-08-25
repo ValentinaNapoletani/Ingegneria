@@ -97,7 +97,7 @@ public class MedicoController {
     public static String oggettoSelezionato(int i,ArrayList<String> s){
        System .out. println (" indice elem selezionato : " + i );
        String richiesta=null;
-      richiesta= s.get(i).substring(1,2);
+       richiesta= s.get(i).substring(1,2);
         if(i>0){         
            if(s.get(i).substring(1,2).equals("0") || s.get(i).substring(1,2).equals("1") || s.get(i).substring(1,2).equals("2") || s.get(i).substring(1,2).equals("3") || s.get(i).substring(1,2).equals("4") || s.get(i).substring(1,2).equals("5") || s.get(i).substring(1,2).equals("6")|| s.get(i).substring(1,2).equals("7") || s.get(i).substring(1,2).equals("8") || s.get(i).substring(1,2).equals("9")){
                 richiesta=s.get(i).substring(0, 2);       

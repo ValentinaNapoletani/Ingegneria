@@ -7,6 +7,7 @@ package View;
 
 import controller.MedicoController;
 import java.util.ArrayList;
+import static javafx.scene.input.KeyCode.J;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import model.Farmaco;

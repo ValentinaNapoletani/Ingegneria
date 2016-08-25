@@ -48,19 +48,19 @@ public class SegreteriaController {
         return m;
     }
 //ok
-    private int numeroRichieste(){
+    private int prossimaRichiesta(){
         
         String nRichieste=null;
-        int n=0;
-        
+        int max=0;
         try {
-            String sql = "SELECT count(*) as num FROM \"Richiesta\"";
+            String sql = "SELECT codice as num FROM \"Richiesta\"";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             ResultSet rs=pst. executeQuery ();      
             while(rs.next()){
                  nRichieste=rs.getString("num");
-                 n = Integer.parseInt(nRichieste);
+                 if(Integer.parseInt(nRichieste)> max)
+                     max=Integer.parseInt(nRichieste);
             }
         }
         
@@ -68,46 +68,51 @@ public class SegreteriaController {
             System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
         
-        return n+1;
+        return max+1;
     }
     //ok
     public void inviaRichiestaPrescrizione(String codiceFiscale,ArrayList<String> farmaci){
-            
-        String n=numeroRichieste() + "";
-        
-        try {
-            PreparedStatement stmt;
-            PreparedStatement stmt2;
-            stmt = c.prepareStatement("INSERT INTO \"Richiesta\" (paziente,codice) VALUES (?, ? )");
-            stmt2 = c.prepareStatement("INSERT INTO \"farmacoInRichiesta\" (codicerichiesta,nomefarmaco) VALUES (?, ?)");
+        String n=prossimaRichiesta() + "";
+        if(farmaci.size()>0){
+            try {
+                PreparedStatement stmt;
+                PreparedStatement stmt2;
+                stmt = c.prepareStatement("INSERT INTO \"Richiesta\" (paziente,codice) VALUES (?, ? )");
+                stmt2 = c.prepareStatement("INSERT INTO \"farmacoInRichiesta\" (codicerichiesta,nomefarmaco) VALUES (?, ?)");
           
-            System.out.println(SegreteriaController.medicoDelPaziente(codiceFiscale,c));
-            if(((SegreteriaController.medicoDelPaziente(codiceFiscale,c)).listaPazienti()).contains(codiceFiscale)) {
+                System.out.println(SegreteriaController.medicoDelPaziente(codiceFiscale,c));
+                if(((SegreteriaController.medicoDelPaziente(codiceFiscale,c)).listaPazienti()).contains(codiceFiscale)) {
                 
-                stmt.clearParameters();
-                stmt.setString(1, codiceFiscale);        
-                stmt.setString(2, n);
-                stmt.executeUpdate();
+                    stmt.clearParameters();
+                    stmt.setString(1, codiceFiscale);        
+                    stmt.setString(2, n);
+                    stmt.executeUpdate();
                 
-                for(String f :farmaci) {
-                    stmt2.clearParameters();
-                    stmt2.setString(1, n);        
-                    stmt2.setString(2, f);
-                    stmt2.executeUpdate();
+                    for(String f :farmaci) {
+                        stmt2.clearParameters();
+                        stmt2.setString(1, n);        
+                        stmt2.setString(2, f);
+                        stmt2.executeUpdate();
+                    }
+                System.out.println("Richiesta prescrizione inserita");
                 }
-            System.out.println("Richiesta prescrizione inserita");
+                else {
+                    System.out.println("Paziente non presente ");
+                }            
+                stmt.close();   
+            } catch (SQLException e) {
+                System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+                System.exit(0);
             }
-            else {
-                System.out.println("Paziente non presente ");
-            }            
-            stmt.close();   
-        } catch (SQLException e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
+        }
+        else{
+            System.out.println("Nessun farmaco selezionato");
         }
     }
     //controllo se la la richesta è stat prescritta e se il medico è di questa segreteria
     //FAI: imposta le richieste del medicoview //modifica con prescritta
+    //versione vecchia: tutto da modificare 
+    /*
     public ArrayList<String> prescrizioniDaConsegnare(){
         
         ArrayList<String> prescrizioni=new ArrayList<>();
@@ -130,6 +135,7 @@ public class SegreteriaController {
         
         return prescrizioni;
     }
+    */
     
     public ArrayList<Prescrizione> prescrizioniDaConsegnareComePrescrizione(){
         
@@ -137,7 +143,7 @@ public class SegreteriaController {
         try {
            
            PreparedStatement stmt;
-           stmt = c.prepareStatement("SELECT codice, \"paziente\" FROM \"Richiesta\"  WHERE \"prescritta\"=true ");//and segreteria giusta...
+           stmt = c.prepareStatement("SELECT codice, \"paziente\" FROM \"Richiesta\"  WHERE \"prescritta\"=true and \"consegnata\"=false");//and segreteria giusta...
            stmt.clearParameters();
            //stmt.setString(1, segreteria.getCodiceSegreteria()); 
            
@@ -163,7 +169,7 @@ public class SegreteriaController {
         try {
            //String rp=richiestaPrescritta(codicePrescrizione);
            PreparedStatement stmt;
-           stmt = c.prepareStatement("DELETE FROM \"Richiesta\" WHERE \"codice\"=?  ");
+           stmt = c.prepareStatement("UPDATE \"Richiesta\" SET consegnata=true WHERE \"codice\"=?");
             
             //if(rp!=null){
                
