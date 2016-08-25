@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -32,9 +33,9 @@ public class Farmaco {
         this.prezzo = prezzo;
     }
     
-    public static LinkedList<String> getListaFarmaci(Connection c){
+    public static ArrayList<String> getListaFarmaci(Connection c){
         PreparedStatement stmt;
-        LinkedList<String> listaRisultati= new LinkedList<String>();
+        ArrayList<String> listaRisultati= new ArrayList<String>();
         try{
             stmt=c.prepareStatement("SELECT DISTINCT nome FROM \"Farmaco\"");
             ResultSet rs;

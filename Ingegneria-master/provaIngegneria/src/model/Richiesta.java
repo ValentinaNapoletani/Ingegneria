@@ -6,6 +6,10 @@
 package model;
 
 import java.awt.Font;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -77,5 +81,27 @@ public class Richiesta {
         return dataNascitaPaziente;
     }
     
+       //getFarmaci non è funzionante
+    
+    public static ArrayList<String> getFarmaci(String codiceRichiesta, Connection c){
+        ArrayList<String> farmaci=new ArrayList<>();
+         try {
+           
+           PreparedStatement stmt;
+           stmt = c.prepareStatement(" SELECT \"nomefarmaco\" FROM \"farmacoInRichiesta\" WHERE \"codicerichiesta\"= ? ");
+           stmt.clearParameters();
+           stmt.setString(1, codiceRichiesta); 
+           
+           ResultSet rs=stmt.executeQuery ();      
+            while(rs.next()){
+                farmaci.add(rs.getString("nomefarmaco"));
+            }     
+           stmt.close();   
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+        return farmaci;
+    }
        
 }

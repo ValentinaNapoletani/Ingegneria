@@ -9,6 +9,7 @@ import controller.MedicoController;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import static javafx.scene.input.KeyCode.J;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
