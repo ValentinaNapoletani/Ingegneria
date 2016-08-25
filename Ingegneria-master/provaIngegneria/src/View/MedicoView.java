@@ -6,12 +6,10 @@
 package View;
 
 import controller.MedicoController;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
+import model.Farmaco;
 import model.Richiesta;
 
 /**
@@ -40,6 +38,9 @@ public class MedicoView extends javax.swing.JFrame {
     private MedicoController medicoController;
     private ArrayList<Richiesta> richieste;
     private ArrayList<String> strings= new ArrayList<>();
+    private ArrayList<String> listaFarmaci= new ArrayList<>();
+     
+    private frameConfermaPrescrizione frameP;
 
     
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
@@ -51,7 +52,16 @@ public class MedicoView extends javax.swing.JFrame {
     public ArrayList<String> getRichiesteNonPrescritte(){
         return strings;
     }
+    
+     public MedicoController getMedicoController(){
+        return medicoController;
+    }
      
+     
+    public frameConfermaPrescrizione getFrameP(){
+        return frameP;       
+    }
+    
     public void impostaStringaRichiesta(){
         
         ArrayList<String> codric=new ArrayList<>();
@@ -69,6 +79,15 @@ public class MedicoView extends javax.swing.JFrame {
             strings=codric;
         }
     }
+    
+       public void impostaListaFarmaci(){
+        
+       for( String f: Farmaco.getListaFarmaci(medicoController.getConnection())){
+                listaFarmaci.add("•" + f);
+                
+        }
+    }
+    
     
     /*public void valueChanged(ListSelectionEvent e) {
          if (e.getValueIsAdjusting() == false) {
@@ -88,6 +107,10 @@ public class MedicoView extends javax.swing.JFrame {
         return jList1;
     }
         
+    private  void creaFinestra(){
+        frameP= new frameConfermaPrescrizione(MedicoController.farmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci),jTextField2.getText(),this);
+        frameP.setVisible(true);
+    }
     
      private void initComponents() {
    
@@ -151,7 +174,7 @@ public class MedicoView extends javax.swing.JFrame {
         );
        
       
-       jPanel1Layout.setVerticalGroup(
+       /*jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -159,7 +182,7 @@ public class MedicoView extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addContainerGap())
         );
-
+*/
         jTabbedPane1.addTab("Prescrizioni da effettuare", jPanel1);
      
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -173,17 +196,28 @@ public class MedicoView extends javax.swing.JFrame {
             .addComponent(jTabbedPane1)
         );
        
-        jTabbedPane1.addTab("tab2", jPanel2);
+        jTabbedPane1.addTab("Prescrizioni Con Visita", jPanel2);
         
+        impostaListaFarmaci();
         
-         jList2.setModel(new javax.swing.AbstractListModel<J>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        jList2.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jList2.setFont(new java.awt.Font("Corbel", 0, 14)); 
+        
+        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+  
+            @Override
+            public int getSize() { return listaFarmaci.size(); }
+            @Override
+            public String getElementAt(int i) { return listaFarmaci.get(i); }
         });
+         
         jScrollPane2.setViewportView(jList2);
+        
+        jList2.addListSelectionListener(event -> MedicoController.farmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci));
+
 
         jButton2.setText("jButton2");
+        jButton2.addActionListener(event -> creaFinestra());
         
         jLabel1.setText("Inserisci codice fiscale del paziente:");
 
@@ -202,8 +236,8 @@ public class MedicoView extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 75, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -215,7 +249,7 @@ public class MedicoView extends javax.swing.JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addGap(30, 30, 30))

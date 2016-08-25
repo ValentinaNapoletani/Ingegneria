@@ -31,16 +31,23 @@ public class MedicoController {
         this.medico=m; 
         this.login=login;
     }
-    
+    //rivedi nome
     public LoginMedico getMedicoView() {
         return login; 
     }
 
+    public Medico getMedico(){
+        return medico;
+    }
     //public void setMedicoview(MedicoView medicoView) { 
      //   this.medicoView = medicoView;            
    // }
        
-      
+   public Connection getConnection(){
+        return c;
+   }   
+    
+    
     private boolean autenticazione(String codiceRegione, String password){
         try {
             int occorrenze;
@@ -86,6 +93,7 @@ public class MedicoController {
            login.dispose();  }
     }
     
+    //non credo sia giusto static da verificare
     public static String oggettoSelezionato(int i,ArrayList<String> s){
        System .out. println (" indice elem selezionato : " + i );
        String richiesta=null;
@@ -105,7 +113,40 @@ public class MedicoController {
        return richiesta; 
       
     }
-    		
+    
+    //non credo sia giusto static da verificare
+    public static ArrayList<String> farmaciSelezionati(int[] i,ArrayList<String> s){
+       //System .out. println (" indice elem selezionato : " + i );
+       ArrayList<String> farmaci=new ArrayList<>();
+
+       for(int pos=0;pos<i.length;pos++){
+            farmaci.add(s.get(i[pos]).substring(1, (s.get(i[pos])).length() ));       
+           // System .out. println (" elem selezionato : " +  );
+        }
+  
+       return farmaci; 
+      
+    }
+    
+   	//NON VA vedi e aggiungi tutte le label	
+    public void impostaDatiPerPrescrizione(String pazienteCF){
+        
+        try {
+            String sql = "SELECT \"Medico\".\"Nome\" FROM \"Paziente\" JOIN \"Medico\" ON \"Medico\"=\"CodiceRegione\" WHERE \"CodiceSanitario\"=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, pazienteCF);
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                mv.getFrameP().getMedico().setText(rs.getString(" \"Medico\".\"Nome\" "));
+            }
+        } catch (SQLException e) {
+            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+        } 
+    }
+    
+    
     public Prescrizione getPrescrizionenonusata() {     
 	 	 return null; 
     }
@@ -440,7 +481,7 @@ public class MedicoController {
             System.exit(0);
         }
       
-          
+       //??   
         mv.getLista().setModel(new javax.swing.AbstractListModel<String>() {
              
             public int getSize() { return mv.getRichiesteNonPrescritte().size(); }
