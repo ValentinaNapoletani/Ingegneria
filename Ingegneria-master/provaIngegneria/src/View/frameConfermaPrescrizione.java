@@ -31,7 +31,7 @@ public class frameConfermaPrescrizione extends JFrame {
     private javax.swing.JList<String> farmaciJList;
     
     
-    public frameConfermaPrescrizione(ArrayList<String> farmaci,String paziente, MedicoView mv){
+    public frameConfermaPrescrizione(ArrayList<String> farmaci,String pazienteCF, MedicoView mv){
        this.farmaci=farmaci;
        this.pazienteCF=pazienteCF;
        this.mv=mv;
@@ -40,7 +40,17 @@ public class frameConfermaPrescrizione extends JFrame {
     }
     
     private void impostaLabel(){
-        (mv.getMedicoController()).impostaDatiPerPrescrizione(pazienteCF);
+        ArrayList<String> dati = new ArrayList<String>();
+        dati=(mv.getMedicoController()).impostaDatiPerPrescrizione(pazienteCF);
+         
+        
+        via.setText(dati.get(0));
+        paziente.setText(dati.get(1) +  " " + dati.get(2));
+        medico.setText("Dott." + dati.get(3) +  " " + dati.get(4));
+        data.setText(dati.get(5));
+        cf.setText(pazienteCF);
+        codPrescr.setText("Prescrizione num:" + dati.get(6));
+        
     }
      
     public JLabel getMedico(){

@@ -129,21 +129,31 @@ public class MedicoController {
     }
     
    	//NON VA vedi e aggiungi tutte le label	
-    public void impostaDatiPerPrescrizione(String pazienteCF){
+    public ArrayList<String> impostaDatiPerPrescrizione(String pazienteCF){
+        
+        ArrayList<String> dati = new ArrayList<String>();
         
         try {
-            String sql = "SELECT \"Medico\".\"Nome\" FROM \"Paziente\" JOIN \"Medico\" ON \"Medico\"=\"CodiceRegione\" WHERE \"CodiceSanitario\"=?";
+            String sql = "SELECT \"Paziente\".\"Via\",\"Paziente\".\"Nome\",\"Paziente\".\"Cognome\",\"Medico\".\"Nome\",\"Medico\".\"Cognome\",CURRENT_DATE FROM \"Paziente\" JOIN \"Medico\" ON \"Medico\"=\"CodiceRegione\" WHERE \"CodiceSanitario\"=? ";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
             pst.setString(1, pazienteCF);
-            ResultSet rs=pst. executeQuery ();
+            ResultSet rs=pst. executeQuery();
             while(rs.next()){
-                mv.getFrameP().getMedico().setText(rs.getString(" \"Medico\".\"Nome\" "));
+                dati.add(rs.getString(1));
+                dati.add(rs.getString(2));
+                dati.add(rs.getString(3));
+                dati.add(rs.getString(4));
+                dati.add(rs.getString(5));
+                dati.add(rs.getString(6));
+                dati.add(numeroPrescrizioni(c)+ "");
             }
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
         } 
+        
+        return dati;
     }
     
     
