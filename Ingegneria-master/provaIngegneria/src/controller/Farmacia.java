@@ -25,12 +25,19 @@ public class Farmacia {
     String indirizzo;
     String cap;
     String citta;
+    private int ultimoScontrino;
+    
+    public int rilasciaScontrino(){
+        ultimoScontrino++;
+        return ultimoScontrino;
+    }
     
     public Farmacia(Connection c,String indirizzo, String cap, String citta){
         this.c = c;
         this.indirizzo=indirizzo;
         this.cap=cap;
         this.citta=citta;
+        ultimoScontrino = (int)(Math.random()*100000000);
     }
     
     public boolean controlloPresenzaFarmaco(String farmaco){
@@ -51,121 +58,114 @@ public class Farmacia {
             return false;
     }
     
-    public void ordinaFarmaco(String farmaco, int quantita){
+    public boolean ordinaFarmaco(String farmaco, int quantita){
         int pezzi = numeroPezziFarmacoDisponibili(farmaco);
         try {
-            String sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
-            PreparedStatement pst;
-            pst = c.prepareStatement ( sql );
-            pst.clearParameters();
-            pst.setString(2, indirizzo);
-            pst.setString(3, cap);
-            pst.setString(4, farmaco);
-            pst.setInt(1, pezzi+quantita);
-            pst. executeUpdate ();
+            String sql;
+            if(controllaEsistenzaCampoFarmaco(farmaco)){
+                sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+                PreparedStatement pst;
+                pst = c.prepareStatement ( sql );
+                pst.clearParameters();
+                pst.setString(2, indirizzo);
+                pst.setString(3, cap);
+                pst.setString(4, farmaco);
+                pst.setInt(1, pezzi+quantita);
+                pst. executeUpdate ();
+            }
+            else{
+                sql = "insert into  \"FarmacoInFarmacia\" ( \"quantita\", \"indirizzofarmacia\", \"capfarmacia\", \"farmaco\") VALUES (?,?,?,?)";
+                PreparedStatement pst;
+                pst = c.prepareStatement ( sql );
+                pst.clearParameters();
+                pst.setString(2, indirizzo);
+                pst.setString(3, cap);
+                pst.setString(4, farmaco);
+                pst.setInt(1, quantita);
+                pst. executeUpdate ();
+            }
+            return true;
         } catch (SQLException e) {
             System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+            return false;
         }
         
     }
     
-    /*
-    public void ordinaFarmaco(String farmaco, int quantita){
-        int ordinato = 0;
-        int quantitaNelDb = 0;
+    
+    public boolean compraFarmaco(String farmaco, int quantita){
+        int numPezziFarmacoInFarmacia;
+        if(controlloPresenzaFarmaco(farmaco,quantita)){
+            numPezziFarmacoInFarmacia = numeroPezziFarmacoDisponibili(farmaco);
+            try {
+                String sql;
+                if(controllaEsistenzaCampoFarmaco(farmaco)){
+                    sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+                    PreparedStatement pst;
+                    pst = c.prepareStatement ( sql );
+                    pst.clearParameters();
+                    //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
+                    pst.setString(2, indirizzo);
+                    pst.setString(3, cap);
+                    pst.setString(4, farmaco);
+                    pst.setInt(1, numPezziFarmacoInFarmacia-quantita);
+                    pst.executeUpdate ();
+                    return true;
+                }
+            } catch (SQLException e) {
+                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+                return false;
+            }
+        }
+        else{
+            //System.out.println("Farmaco non presente nella farmacia oppure non ci sono abbastanza confezioni a disposizione, eseguo l'ordine");
+            //potrei calcolare la quantità da ordinare cosi: farmaciDaComprare - farmaciNellaFarmacia
+            ordinaFarmaco(farmaco, quantita);
+            return false;
+        }
+        return false;
+    }
+    
+    private boolean controllaEsistenzaCampoFarmaco(String farmaco){
+        int num=0;
         try {
-            String sql = "SELECT count(*) as num FROM \"FarmacoOrdinato\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+            String sql = "Select count(*) as cont FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
             pst.setString(1, indirizzo);
             pst.setString(2, cap);
             pst.setString(3, farmaco);
-            ResultSet rs=pst. executeQuery ();
-            ordinato = rs.getInt("num");
+            ResultSet rs=pst.executeQuery ();
+            while(rs.next()){
+                num=rs.getInt("cont");
+            }
         } catch (SQLException e) {
-            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
-        if(ordinato > 0){
-            try {
-                String sql = "SELECT TOP 1 \"quantita\" FROM \"FarmacoOrdinato\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
-                PreparedStatement pst;
-                pst = c.prepareStatement ( sql );
-                pst.clearParameters();
-                pst.setString(1, indirizzo);
-                pst.setString(2, cap);
-                pst.setString(3, farmaco);
-                ResultSet rs=pst. executeQuery ();
-                quantitaNelDb = rs.getInt("quantita");
-                sql = "UPDATE \"FarmacoOrdinato\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
-                pst = c.prepareStatement ( sql );
-                pst.clearParameters();
-                pst.setInt(1, quantita+quantitaNelDb);
-                rs=pst.executeQuery ();
-            } catch (SQLException e) {
-                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
-            }
-        }
-        else {
-            try {
-                String sql = "INSERT INTO \"FarmacoOrdinato\" (\"indirizzofarmacia\", \"capfarmacia\", \"farmaco\", \"quantita\") VALUES (?,?,?,?)";
-                PreparedStatement pst;
-                pst = c.prepareStatement ( sql );
-                pst.clearParameters();
-                pst.setString(1, indirizzo);
-                pst.setString(2, cap);
-                pst.setString(3, farmaco);
-                pst.setInt(4, quantita);
-                ResultSet rs=pst. executeQuery ();
-            } catch (SQLException e) {
-                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
-            }
-        }
-    }
-    */
-    
-    public void compraFarmaco(String farmaco, int quantita){
-        int numPezziFarmacoInFarmacia;
-        if(controlloPresenzaFarmaco(farmaco,quantita)){
-            numPezziFarmacoInFarmacia = numeroPezziFarmacoDisponibili(farmaco);
-            try {
-                String sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
-                PreparedStatement pst;
-                pst = c.prepareStatement ( sql );
-                pst.clearParameters();
-                //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
-                pst.setString(2, indirizzo);
-                pst.setString(3, cap);
-                pst.setString(4, farmaco);
-                pst.setInt(1, numPezziFarmacoInFarmacia-quantita);
-                ResultSet rs=pst. executeQuery ();
-            } catch (SQLException e) {
-                System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
-            }
-        }
-        else{
-            System.out.println("Farmaco non presente nella farmacia oppure non ci sono abbastanza confezioni a disposizione, eseguo l'ordine");
-            //potrei calcolare la quantità da ordinare cosi: farmaciDaComprare - farmaciNellaFarmacia
-            ordinaFarmaco(farmaco, quantita);
-        }
+        if(num>0)
+            return true;
+        else
+            return false;
     }
     
+    /*
     private void rilasciaScontrino(Farmaco farmaco, int quantita){
         numeroScontrino++;
         System.out.println("Scontrino numero "+numeroScontrino+": "+farmaco.getNome()+"x"+quantita+"\nPrezzo totale: "+quantita*farmaco.getPrezzo());
     }
+    */
     
     private int numeroPezziFarmacoDisponibili(String farmaco){
         int quantita=0;
         try {
-            String sql = "SELECT \"quantita\" FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=? AND \"citta\" =?";
+            String sql = "SELECT \"quantita\" FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
             pst.setString(1, indirizzo);        
             pst.setString(2, cap);
             pst.setString(3, farmaco);
-            pst.setString(4, citta);
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
                 quantita=rs.getInt("quantita");

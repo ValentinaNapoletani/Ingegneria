@@ -267,8 +267,11 @@ public class SegreteriaView extends javax.swing.JFrame {
         
     }
      
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionato(jList2.getSelectedIndex(),strings2));
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {        
+        int[] arr=jList2.getSelectedIndices();
+        for(int i=0;i<arr.length;i++){
+            segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionato(arr[i],strings2));
+        }
         richieste = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
         impostaListaRichieste();
         this.repaint();

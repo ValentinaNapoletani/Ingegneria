@@ -20,6 +20,7 @@ public class LoginFarmacia extends javax.swing.JFrame {
     public LoginFarmacia(Connection c) {
         this.c=c;
         initComponents();
+        
     }
 
     /**
