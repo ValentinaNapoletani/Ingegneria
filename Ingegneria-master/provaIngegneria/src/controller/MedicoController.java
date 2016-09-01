@@ -11,6 +11,8 @@ import View.*;
 import model.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JList;
 
 /**
@@ -93,7 +95,7 @@ public class MedicoController {
            login.dispose();  }
     }
     
-    //non credo sia giusto static da verificare
+    //non credo sia giusto static da verificare -> dato che si passa l'indice e la lista il metodo non dipende dall'oggetto in cui si trova, facendolo statico si può chiamare da qualsiasi parte del programma e sarà sempre funzionante
     public static String oggettoSelezionato(int i,ArrayList<String> s){
        System .out. println (" indice elem selezionato : " + i );
        String richiesta=null;
@@ -114,11 +116,9 @@ public class MedicoController {
       
     }
     
-    //non credo sia giusto static da verificare
+    //non credo sia giusto static da verificare -> come prima 
     public static ArrayList<String> farmaciSelezionati(int[] i,ArrayList<String> s){
-       //System .out. println (" indice elem selezionato : " + i );
        ArrayList<String> farmaci=new ArrayList<>();
-
        for(int pos=0;pos<i.length;pos++){
             farmaci.add(s.get(i[pos]).substring(1, (s.get(i[pos])).length() ));       
            // System .out. println (" elem selezionato : " +  );
@@ -128,7 +128,7 @@ public class MedicoController {
       
     }
     
-   	//NON VA vedi e aggiungi tutte le label	
+   	//NON VA vedi e aggiungi tutte le label
     public ArrayList<String> impostaDatiPerPrescrizione(String pazienteCF){
         
         ArrayList<String> dati = new ArrayList<String>();
@@ -156,22 +156,25 @@ public class MedicoController {
         return dati;
     }
     
-    
+    //return null???
     public Prescrizione getPrescrizionenonusata() {     
 	 	 return null; 
     }
 
+    
     public ArrayList<String> pazientiPerFarmaco(String farmaco) { 
         ArrayList<String> listaPazienti = new ArrayList<String>();
         try {
-            String sql = "SELECT DISTINCT \"nome\" FROM \"FarmacoInRicetta\" JOIN \"Prescrizione\" ON \"FarmacoInRicetta\".\"codiceprescrizione\"=\"Prescrizione\".\"codice\" WHERE \"nomefarmaco\"=?";
+            String sql = "SELECT DISTINCT \"Paziente\".\"Nome\" as nome, \"Paziente\".\"Cognome\" as cognome FROM \"FarmacoInRicetta\" JOIN \"Prescrizione\" ON \"FarmacoInRicetta\".\"codiceprescrizione\"=\"Prescrizione\".\"codice\" JOIN \"Paziente\" ON \"Prescrizione\".\"paziente\" = \"Paziente\".\"CodiceSanitario\" WHERE \"FarmacoInRicetta\".\"nomefarmaco\"=? AND \"Prescrizione\".\"medico\" =?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
             pst.setString(1, farmaco);
+            pst.setString(2, medico.getCodiceRegionale());
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
-                listaPazienti.add(rs.getString("nome"));
+                listaPazienti.add(rs.getString("nome")+" "+rs.getString("cognome"));
+                System.out.println(rs.getString("nome")+" "+rs.getString("cognome"));
             }
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
@@ -179,6 +182,7 @@ public class MedicoController {
 	return listaPazienti;
     }
 
+    
     public ArrayList<String> reazioniAvverse() { 
         ArrayList<String> listaReazioni = new ArrayList<String>();
         try {
@@ -194,11 +198,6 @@ public class MedicoController {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
         return listaReazioni;
-    }
-
-    public Prescrizione verificaUsoPrescrizione() { 
-        
-		return null;
     }
     
     public ArrayList<String> listaPrescrizioniNonUsate(){
@@ -218,7 +217,26 @@ public class MedicoController {
         return listaPrescrizioni;
         
     }
+    
+    public ArrayList<String> listaPrescrizioniNonUsateConData(){
+        ArrayList<String> listaPrescrizioni = new ArrayList<String>();
+        try {
+            String sql = "SELECT \"codice\", data, paziente FROM \"Prescrizione\" WHERE \"usata\"=false";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                listaPrescrizioni.add("Prescrizione n. "+rs.getString("codice")+" prescritta il "+rs.getString("data")+" al paziente con codice sanitario "+rs.getString("paziente"));
+            }
+        } catch (SQLException e) {
+            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return listaPrescrizioni;
+        
+    }
 
+    //metodo non usato
     public ArrayList<Farmaco> listaFarmaci() {
         ArrayList<Farmaco> listaFarmaci = new ArrayList<Farmaco>();
         try {
@@ -236,13 +254,17 @@ public class MedicoController {
         return listaFarmaci;
     }
 
-	public int quantitaFarmacoPrescritto( String tipoPeriodo, String periodo) { 
-		return 0; }
+    //non implementato, credo non serva
+    public int quantitaFarmacoPrescritto( String tipoPeriodo, String periodo) { 
+        return 0; 
+    }
 
-	public boolean farmacoGenerico(String codicePrescrizione){ 
-		return false;
-	 } 
+    //cosa deve fare questo metodo???
+    public boolean farmacoGenerico(String codicePrescrizione){ 
+	return false;
+    } 
         
+    
     public ArrayList<String> farmacoPerPaziete(String codiceFiscale, String tipoPeriodo,int periodo) { 
 	ArrayList<String> listaFarmaci = new ArrayList<String>();
         String dataInizio = null;
@@ -416,7 +438,7 @@ public class MedicoController {
             
         } catch (SQLException e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
+            System.exit(0); //perchè uscita qui? (vik)
         }
                   
     }
@@ -445,6 +467,7 @@ public class MedicoController {
     }
         
     //modfica richiesta modello per ri settere modello lista dopo che il medico fa prescrizione(ma non è ancore tolta da ricieste) nuova lista basata sul modello non su query
+    //eh? (l'ho scritto io???)
     public void effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
              
         String n=numeroPrescrizioni(c) + "";
@@ -521,6 +544,31 @@ public class MedicoController {
         return lista;
     }
     
+    //funziona
+    public ArrayList<String> farmaciPrescrittiDaMedicoNelPeriodo(String periodo){
+        PreparedStatement pst;
+        ArrayList<String> lista = new ArrayList<>();
+        String sql="";
+        if(periodo.equals("Ultimo mese")) 
+            sql = "SELECT nomefarmaco, count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? AND data > CURRENT_DATE - interval '31 day' GROUP BY nomefarmaco"; 
+        else if(periodo.equals("Ultimo anno")){
+            sql = "SELECT nomefarmaco, count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? AND data > CURRENT_DATE - interval '1 year' GROUP BY nomefarmaco"; 
+        }
+        try{
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters(); 
+            pst.setString(1, medico.getCodiceRegionale());
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                lista.add(rs.getString("nomefarmaco")+" x "+rs.getString("occorrenze")); 
+            }  
+        }
+        catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return lista;
+    }
+    
     public static ArrayList<String> listaRichiestePrescritte(Connection c){
             
         ArrayList<String> lista=new ArrayList<>(); 
@@ -539,6 +587,7 @@ public class MedicoController {
         return lista;
     }
         
+    //non usato??
     public Richiesta richiestaConAnagraficaEFarmaco(String codiceRichiesta){
             
 
@@ -568,4 +617,36 @@ public class MedicoController {
         return r;
     }
     
+    //ok
+    public int quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(String farmaco, int periodo){
+        String p="";
+        int risultato=0;
+        switch(periodo){
+            case 0: p="interval '1 month'";break;
+            case 1: p="interval '3 month'";break;
+            case 2: p="interval '6 month'";break;
+            case 3: p="interval '1 year'";break;
+            default: {
+                try {
+                    throw new Exception("periodo errato");
+                } catch (Exception ex) {
+                    Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        String sql="SELECT count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? AND data > CURRENT_DATE - "+p+" AND nomefarmaco = ?"; 
+        try {
+            PreparedStatement pst=c.prepareStatement(sql);
+            pst.clearParameters(); 
+            pst.setString(1, medico.getCodiceRegionale());
+            pst.setString(2, farmaco);
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                risultato = rs.getInt("occorrenze");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return risultato;
+    }
 }

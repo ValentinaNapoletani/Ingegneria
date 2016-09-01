@@ -143,9 +143,10 @@ public class SegreteriaController {
         try {
            
            PreparedStatement stmt;
-           stmt = c.prepareStatement("SELECT codice, \"paziente\" FROM \"Richiesta\"  WHERE \"prescritta\"=true and \"consegnata\"=false");//and segreteria giusta...
+           //stmt = c.prepareStatement("SELECT codice, \"paziente\" FROM \"Richiesta\"  WHERE \"prescritta\"=true and \"consegnata\"=false");//and segreteria giusta...
+           stmt = c.prepareStatement("SELECT \"Richiesta\".codice as codice, \"Richiesta\".\"paziente\" as paziente FROM \"Richiesta\" JOIN \"Prescrizione\" ON \"Richiesta\".codice = \"Prescrizione\".\"CodiceRichiesta\" WHERE \"prescritta\"=true and \"consegnata\"=false AND medico IN (SELECT DISTINCT \"CodiceRegione\" FROM \"Medico\" WHERE codicesegreteria=?)");
            stmt.clearParameters();
-           //stmt.setString(1, segreteria.getCodiceSegreteria()); 
+           stmt.setString(1, segreteria.getCodiceSegreteria()); 
            
            ResultSet rs=stmt.executeQuery ();      
             while(rs.next()){

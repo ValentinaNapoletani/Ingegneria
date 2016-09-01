@@ -6,9 +6,14 @@
 package View;
 
 import controller.MedicoController;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import static javafx.scene.input.KeyCode.J;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import model.Farmaco;
 import model.Richiesta;
@@ -32,21 +37,56 @@ public class MedicoView extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel jPanel3;
+    
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel jLabel1;
+    
          
     private MedicoController medicoController;
     private ArrayList<Richiesta> richieste;
     private ArrayList<String> strings= new ArrayList<>();
     private ArrayList<String> listaFarmaci= new ArrayList<>();
+    private JList jList3;
      
     private frameConfermaPrescrizione frameP;
 
+    //tab 3
+    private javax.swing.JPanel jPanel4;
+    private JButton jButton3;
+    private JScrollPane jScrollPane4;
+    private ArrayList<String> prescrizioniNonUsate;
+    
+    //tab4
+    private JButton jButton4;
+    private JList jList4;
+    private JScrollPane jScrollPane5;
+    private JComboBox jComboBox1;
+    private JPanel jPanel5;
+    private ArrayList<String> farmaciPrescrittiDaMedico;
+    
+    //tab5
+    private JLabel jLabel5;
+    private JComboBox jComboBox2;
+    private JLabel jLabel6;
+    private JComboBox jComboBox3;
+    private JLabel jLabel7;
+    private JButton jButton5;
+    private JPanel jPanel6;
+    
+    //tab6
+    private JButton jButton6;
+    private JPanel jPanel7;
+    private JLabel jLabel8;
+    private JComboBox jComboBox4;
+    private JList jList6;
+    private JScrollPane jScrollPane6;
+    private ArrayList<String> listaPazientiPerFarmaco;
     
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
         this.richieste=richieste;
         this.medicoController=medicoController;
+        
         initComponents();       
     }
     
@@ -90,30 +130,17 @@ public class MedicoView extends javax.swing.JFrame {
     }
     
     
-    /*public void valueChanged(ListSelectionEvent e) {
-         if (e.getValueIsAdjusting() == false) {
-
-        if (jList1.getSelectedIndex() == -1) {
-        //No selection, disable fire button.
-            jButton1.setEnabled(false);
-
-        } else {
-        //Selection, enable the fire button.
-             jButton1.setEnabled(true);
-        }
-    }
-    }*/
-    
     public JList<String> getLista(){
         return jList1;
     }
+    
         
     private  void creaFinestra(){
         frameP= new frameConfermaPrescrizione(MedicoController.farmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci),jTextField2.getText(),this);
         frameP.setVisible(true);
     }
     
-     private void initComponents() {
+    private void initComponents() {
    
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -130,6 +157,11 @@ public class MedicoView extends javax.swing.JFrame {
         //jScrollPane3 = new javax.swing.JScrollPane();
         //jTextPane1 = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
+        
+        initTabRicercaPrescrizioniNonUsate();
+        initTabFarmaciPrescrittiDalMedico();
+        initTabQuantitaFarmaci();
+        initTabListaPazientiPerFarmaco();
     
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   
@@ -139,7 +171,6 @@ public class MedicoView extends javax.swing.JFrame {
         jList1.setFont(new java.awt.Font("Corbel", 0, 14)); 
         
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            //ArrayList<String> strings= impostaStringaRichiesta();
 
             @Override
             public int getSize() { return strings.size(); }
@@ -198,6 +229,7 @@ public class MedicoView extends javax.swing.JFrame {
         );
        
         jTabbedPane1.addTab("Prescrizioni Con Visita", jPanel2);
+        
         
         impostaListaFarmaci();
         
@@ -269,9 +301,286 @@ public class MedicoView extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+        //aggiunta terza tab
+        jTabbedPane1.addTab("Prescrizioni non usate", jPanel4);
+        jTabbedPane1.addTab("Farmaci prescritti in generale", jPanel5);
+        jTabbedPane1.addTab("Quantità farmaci prescritti dal medico", jPanel6);
+        jTabbedPane1.addTab("Pazienti ai quali è stato prescritto un certo farmaco", jPanel7);
      
         pack();
     }
      
+    private void initTabRicercaPrescrizioniNonUsate(){
+        jPanel4 = new JPanel();
+        jButton3 = new JButton();
+        jScrollPane4 = new JScrollPane();
+        jList3 = new JList();
+        prescrizioniNonUsate=new ArrayList<>();
+        jButton3.setText("Verifica esistenza prescrizioni non usate");
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                //.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                    
+                .addGap(130, 130, 130))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(10, 86, 86)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(89, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jButton3)
+                .addGap(37, 37, 37)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
+        );
+        jList3.setModel(new javax.swing.AbstractListModel<String>() {
+
+            @Override
+            public int getSize() { return prescrizioniNonUsate.size(); }
+            @Override
+            public String getElementAt(int i) { return prescrizioniNonUsate.get(i); }
+        });
+        
+        jScrollPane4.setViewportView(jList3);
+        
+        jButton3.addActionListener(event -> listenerButtonPrescrizioniNonUsate());
+        
+    }
     
+    private void initTabFarmaciPrescrittiDalMedico(){
+        jButton4= new JButton();
+        jList4 = new JList();
+        jScrollPane5 = new JScrollPane();
+        jComboBox1 = new JComboBox();
+        jPanel5 = new JPanel();
+        farmaciPrescrittiDaMedico = new ArrayList<>();
+        
+        jButton4.setText("Verifica farmaci prescritti nel periodo...");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jList4.setModel(new javax.swing.AbstractListModel<String>() { 
+            public int getSize() { return farmaciPrescrittiDaMedico.size(); }
+            public String getElementAt(int i) { return farmaciPrescrittiDaMedico.get(i); }
+        });
+        jScrollPane5.setViewportView(jList4);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ultimo mese", "Ultimo anno" }));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jButton4)
+                        .addGap(38, 38, 38)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(117, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
+        );
+
+        
+    }
+    
+    private void initTabQuantitaFarmaci(){
+        jLabel5 = new JLabel();
+        jComboBox2 = new JComboBox();
+        jLabel6 = new JLabel();
+        jComboBox3 = new JComboBox();
+        jLabel7 = new JLabel();
+        jButton5 = new JButton();
+        jPanel6 = new JPanel();
+        jLabel5.setText("Quantità di farmaco del tipo:");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<String>() {
+            public int getSize() { return listaFarmaci.size(); }
+            public String getElementAt(int i) { return listaFarmaci.get(i).substring(1); }
+        });
+
+        jLabel6.setText("Prescritta nel periodo:");
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ultimo mese", "Ultimo trimestre", "Ultimo semestre", "Ultimo anno" }));
+
+        jLabel7.setText("");
+
+        jButton5.setText("Controlla");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+
+            
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(93, 93, 93)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBox2, 0, 144, Short.MAX_VALUE)
+                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(218, 218, 218)
+                        .addComponent(jLabel7))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(195, 195, 195)
+                        .addComponent(jButton5)))
+                .addContainerGap(99, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(43, 43, 43))
+        );
+
+        
+    }
+    
+    private void initTabListaPazientiPerFarmaco(){
+        jLabel8 = new JLabel();
+        jComboBox4 = new JComboBox();
+        jList6 = new JList();
+        jButton6 = new JButton();
+        jPanel7 = new JPanel();
+        jScrollPane6 = new JScrollPane();
+        listaPazientiPerFarmaco = new ArrayList<>();
+        
+        jLabel8.setText("Farmaco");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<String>() {
+            public int getSize() { return listaFarmaci.size(); }
+            public String getElementAt(int i) { return listaFarmaci.get(i).substring(1); }
+        });
+
+        jList6.setModel(new javax.swing.AbstractListModel<String>() {
+            
+            public int getSize() { return listaPazientiPerFarmaco.size(); }
+            public String getElementAt(int i) { return listaPazientiPerFarmaco.get(i); }
+        });
+        jScrollPane6.setViewportView(jList6);
+
+        jButton6.setText("Cerca pazienti ai quali è stato prescritto il farmaco selezionato");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+
+            
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(65, 65, 65)
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(85, 85, 85)
+                        .addComponent(jButton6)))
+                .addContainerGap(96, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(jButton6)
+                .addGap(43, 43, 43))
+        );
+
+        
+    }
+    
+    private void listenerButtonPrescrizioniNonUsate(){
+        prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData();
+        jList3.updateUI();
+        
+    }
+    
+    private void jButton4ActionPerformed(ActionEvent evt) {
+        int indice = jComboBox1.getSelectedIndex();
+        String periodo="";
+        if(indice == 0)
+            periodo = "Ultimo mese";
+        else{
+            if(indice == 1)
+                periodo = "Ultimo anno";
+            else{
+                System.out.println("Messaggio di errore, selezione sbagliata");
+            }
+        }
+        farmaciPrescrittiDaMedico=medicoController.farmaciPrescrittiDaMedicoNelPeriodo(periodo);
+        jList4.updateUI();
+       
+    }
+    
+    private void jButton5ActionPerformed(ActionEvent evt) {
+        jLabel7.setText("Numero occorrenze: "+medicoController.quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(listaFarmaci.get(jComboBox2.getSelectedIndex()).substring(1), jComboBox3.getSelectedIndex()));
+        
+    }
+    
+    private void jButton6ActionPerformed(ActionEvent evt) {
+        listaPazientiPerFarmaco=medicoController.pazientiPerFarmaco(listaFarmaci.get(jComboBox4.getSelectedIndex()).substring(1));
+        jList6.updateUI();
+    }
 }

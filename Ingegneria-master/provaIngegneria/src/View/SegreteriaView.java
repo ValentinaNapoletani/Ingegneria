@@ -49,6 +49,7 @@ public class SegreteriaView extends javax.swing.JFrame {
     private JTextField jTextField1;
     private JLabel jLabel2;
     private JLabel jLabel3;
+    private JLabel jLabel4;
     
     
     
@@ -155,6 +156,7 @@ public class SegreteriaView extends javax.swing.JFrame {
         jTextField1 = new JTextField();
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
+        jLabel4 = new JLabel();
         jList1 = new javax.swing.JList<String>();
         jButton2.setText("Genera richiesta prescrizione");
         impostaListaFarmaci();
@@ -178,14 +180,18 @@ public class SegreteriaView extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(368, 368, 368)
+                
                 .addComponent(jButton2)
                 .addGap(0, 0, Short.MAX_VALUE))
+                
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel4)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(196, 196, 196))
         );
@@ -195,13 +201,17 @@ public class SegreteriaView extends javax.swing.JFrame {
                 .addContainerGap(64, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
+                .addComponent(jLabel4)
+                .addGap(94, 94, 94)
                 .addComponent(jButton2)
+                
                 .addContainerGap())
         );
         
@@ -278,9 +288,15 @@ public class SegreteriaView extends javax.swing.JFrame {
     } 
     
     private void jButton2ActionPerformed(ActionEvent evt) {
-        System.out.println(listaFarmaciSelezionati().toString());
-        segreteriaController.inviaRichiestaPrescrizione(jTextField1.getText(), listaFarmaciSelezionati());
-        jList1.removeSelectionInterval(0, farmaci.size()-1);
+        //System.out.println(listaFarmaciSelezionati().toString());
+        if(listaFarmaciSelezionati().size()<=5){
+            segreteriaController.inviaRichiestaPrescrizione(jTextField1.getText(), listaFarmaciSelezionati());
+            jList1.removeSelectionInterval(0, farmaci.size()-1);
+            jLabel4.setText("Richiesta prescrizione generata");
+        }
+        else{
+            jLabel4.setText("Una prescrizione non può contenere più di 5 farmaci");
+        }
         
     }
     

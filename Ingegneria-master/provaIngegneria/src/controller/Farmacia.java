@@ -223,4 +223,17 @@ public class Farmacia {
             return false;
         }
     }
+    
+    public void impostaPrescrizioneUsata(String numeroPrescrizione){
+        try {
+            String sql = "UPDATE \"Prescrizione\" SET usata=true WHERE codice=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, numeroPrescrizione);        
+            pst. executeUpdate ();
+        } catch ( SQLException e) {
+            System .out. println (" Problema durante inserimento dati : " + e.getMessage () );
+        }
+    }
 }

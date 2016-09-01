@@ -353,18 +353,16 @@ public class FarmaciaView extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         ArrayList<String> lista = listaFarmaciSelezionati();
-        for(String s: lista){
-            farmacia.compraFarmaco(s, 1);
-            /*
-            if(farmacia.controlloPresenzaFarmaco(s)){
-                farmacia.ordinaFarmaco(s, 1);
+        if(lista.size()>0){
+            for(String s: lista){
+                farmacia.compraFarmaco(s, 1);
             }
-            else{
-                System.err.println("QUI bisognerà chiedere se ordinare il farmaco");
-            }
-            */
+            jLabel11.setText("Scontrino "+farmacia.rilasciaScontrino()+" rilasciato");
+            farmacia.impostaPrescrizioneUsata(jTextField4.getText());
         }
-        jLabel11.setText("Scontrino "+farmacia.rilasciaScontrino()+" rilasciato");
+        else{
+            jLabel11.setText("Nessun farmaco selezionato");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
