@@ -200,6 +200,7 @@ public class MedicoController {
         return listaReazioni;
     }
     
+    //ok
     public ArrayList<String> listaPrescrizioniNonUsate(){
         ArrayList<String> listaPrescrizioni = new ArrayList<String>();
         try {
@@ -218,6 +219,7 @@ public class MedicoController {
         
     }
     
+    //ok
     public ArrayList<String> listaPrescrizioniNonUsateConData(){
         ArrayList<String> listaPrescrizioni = new ArrayList<String>();
         try {
@@ -236,7 +238,7 @@ public class MedicoController {
         
     }
 
-    //metodo non usato
+    //metodo non usato (costo non usato?)
     public ArrayList<Farmaco> listaFarmaci() {
         ArrayList<Farmaco> listaFarmaci = new ArrayList<Farmaco>();
         try {
@@ -263,9 +265,42 @@ public class MedicoController {
     public boolean farmacoGenerico(String codicePrescrizione){ 
 	return false;
     } 
-        
     
-    public ArrayList<String> farmacoPerPaziete(String codiceFiscale, String tipoPeriodo,int periodo) { 
+    public ArrayList<String> farmacoPerPaziete(String codiceFiscale, int periodo) {
+        String p="";
+        ArrayList<String> risultato = new ArrayList<>();
+        switch(periodo){
+            case 0: p="interval '1 month'";break;
+            case 1: p="interval '3 month'";break;
+            case 2: p="interval '6 month'";break;
+            case 3: p="interval '1 year'";break;
+            default: {
+                try {
+                    throw new Exception("periodo errato");
+                } catch (Exception ex) {
+                    Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        String sql="SELECT nomefarmaco, count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? AND paziente=? AND data > CURRENT_DATE - "+p+" GROUP BY nomefarmaco ORDER BY nomefarmaco"; 
+        try {
+            PreparedStatement pst=c.prepareStatement(sql);
+            pst.clearParameters(); 
+            pst.setString(1, medico.getCodiceRegionale());
+            pst.setString(2, codiceFiscale);
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                risultato.add(rs.getString("nomefarmaco")+" x "+rs.getInt("occorrenze"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return risultato;
+        
+    }
+        
+    /*
+    public ArrayList<String> farmacoPerPaziete(String codiceFiscale, String tipoPeriodo, int periodo) { 
 	ArrayList<String> listaFarmaci = new ArrayList<String>();
         String dataInizio = null;
         String dataFine = null;
@@ -377,6 +412,7 @@ public class MedicoController {
 
         return listaFarmaci;
     }
+    */
         
     //numero da assegnare al ocdice della prescrizione
     public static int numeroPrescrizioni(Connection c){

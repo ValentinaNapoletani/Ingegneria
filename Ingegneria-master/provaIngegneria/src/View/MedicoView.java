@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import model.Farmaco;
 import model.Richiesta;
@@ -82,6 +83,17 @@ public class MedicoView extends javax.swing.JFrame {
     private JList jList6;
     private JScrollPane jScrollPane6;
     private ArrayList<String> listaPazientiPerFarmaco;
+    
+    //tab7
+    private JLabel jLabel9;
+    private JLabel jLabel10;
+    private JComboBox jComboBox5;
+    private JList jList5;
+    private JScrollPane jScrollPane7;
+    private JButton jButton7;
+    private JPanel jPanel8;
+    private JTextField jTextField3;
+    private ArrayList<String> listaFarmaciPaziente;
     
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
         this.richieste=richieste;
@@ -162,6 +174,7 @@ public class MedicoView extends javax.swing.JFrame {
         initTabFarmaciPrescrittiDalMedico();
         initTabQuantitaFarmaci();
         initTabListaPazientiPerFarmaco();
+        initTabListaFarmaciPaziente();
     
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   
@@ -306,6 +319,7 @@ public class MedicoView extends javax.swing.JFrame {
         jTabbedPane1.addTab("Farmaci prescritti in generale", jPanel5);
         jTabbedPane1.addTab("Quantità farmaci prescritti dal medico", jPanel6);
         jTabbedPane1.addTab("Pazienti ai quali è stato prescritto un certo farmaco", jPanel7);
+        jTabbedPane1.addTab("Lista di farmaci prescritti ad un paziente", jPanel8);
      
         pack();
     }
@@ -551,6 +565,81 @@ public class MedicoView extends javax.swing.JFrame {
         
     }
     
+    private void initTabListaFarmaciPaziente(){
+        jLabel9 = new JLabel();
+        jLabel9.setText("Codice sanitario paziente");
+        jLabel10 = new JLabel();
+        jComboBox5 = new JComboBox();
+        jList5 = new JList();
+        jScrollPane7 = new JScrollPane();
+        jButton7 = new JButton();
+        jPanel8 = new JPanel();
+        jTextField3 = new JTextField();
+        listaFarmaciPaziente = new ArrayList<>();
+
+        jLabel10.setText("Periodo");
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ultimo mese", "Ultimo trimestre", "Ultimo semestre", "Ultimo anno" }));
+
+        jList5.setModel(new javax.swing.AbstractListModel<String>() {
+            
+            public int getSize() { return listaFarmaciPaziente.size(); }
+            public String getElementAt(int i) { return listaFarmaciPaziente.get(i); }
+        });
+        jScrollPane7.setViewportView(jList5);
+
+        jButton7.setText("Cerca");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(59, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(168, 168, 168))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField3)
+                            .addComponent(jComboBox5, 0, 146, Short.MAX_VALUE)))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(178, 178, 178)
+                        .addComponent(jButton7)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jButton7)
+                .addGap(30, 30, 30))
+        );
+
+        
+    }
+    
     private void listenerButtonPrescrizioniNonUsate(){
         prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData();
         jList3.updateUI();
@@ -582,5 +671,17 @@ public class MedicoView extends javax.swing.JFrame {
     private void jButton6ActionPerformed(ActionEvent evt) {
         listaPazientiPerFarmaco=medicoController.pazientiPerFarmaco(listaFarmaci.get(jComboBox4.getSelectedIndex()).substring(1));
         jList6.updateUI();
+    }
+    
+    private void jButton7ActionPerformed(ActionEvent evt) {
+        String codice=jTextField3.getText();
+        if(!codice.isEmpty() && jComboBox5.getSelectedIndex()>= 0 ){
+            listaFarmaciPaziente=medicoController.farmacoPerPaziete(codice, jComboBox5.getSelectedIndex());
+            jList5.updateUI();
+        }
+        else{
+            System.err.println("Il codice fiscale non deve essere nullo e il periodo deve essere selezionato");
+        }
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
