@@ -672,4 +672,21 @@ public class MedicoController {
         }
         return risultato;
     }
+    
+    public ArrayList<String> getFarmaciGenericiAcquistati(){
+        ArrayList<String> listaRisultati= new ArrayList<>();
+        String sql = "select \"Prescrizione\".codice as codice, \"Farmaco\".nome as nome, \"Prescrizione\".paziente as paziente from \"Acquisto\" join \"Farmaco\" on \"Acquisto\".farmaco = \"Farmaco\".nome join \"Prescrizione\" on \"Prescrizione\".codice = \"Acquisto\".prescrizione where medico = ? and generico = true";
+        try {
+            PreparedStatement pst=c.prepareStatement(sql);
+            pst.clearParameters(); 
+            pst.setString(1, medico.getCodiceRegionale());
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                listaRisultati.add("<html>Prescrizione n. "+rs.getString("codice")+"<br><table> farmaco: "+rs.getString("nome")+"<br> paziente: "+rs.getString("paziente")+"</html>");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRisultati;
+    }
 }

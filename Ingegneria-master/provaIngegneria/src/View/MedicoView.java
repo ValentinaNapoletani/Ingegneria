@@ -97,6 +97,13 @@ public class MedicoView extends javax.swing.JFrame {
     private JTextField jTextField3;
     private ArrayList<String> listaFarmaciPaziente;
     
+    //tab8
+    private JList jList7;
+    private JScrollPane jScrollPane8;
+    private JButton jButton8;
+    private JPanel jPanel9;
+    private ArrayList<String> listFarmaciGenericiAcquistati;
+    
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
         this.richieste=richieste;
         this.medicoController=medicoController;
@@ -177,6 +184,7 @@ public class MedicoView extends javax.swing.JFrame {
         initTabQuantitaFarmaci();
         initTabListaPazientiPerFarmaco();
         initTabListaFarmaciPaziente();
+        initTabFarmaciGenericiComprati();
     
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   
@@ -326,6 +334,7 @@ public class MedicoView extends javax.swing.JFrame {
         jTabbedPane1.addTab("Quantità farmaci prescritti dal medico", jPanel6);
         jTabbedPane1.addTab("Pazienti ai quali è stato prescritto un certo farmaco", jPanel7);
         jTabbedPane1.addTab("Lista di farmaci prescritti ad un paziente", jPanel8);
+        jTabbedPane1.addTab("Farmaci generici comprati", jPanel9);
      
         pack();
     }
@@ -646,6 +655,51 @@ public class MedicoView extends javax.swing.JFrame {
         
     }
     
+    private void initTabFarmaciGenericiComprati(){
+        jList7 = new JList();
+        jScrollPane8 = new JScrollPane();
+        jButton8 = new JButton();
+        jPanel9 = new JPanel(); 
+        listFarmaciGenericiAcquistati=new ArrayList<>();
+        
+        jList7.setModel(new javax.swing.AbstractListModel<String>() {
+            public int getSize() { return listFarmaciGenericiAcquistati.size(); }
+            public String getElementAt(int i) { return listFarmaciGenericiAcquistati.get(i); }
+        });
+        jScrollPane8.setViewportView(jList7);
+
+        jButton8.setText("Controlla");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton8)
+                .addGap(212, 212, 212))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jButton8)
+                .addGap(43, 43, 43)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
+        );
+
+    }
+    
     private void listenerButtonPrescrizioniNonUsate(){
         prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData();
         jList3.updateUI();
@@ -727,6 +781,12 @@ public class MedicoView extends javax.swing.JFrame {
         catch(Exception e){ 
             jLabel11.setText("<html>" + jLabel11.getText() + "<br>•Selezionare almeno un farmaco<html>");
         }
+    }
+    
+    private void jButton8ActionPerformed(ActionEvent evt) {
+        listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati();
+        jList7.updateUI();
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

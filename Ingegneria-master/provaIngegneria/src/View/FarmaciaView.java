@@ -6,7 +6,6 @@
 package View;
 
 import controller.Farmacia;
-import controller.MedicoController;
 import java.sql.Connection;
 import java.util.ArrayList;
 import model.Farmaco;
