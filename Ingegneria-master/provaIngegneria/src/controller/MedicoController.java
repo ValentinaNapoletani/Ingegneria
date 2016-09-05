@@ -95,19 +95,19 @@ public class MedicoController {
            login.dispose();  }
     }
     
-    //non credo sia giusto static da verificare -> dato che si passa l'indice e la lista il metodo non dipende dall'oggetto in cui si trova, facendolo statico si può chiamare da qualsiasi parte del programma e sarà sempre funzionante
+    //sbagliato con codice richoestqa a 3 cifre
     public static String oggettoSelezionato(int i,ArrayList<String> s){
        System .out. println (" indice elem selezionato : " + i );
        String richiesta=null;
-       richiesta= s.get(i).substring(1,2);
-        if(i>0){         
-           if(s.get(i).substring(1,2).equals("0") || s.get(i).substring(1,2).equals("1") || s.get(i).substring(1,2).equals("2") || s.get(i).substring(1,2).equals("3") || s.get(i).substring(1,2).equals("4") || s.get(i).substring(1,2).equals("5") || s.get(i).substring(1,2).equals("6")|| s.get(i).substring(1,2).equals("7") || s.get(i).substring(1,2).equals("8") || s.get(i).substring(1,2).equals("9")){
+       //richiesta= s.get(i).substring(1,2);
+        if(i>=0){         
+           if(s.get(i).substring(6,7).equals("0") || s.get(i).substring(1,2).equals("1") || s.get(i).substring(1,2).equals("2") || s.get(i).substring(1,2).equals("3") || s.get(i).substring(1,2).equals("4") || s.get(i).substring(1,2).equals("5") || s.get(i).substring(1,2).equals("6")|| s.get(i).substring(1,2).equals("7") || s.get(i).substring(1,2).equals("8") || s.get(i).substring(1,2).equals("9")){
                 richiesta=s.get(i).substring(0, 2);       
                 System .out. println (" elem selezionato : " + richiesta );
            }
            
            else {
-               richiesta=s.get(i).substring(0, 1);       
+               richiesta=s.get(i).substring(6, 8);       
                System .out. println (" elem selezionato : " + richiesta );
            }
         }
@@ -115,19 +115,16 @@ public class MedicoController {
        return richiesta; 
       
     }
-    
-    //non credo sia giusto static da verificare -> come prima 
-    public static ArrayList<String> farmaciSelezionati(int[] i,ArrayList<String> s){
-       ArrayList<String> farmaci=new ArrayList<>();
-       for(int pos=0;pos<i.length;pos++){
-            farmaci.add(s.get(i[pos]).substring(1, (s.get(i[pos])).length() ));       
-           // System .out. println (" elem selezionato : " +  );
+   
+       public ArrayList<String> listaFarmaciSelezionati(int[] indici,ArrayList<String> farmaci){
+        ArrayList<String> risultato = new ArrayList<String>();
+        System.out.println(indici.length);
+        for(int i=0;i<indici.length;i++){
+            risultato.add(farmaci.get(indici[i]));
         }
-  
-       return farmaci; 
-      
+        return risultato;
     }
-    
+       
    	//NON VA vedi e aggiungi tutte le label
     public ArrayList<String> impostaDatiPerPrescrizione(String pazienteCF){
         
@@ -467,7 +464,7 @@ public class MedicoController {
                 System.out.println("Prescrizione effettuata");
             }
             else {
-                System.out.println("Paziente non presente");
+                System.out.println("Paziente non presente(visita)");
             }
             
             stmt.close();
@@ -549,24 +546,14 @@ public class MedicoController {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
         }
-      
-       //??   
-        mv.getLista().setModel(new javax.swing.AbstractListModel<String>() {
-             
-            public int getSize() { return mv.getRichiesteNonPrescritte().size(); }
-            public String getElementAt(int i) { return mv.getRichiesteNonPrescritte().get(i); }
-        });
-        //è comparso questo errore dopo il merge
-        //mv.configChange();
-        
-        
+          
     }
         
     public ArrayList<String> listaRichieste(){
             
         ArrayList<String> lista=new ArrayList<>(); 
         try {
-            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false " ); 
+            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false" ); 
             pst.clearParameters(); 
           
             ResultSet rs=pst.executeQuery ();      

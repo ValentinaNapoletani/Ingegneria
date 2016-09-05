@@ -49,6 +49,8 @@ public class MedicoView extends javax.swing.JFrame {
     private ArrayList<String> strings= new ArrayList<>();
     private ArrayList<String> listaFarmaci= new ArrayList<>();
     private JList jList3;
+    private javax.swing.JLabel jLabel11;
+      
      
     private frameConfermaPrescrizione frameP;
 
@@ -123,10 +125,9 @@ public class MedicoView extends javax.swing.JFrame {
         
         for(Richiesta r: richieste){
             for(String s:r.getFarmaci()) {
-                stringaFarmaci+= "\n "
-                        + "•" + s; 
+                stringaFarmaci+="<br>•" + s; 
             }
-            codric.add(r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() +"\n\t"+ stringaFarmaci);
+            codric.add("<html>" + r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci +"<br><br>" + "<html>");
             stringaFarmaci="";
             
             strings=codric;
@@ -148,7 +149,7 @@ public class MedicoView extends javax.swing.JFrame {
     
         
     private  void creaFinestra(){
-        frameP= new frameConfermaPrescrizione(MedicoController.farmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci),jTextField2.getText(),this);
+        frameP= new frameConfermaPrescrizione(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci),jTextField2.getText(),this);
         frameP.setVisible(true);
     }
     
@@ -169,6 +170,7 @@ public class MedicoView extends javax.swing.JFrame {
         //jScrollPane3 = new javax.swing.JScrollPane();
         //jTextPane1 = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         
         initTabRicercaPrescrizioniNonUsate();
         initTabFarmaciPrescrittiDalMedico();
@@ -191,12 +193,13 @@ public class MedicoView extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings.get(i); }
         });
         
-        jList1.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings));
+       // jList1.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings));
 
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setText("Effettua Prescrizione");
-        jButton1.addActionListener(event -> medicoController.effettuaPrescrizioneSuRichiesta(MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings)));
+        jButton1.addActionListener(event -> jButton1ActionPerformed(event));
+       // jButton1.addActionListener(event -> medicoController.effettuaPrescrizioneSuRichiesta(MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings)));
         //jButton1.addActionListener(event -> initComponents());
        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -259,13 +262,14 @@ public class MedicoView extends javax.swing.JFrame {
          
         jScrollPane2.setViewportView(jList2);
         
-        jList2.addListSelectionListener(event -> MedicoController.farmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci));
+        //farjList2.addListSelectionListener(event -> MedicoController.farmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci));
 
 
         jButton2.setText("jButton2");
-        jButton2.addActionListener(event -> creaFinestra());
+        jButton2.addActionListener(event -> jButton2ActionPerformed(event));
         
         jLabel1.setText("Inserisci codice fiscale del paziente:");
+        
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -281,6 +285,7 @@ public class MedicoView extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, Short.MAX_VALUE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -298,6 +303,7 @@ public class MedicoView extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jButton2)
+                .addComponent(jLabel11)
                 .addGap(30, 30, 30))
         );
 
@@ -684,4 +690,47 @@ public class MedicoView extends javax.swing.JFrame {
         }
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    private void jButton1ActionPerformed(ActionEvent evt) {
+        ArrayList<Richiesta> r=new ArrayList<>();
+        
+        medicoController.effettuaPrescrizioneSuRichiesta(MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings));
+ 
+        for(String s:medicoController.listaRichieste())
+            r.add(medicoController.richiestaConAnagraficaEFarmaco(s));
+        
+        richieste=r;  
+        impostaStringaRichiesta();
+        jList1.updateUI();
+    }
+    
+    private void jButton2ActionPerformed(ActionEvent evt) {
+       
+        try{
+        if(!(jLabel11.getText().equals("")))
+            jLabel11.setText("");
+        
+        if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).size()>=5 && jTextField2.getText().equals("")) 
+            jLabel11.setText(  "<html>" + "•Una prescrizione non può contenere più di 5 farmaci<br>" + "•Inserire paziente <html>");
+        else if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).size()==0 && jTextField2.getText().equals("") )
+            jLabel11.setText(  "<html>" + "•Selezionare almeno un farmaco" + "<br>•Inserire paziente <html>"); 
+        else if(jTextField2.getText().equals(""))
+            jLabel11.setText(  "<html>" + jLabel11.getText()+ "<br>" + "•Inserire paziente <html>");
+        else if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).size()>=5)
+            jLabel11.setText("Una prescrizione non può contenere più di 5 farmaci");
+        else if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).size()==0)
+            jLabel11.setText("<html>" + jLabel11.getText() + "<br>•Selezionare almeno un farmaco<html>");
+        else if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).size()<=5 && !(jTextField2.getText().equals("")) )
+            creaFinestra();
+        }   
+            
+        catch(Exception e){ 
+            jLabel11.setText("<html>" + jLabel11.getText() + "<br>•Selezionare almeno un farmaco<html>");
+        }
+    }
+    
+    
 }
+
+
+
