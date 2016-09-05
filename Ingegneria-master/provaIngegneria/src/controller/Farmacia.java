@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Farmaco;
@@ -31,6 +32,21 @@ public class Farmacia {
         ultimoScontrino++;
         return ultimoScontrino;
     }
+    
+    public String rilasciaScontrino(ArrayList<String> listaFarmaci){
+        String scontrino="";
+        double temp;
+        double totale=0;
+        for(String s: listaFarmaci){
+            temp=getPrezzoFarmaco(s);
+            scontrino+=s+": "+temp+"<br>";
+            totale += temp;
+        }
+        scontrino +="TOTALE: "+totale+"<br>";
+        ultimoScontrino++;
+        return "<html>"+scontrino+"<br>---------------<br>Scontrino "+ultimoScontrino+" rilasciato</html>";
+    }
+    
     
     public Farmacia(Connection c,String indirizzo, String cap, String citta){
         this.c = c;
@@ -93,9 +109,9 @@ public class Farmacia {
     }
     
     
-    public boolean compraFarmaco(String farmaco, int quantita){
+    public boolean compraFarmaco(String farmaco, String prescrizione){
         int numPezziFarmacoInFarmacia;
-        if(controlloPresenzaFarmaco(farmaco,quantita)){
+        if(controlloPresenzaFarmaco(farmaco)){
             numPezziFarmacoInFarmacia = numeroPezziFarmacoDisponibili(farmaco);
             try {
                 String sql;
@@ -108,7 +124,13 @@ public class Farmacia {
                     pst.setString(2, indirizzo);
                     pst.setString(3, cap);
                     pst.setString(4, farmaco);
-                    pst.setInt(1, numPezziFarmacoInFarmacia-quantita);
+                    pst.setInt(1, numPezziFarmacoInFarmacia-1);
+                    pst.executeUpdate ();
+                    sql = "INSERT INTO \"Acquisto\" (\"prescrizione\", \"farmaco\") VALUES (?,?)";
+                    pst = c.prepareStatement ( sql );
+                    pst.clearParameters();
+                    pst.setString(1, prescrizione);
+                    pst.setString(2, farmaco);
                     pst.executeUpdate ();
                     return true;
                 }
@@ -120,7 +142,7 @@ public class Farmacia {
         else{
             //System.out.println("Farmaco non presente nella farmacia oppure non ci sono abbastanza confezioni a disposizione, eseguo l'ordine");
             //potrei calcolare la quantità da ordinare cosi: farmaciDaComprare - farmaciNellaFarmacia
-            ordinaFarmaco(farmaco, quantita);
+            //ordinaFarmaco(farmaco, quantita);
             return false;
         }
         return false;
@@ -235,5 +257,23 @@ public class Farmacia {
         } catch ( SQLException e) {
             System .out. println (" Problema durante inserimento dati : " + e.getMessage () );
         }
+    }
+    
+    public double getPrezzoFarmaco(String farmaco){
+        double risultato = 0;
+        try {
+            String sql = "Select prezzo FROM \"Farmaco\" WHERE \"nome\"=? ";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, farmaco);
+            ResultSet rs=pst.executeQuery ();
+            while(rs.next()){
+                risultato=rs.getDouble("prezzo");
+            }
+        } catch (SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return risultato;
     }
 }
