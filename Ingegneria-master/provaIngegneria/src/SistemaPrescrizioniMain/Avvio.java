@@ -148,8 +148,8 @@ public class Avvio extends javax.swing.JFrame {
             try {
                 Class.forName("org.postgresql.Driver");
                // c=DriverManager.getConnection("jdbc:postgresql://2.37.155.139:5432/Ingegneria","postgres","123");
-                c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
-                //c=DriverManager.getConnection("jdbc:postgresql://192.168.1.14:5432/Ingegneria","postgres","123");
+                //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
+                c=DriverManager.getConnection("jdbc:postgresql://192.168.1.3:5432/Ingegneria","postgres","123123");
             }    
             catch (Exception e) {
                 e.printStackTrace();
