@@ -52,3 +52,5 @@ Ingegneria-master/provaIngegneria/build/classes/controller/MedicoController.clas
 /Ingegneria-master/provaIngegneria/dist/
 *.properties
 *.class
+Ingegneria-master/provaIngegneria/src/View/prova.java
+Ingegneria-master/provaIngegneria/src/View/MedicoView.java

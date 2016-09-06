@@ -463,7 +463,7 @@ public class MedicoController {
             PreparedStatement stmt;
             PreparedStatement stmt2;
             stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
-            stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco,tipoacquisto) VALUES (?, ?, ?)");
+            stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
                       
             if(medico.listaPazienti().contains(codiceFiscale)) {
                
@@ -477,7 +477,6 @@ public class MedicoController {
                     stmt2.clearParameters(); 
                     stmt2.setString(1, n);
                     stmt2.setString(2, f );
-                    stmt2.setString(3, null);
                     stmt2.executeUpdate();
                 }   
                 System.out.println("Prescrizione effettuata");
@@ -533,7 +532,7 @@ public class MedicoController {
             PreparedStatement stmt2;
             PreparedStatement stmt3;
             stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data,\"CodiceRichiesta\") VALUES (?, ?, ?,CURRENT_DATE,?)");
-            stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco,tipoacquisto) VALUES (?, ?, ?)");
+            stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
             stmt3 = c.prepareStatement("UPDATE \"Richiesta\" SET prescritta=true WHERE paziente = ? AND codice = ? ");
             stmt.clearParameters();
             stmt.setString(1, n);
@@ -547,7 +546,6 @@ public class MedicoController {
                     stmt2.clearParameters(); 
                     stmt2.setString(1, n);
                     stmt2.setString(2, f );
-                    stmt2.setString(3, null);
                     stmt2.executeUpdate();
                 }
                 stmt3.setString(1, codiceFiscale);
@@ -709,6 +707,7 @@ public class MedicoController {
         }
         return listaRisultati;
     }
+
     
     public ArrayList<String> getFarmaciGenericiAcquistati(String paziente){
         ArrayList<String> listaRisultati= new ArrayList<>();
@@ -717,10 +716,29 @@ public class MedicoController {
             PreparedStatement pst=c.prepareStatement(sql);
             pst.clearParameters(); 
             pst.setString(1, medico.getCodiceRegionale());
+
             pst.setString(2, paziente);
             ResultSet rs=pst.executeQuery ();      
             while(rs.next()){
                 listaRisultati.add("<html>Prescrizione n. "+rs.getString("codice")+"<br><table> farmaco: "+rs.getString("nome")+"</html>");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRisultati;
+        
+    }
+    
+    public ArrayList<String> getlistaPazienti() {
+        ArrayList<String> listaRisultati= new ArrayList<>();
+        String sql = "select \"CodiceSanitario\" as codice from \"Paziente\" where \"Medico\" = ?" ;
+        try {
+            PreparedStatement pst=c.prepareStatement(sql);
+            pst.clearParameters(); 
+            pst.setString(1, medico.getCodiceRegionale());
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                listaRisultati.add(rs.getString("codice"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
@@ -807,4 +825,38 @@ public class MedicoController {
         } 
         return risultato;
     }
+    
+    public ArrayList<String> getFattoriDiRischio(String paziente) {
+         ArrayList<String> listaRisultati= new ArrayList<>();
+        String sql = "select \"fattore\" from \"FattoreRischioPaziente\" where paziente=?";
+        try {
+            PreparedStatement pst=c.prepareStatement(sql);
+            pst.clearParameters(); 
+            pst.setString(1, paziente);
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                listaRisultati.add(rs.getString("fattore"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaRisultati;
+    }
+
+    public void impostaRischioPrescrizione() {
+        try {
+            PreparedStatement stmt;
+            stmt = c.prepareStatement("UPDATE \"Prescrizione\" SET rischio=true WHERE codice = ?  ");
+           
+            stmt.setString(1, numeroPrescrizioni(c)+ "");
+            stmt.executeUpdate();
+            stmt.close();
+            System.out.println("Prescrizione modificata");
+            
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+        }
+    }
+
 }

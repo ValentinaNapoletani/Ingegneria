@@ -5,6 +5,7 @@
  */
 package View;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +30,9 @@ public class frameConfermaPrescrizione extends JFrame {
     private javax.swing.JLabel via;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> farmaciJList;
-    
+    private javax.swing.JButton interazioneFarmaci;
+    private javax.swing.JLabel labelInterazione;
+ 
     
     public frameConfermaPrescrizione(ArrayList<String> farmaci,String pazienteCF, MedicoView mv){
        this.farmaci=farmaci;
@@ -89,16 +92,19 @@ public class frameConfermaPrescrizione extends JFrame {
         paziente= new javax.swing.JLabel();
         via = new javax.swing.JLabel();
         farmaciJList = new javax.swing.JList<>();
+        interazioneFarmaci = new javax.swing.JButton();
+        labelInterazione  = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         farmaciJList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            
             @Override
-            public int getSize() { return strings.length; }
+            public int getSize() { return (mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci())).size(); }
             @Override
-            public String getElementAt(int i) { return strings[i]; }
+            public String getElementAt(int i) { return (mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci())).get(i); }
         });
+       
        
         jScrollPane1.setViewportView(farmaciJList);
 
@@ -106,12 +112,24 @@ public class frameConfermaPrescrizione extends JFrame {
         conferma.setText("Conferma");
         impostaLabel();
         
+        annulla.addActionListener(event -> annullaActionPerformed(event));
+        conferma.addActionListener(event -> confermaActionPerformed(event));
+        
+      //  labelInterazione.setText("iao");
+        interazioneFarmaci.setText("Interazione farmaci");
+        interazioneFarmaci.addActionListener(event -> farmaciActionPerformed(event));
+        
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(interazioneFarmaci, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelInterazione, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(annulla)
                 .addGap(18, 18, 18)
                 .addComponent(conferma)
@@ -121,8 +139,9 @@ public class frameConfermaPrescrizione extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cf)
                     .addComponent(paziente)
-                    .addComponent(via)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(via)                    
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(interazioneFarmaci, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
@@ -157,16 +176,35 @@ public class frameConfermaPrescrizione extends JFrame {
                         .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(annulla)
-                            .addComponent(conferma))
+                            .addComponent(conferma)
+                            .addComponent(interazioneFarmaci)
+                            .addComponent(labelInterazione) )
                         .addContainerGap(41, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(medico)
+                        .addComponent(medico)       
                         .addGap(90, 90, 90)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
         
+    }
+
+    private void annullaActionPerformed(ActionEvent event) {
+        this.dispose();
+    }
+
+    private void confermaActionPerformed(ActionEvent event) {
+        mv.getMedicoController().effettuaPrescrizioneConVisita(pazienteCF, farmaci);
+        if(mv.getRischio())
+            mv.getMedicoController().impostaRischioPrescrizione();
+    }
+
+    //mdifica database coppie farmaci
+    private void farmaciActionPerformed(ActionEvent event) {
+       ArrayList<String> farmaciPrescrizione= mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci());
+       
+       mv.getMedicoController().listaFarmaciSelezionati(farmaciJList.getSelectedIndices(), farmaciPrescrizione);
     }
     
 }
