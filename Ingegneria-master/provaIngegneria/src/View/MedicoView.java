@@ -59,6 +59,7 @@ public class MedicoView extends javax.swing.JFrame {
     private JButton jButton3;
     private JScrollPane jScrollPane4;
     private ArrayList<String> prescrizioniNonUsate;
+    private JTextField jTextField5;
     
     //tab4
     private JButton jButton4;
@@ -103,6 +104,14 @@ public class MedicoView extends javax.swing.JFrame {
     private JButton jButton8;
     private JPanel jPanel9;
     private ArrayList<String> listFarmaciGenericiAcquistati;
+    private JTextField jTextField4;
+    
+    //tab9
+    private JButton jButton9;
+    private JScrollPane jScrollPane9;
+    private JList jList8;
+    private JPanel jPanel10;
+    private ArrayList<String> listaReazioni;
     
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
         this.richieste=richieste;
@@ -185,6 +194,7 @@ public class MedicoView extends javax.swing.JFrame {
         initTabListaPazientiPerFarmaco();
         initTabListaFarmaciPaziente();
         initTabFarmaciGenericiComprati();
+        initTabReazioniAvverse();
     
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   
@@ -335,6 +345,7 @@ public class MedicoView extends javax.swing.JFrame {
         jTabbedPane1.addTab("Pazienti ai quali è stato prescritto un certo farmaco", jPanel7);
         jTabbedPane1.addTab("Lista di farmaci prescritti ad un paziente", jPanel8);
         jTabbedPane1.addTab("Farmaci generici comprati", jPanel9);
+        jTabbedPane1.addTab("Reazioni avverse comunicate", jPanel10);
      
         pack();
     }
@@ -344,6 +355,7 @@ public class MedicoView extends javax.swing.JFrame {
         jButton3 = new JButton();
         jScrollPane4 = new JScrollPane();
         jList3 = new JList();
+        jTextField5 = new JTextField();
         prescrizioniNonUsate=new ArrayList<>();
         jButton3.setText("Verifica esistenza prescrizioni non usate");
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -351,23 +363,28 @@ public class MedicoView extends javax.swing.JFrame {
         
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                //.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                    
-                .addGap(130, 130, 130))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(10, 86, 86)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGap(49, 49, 49)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTextField5)
+                        .addGap(77, 77, 77)
+                        .addComponent(jButton3)
+                        .addGap(212, 212, 212))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                            
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(55, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jButton3)
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jList3.setModel(new javax.swing.AbstractListModel<String>() {
@@ -379,6 +396,7 @@ public class MedicoView extends javax.swing.JFrame {
         });
         
         jScrollPane4.setViewportView(jList3);
+        
         
         jButton3.addActionListener(event -> listenerButtonPrescrizioniNonUsate());
         
@@ -660,6 +678,7 @@ public class MedicoView extends javax.swing.JFrame {
         jScrollPane8 = new JScrollPane();
         jButton8 = new JButton();
         jPanel9 = new JPanel(); 
+        jTextField4 = new JTextField();
         listFarmaciGenericiAcquistati=new ArrayList<>();
         
         jList7.setModel(new javax.swing.AbstractListModel<String>() {
@@ -681,18 +700,23 @@ public class MedicoView extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton8)
-                .addGap(212, 212, 212))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jTextField4)
+                        .addGap(77, 77, 77)
+                        .addComponent(jButton8)
+                        .addGap(212, 212, 212))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(55, Short.MAX_VALUE))))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addComponent(jButton8)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton8)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(58, Short.MAX_VALUE))
@@ -700,8 +724,60 @@ public class MedicoView extends javax.swing.JFrame {
 
     }
     
+    private void initTabReazioniAvverse(){
+        jButton9 = new JButton();
+        jList8 = new JList();
+        jScrollPane9 = new JScrollPane();
+        jPanel10 = new JPanel();
+        listaReazioni = new ArrayList<>();
+        jButton9.setText("Controlla reazioni avverse comunicate");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jList8.setModel(new javax.swing.AbstractListModel<String>() {   
+            public int getSize() { return listaReazioni.size(); }
+            public String getElementAt(int i) { return listaReazioni.get(i); }
+        });
+        jScrollPane9.setViewportView(jList8);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(jButton9))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(90, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jButton9)
+                .addGap(44, 44, 44)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        
+    }
+    
     private void listenerButtonPrescrizioniNonUsate(){
-        prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData();
+        String testo = jTextField5.getText();
+        if(testo.equals("")){
+            prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData();
+        }
+        else{
+            prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData(testo);
+        }
         jList3.updateUI();
         
     }
@@ -784,11 +860,22 @@ public class MedicoView extends javax.swing.JFrame {
     }
     
     private void jButton8ActionPerformed(ActionEvent evt) {
-        listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati();
+        String testo=jTextField4.getText();
+        if(testo.equals("")){
+            listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati();
+            
+        }
+        else{
+            listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati(testo);
+        }
         jList7.updateUI();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
+    private void jButton9ActionPerformed(ActionEvent evt) {
+        listaReazioni= medicoController.getListaReazioniAvverseSegnalate();
+        jList8.updateUI();
+    }
     
 }
 

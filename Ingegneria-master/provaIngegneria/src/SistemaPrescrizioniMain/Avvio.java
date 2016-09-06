@@ -24,7 +24,6 @@ public class Avvio extends javax.swing.JFrame {
     public Avvio() {
         creaConnessione();
         initComponents();
-        
     }
 
     /**

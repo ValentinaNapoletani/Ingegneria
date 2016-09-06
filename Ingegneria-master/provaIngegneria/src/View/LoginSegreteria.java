@@ -28,6 +28,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
 
     private LoginSegreteria() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -1,10 +1,7 @@
 package controller;
 import View.LoginSegreteria;
-import View.MedicoView;
 import View.SegreteriaView;
-import static controller.MedicoController.numeroPrescrizioni;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,9 +26,10 @@ public class SegreteriaController {
         this.segreteria=segreteria;
     }
     
+    
     public static Medico medicoDelPaziente(String codiceFiscale, Connection c){
         
-        Medico m=new Medico(c,"0001","10maco");
+        Medico m=new Medico(c,null,null);
         
         try {
             PreparedStatement pst = c.prepareStatement ( "SELECT \"CodiceRegione\" FROM \"Paziente\" join \"Medico\" on \"Medico\"=\"CodiceRegione\"" ); 
@@ -109,33 +107,6 @@ public class SegreteriaController {
             System.out.println("Nessun farmaco selezionato");
         }
     }
-    //controllo se la la richesta è stat prescritta e se il medico è di questa segreteria
-    //FAI: imposta le richieste del medicoview //modifica con prescritta
-    //versione vecchia: tutto da modificare 
-    /*
-    public ArrayList<String> prescrizioniDaConsegnare(){
-        
-        ArrayList<String> prescrizioni=new ArrayList<>();
-         try {
-           
-           PreparedStatement stmt;
-           stmt = c.prepareStatement(" SELECT \"Richiesta.codice\" FROM \"Richiesta\" join \"Prescrizione\" on \"Richiesta.codice\"=\"CodicePrescrizione\" join \"Medico\" on \"CodiceRegione\"=\"medico\" join \"Segreteria\" on \"codicesegreteria\"=\"Segreteria.codice\" WHERE \"codice\"=? ");
-           stmt.clearParameters();
-           stmt.setString(1, segreteria.getCodiceSegreteria()); 
-           
-           ResultSet rs=stmt.executeQuery ();      
-           while(rs.next()){
-                prescrizioni.add(rs.getString("codice"));
-           }     
-           stmt.close();   
-        } catch (SQLException e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-        }
-        
-        return prescrizioni;
-    }
-    */
     
     public ArrayList<Prescrizione> prescrizioniDaConsegnareComePrescrizione(){
         
@@ -153,15 +124,14 @@ public class SegreteriaController {
                 //System.out.println(rs.getString("paziente")+" "+rs.getString("codice"));
                 prescrizioni.add(new Prescrizione(rs.getString("paziente"),rs.getString("codice")));
             }     
-           stmt.close();   
+            stmt.close();   
         } catch (SQLException e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
+            //System.exit(0);
         }
         
         return prescrizioni;
     }
-    
 
     
     //ok
@@ -188,34 +158,6 @@ public class SegreteriaController {
             System.exit(0);
         }
     }
-    
-    //torna il codice richiesta espletata oppure null
-    /*private String richiestaPrescritta(String codicePrescrizione){
-        
-        String cod=null;
-        
-         try {
-           
-           PreparedStatement stmt;
-           stmt = c.prepareStatement(" SELECT \"codice\" FROM \"Richiesta\" join \"Prescrizione\" on \"Richiesta.codice\"=\"CodicePrescrizione\" WHERE \"Prescrizione.codice\"=? ");
-           stmt.clearParameters();
-           stmt.setString(1, codicePrescrizione); 
-           
-           ResultSet rs=stmt.executeQuery ();      
-            while(rs.next()){
-                cod=rs.getString("codice");
-            }  
- 
-           System.out.println("Richiesta prescrizione eliminata, prescrizione effettuata e consegnata");           
-           stmt.close();   
-        } catch (SQLException e) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-        }
-         
-       return null; 
-    }*/
-    
-    
+     
     
 }
