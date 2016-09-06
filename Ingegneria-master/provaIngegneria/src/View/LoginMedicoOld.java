@@ -32,7 +32,7 @@ public class LoginMedicoOld extends javax.swing.JFrame  {
     public LoginMedicoOld(Connection c) {
         this.c=c; 
         medico=new Medico(c,null,null);
-        mc=new MedicoController(c,medico,this);
+        //mc=new MedicoController(c,medico,this);
         initComponents();
         pack();
     }
