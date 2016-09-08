@@ -462,7 +462,7 @@ public class MedicoController {
         try {
             PreparedStatement stmt;
             PreparedStatement stmt2;
-            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
+            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data, datascadenza) VALUES (?, ?, ?,CURRENT_DATE, CURRENT_DATE+ interval '6 month')");
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
                       
             if(medico.listaPazienti().contains(codiceFiscale)) {
@@ -531,7 +531,7 @@ public class MedicoController {
             PreparedStatement stmt;
             PreparedStatement stmt2;
             PreparedStatement stmt3;
-            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data,\"CodiceRichiesta\") VALUES (?, ?, ?,CURRENT_DATE,?)");
+            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data,\"CodiceRichiesta\", datascadenza) VALUES (?, ?, ?,CURRENT_DATE,?, CURRENT_DATE + interval '6 month')");
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
             stmt3 = c.prepareStatement("UPDATE \"Richiesta\" SET prescritta=true WHERE paziente = ? AND codice = ? ");
             stmt.clearParameters();

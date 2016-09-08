@@ -351,6 +351,7 @@ public class FarmaciaView extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String codiceFiscale = jTextField3.getText();
         String codicePrescrizione = jTextField4.getText();
+        jLabel11.setText("");
         if(Farmacia.controlloPrescrizione(c, codiceFiscale, codicePrescrizione)){
             jLabel8.setText("");
             //listaFarmaci=Prescrizione.getFarmaci(codicePrescrizione, c);
@@ -359,7 +360,7 @@ public class FarmaciaView extends javax.swing.JFrame {
             
         }
         else{
-            jLabel8.setText("Non esiste il paziente con la seguente prescrizione");
+            jLabel8.setText("Non esiste il paziente con la seguente prescrizione oppure la prescrizione è scaduta");
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -370,6 +371,9 @@ public class FarmaciaView extends javax.swing.JFrame {
         ArrayList<String> listaFarmaciComprati = new ArrayList<>();
         int cont = 0;
         String scontrino = "";
+        boolean almenoUnFarmacoAssente=false;
+        jLabel11.setText("");
+        jLabel8.setText("");
         if(lista.size()>0){
             for(String s: lista){
                 if(farmacia.controlloPresenzaFarmaco(s)){
@@ -377,17 +381,23 @@ public class FarmaciaView extends javax.swing.JFrame {
                     listaFarmaciComprati.add(s);
                     cont++;
                 }
+                else{
+                    almenoUnFarmacoAssente=true;
+                }
             }
             if(cont>0){
                 jLabel11.setText(farmacia.rilasciaScontrino(listaFarmaciComprati));
+                if(almenoUnFarmacoAssente){
+                    jLabel8.setText("Uno o più farmaci tra quelli selezionati non è presente nella farmacia");
+                }
                 farmacia.impostaPrescrizioneUsata(jTextField4.getText());
             }
             else{
-               jLabel11.setText("Uno o più farmaci selezionati non presenti"); 
+               jLabel8.setText("Nessun farmaco tra quelli selezionati è presente nella farmacia"); 
             }
         }
         else{
-            jLabel11.setText("Nessun farmaco selezionato");
+            jLabel8.setText("Nessun farmaco selezionato");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
