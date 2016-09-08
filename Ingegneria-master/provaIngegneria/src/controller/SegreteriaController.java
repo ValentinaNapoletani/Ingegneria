@@ -48,7 +48,7 @@ public class SegreteriaController {
 //ok
     private int prossimaRichiesta(){
         
-        String nRichieste=null;
+        int nRichieste=0;
         int max=0;
         try {
             String sql = "SELECT codice as num FROM \"Richiesta\"";
@@ -56,9 +56,9 @@ public class SegreteriaController {
             pst = c.prepareStatement ( sql );
             ResultSet rs=pst. executeQuery ();      
             while(rs.next()){
-                 nRichieste=rs.getString("num");
-                 if(Integer.parseInt(nRichieste)> max)
-                     max=Integer.parseInt(nRichieste);
+                 nRichieste=rs.getInt("num");
+                 if(nRichieste> max)
+                     max=nRichieste;
             }
         }
         
@@ -70,7 +70,7 @@ public class SegreteriaController {
     }
     //ok
     public void inviaRichiestaPrescrizione(String codiceFiscale,ArrayList<String> farmaci){
-        String n=prossimaRichiesta() + "";
+        int n=prossimaRichiesta();
         if(farmaci.size()>0){
             try {
                 PreparedStatement stmt;
@@ -83,12 +83,12 @@ public class SegreteriaController {
                 
                     stmt.clearParameters();
                     stmt.setString(1, codiceFiscale);        
-                    stmt.setString(2, n);
+                    stmt.setInt(2, n);
                     stmt.executeUpdate();
                 
                     for(String f :farmaci) {
                         stmt2.clearParameters();
-                        stmt2.setString(1, n);        
+                        stmt2.setInt(1, n);        
                         stmt2.setString(2, f);
                         stmt2.executeUpdate();
                     }
@@ -114,7 +114,6 @@ public class SegreteriaController {
         try {
            
            PreparedStatement stmt;
-           //stmt = c.prepareStatement("SELECT codice, \"paziente\" FROM \"Richiesta\"  WHERE \"prescritta\"=true and \"consegnata\"=false");//and segreteria giusta...
            stmt = c.prepareStatement("SELECT DISTINCT \"Richiesta\".codice as codice, \"Richiesta\".\"paziente\" as paziente FROM \"Richiesta\" JOIN \"Prescrizione\" ON \"Richiesta\".codice = \"Prescrizione\".\"CodiceRichiesta\" WHERE \"prescritta\"=true and \"consegnata\"=false AND medico IN (SELECT DISTINCT \"CodiceRegione\" FROM \"Medico\" WHERE codicesegreteria=?) ORDER BY codice");
            stmt.clearParameters();
            stmt.setString(1, segreteria.getCodiceSegreteria()); 
@@ -122,7 +121,7 @@ public class SegreteriaController {
            ResultSet rs=stmt.executeQuery ();      
             while(rs.next()){
                 //System.out.println(rs.getString("paziente")+" "+rs.getString("codice"));
-                prescrizioni.add(new Prescrizione(rs.getString("paziente"),rs.getString("codice")));
+                prescrizioni.add(new Prescrizione(rs.getString("paziente"),rs.getInt("codice")));
             }     
             stmt.close();   
         } catch (SQLException e) {
@@ -156,6 +155,30 @@ public class SegreteriaController {
         } catch (SQLException e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
+        }
+    }
+    
+    public static boolean controlloPresenzaPaziente(Connection c, String codiceSanitario){
+        int quantita=0;
+        try {
+            String sql = "SELECT count(*) as cont FROM \"Paziente\" WHERE \"CodiceSanitario\"=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();      
+            pst.setString(1, codiceSanitario);
+
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                quantita=rs.getInt("cont");
+            }
+        } catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e.getMessage () );
+        }
+        if(quantita>0){
+            return true;
+        }
+        else{
+            return false;
         }
     }
      

@@ -6,7 +6,6 @@
 package View;
 
 import controller.MedicoController;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -217,25 +216,19 @@ public class MedicoView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
-<<<<<<< HEAD
-      //  jTextField2 = new javax.swing.JTextField();
-        //jScrollPane3 = new javax.swing.JScrollPane();
-        //jTextPane1 = new javax.swing.JTextPane();
-=======
-        jTextField2 = new javax.swing.JTextField();
->>>>>>> a2bc8fd12f1b6773a3e089f36217d00069bf2a3a
+
+
         jLabel1 = new javax.swing.JLabel();
        
         jLabel11 = new javax.swing.JLabel();
-<<<<<<< HEAD
+
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel12 = new javax.swing.JLabel();
         jTextFieldPaziente = new JTextField();
-        
-=======
+
         richiesteConsorziati = new JCheckBox();
         richiesteTotali = new ArrayList<>();
->>>>>>> a2bc8fd12f1b6773a3e089f36217d00069bf2a3a
+
         
         initTabRicercaPrescrizioniNonUsate();
         initTabFarmaciPrescrittiDalMedico();
