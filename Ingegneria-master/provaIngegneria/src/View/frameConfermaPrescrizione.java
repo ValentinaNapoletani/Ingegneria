@@ -222,16 +222,16 @@ public class frameConfermaPrescrizione extends JFrame {
         
         if(modalità=="visita") 
             mv.getMedicoController().effettuaPrescrizioneConVisita(pazienteCF, farmaci);
-          
-        else mv.getMedicoController().effettuaPrescrizioneSuRichiesta(mv.codiceRichiestaSelezionata());
+        else 
+            mv.getMedicoController().effettuaPrescrizioneSuRichiesta(Integer.parseInt(mv.codiceRichiestaSelezionata()));
             
         if(mv.getRischio())
             mv.getMedicoController().impostaRischioPrescrizione();
         if(premuto) {
             mv.getMedicoController().aggiornaDbConFarmaciContrastanti();
-        premuto=false;
-             }
-        
+            premuto=false;
+        }
+        this.dispose();
     }
 
    

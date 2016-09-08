@@ -19,14 +19,14 @@ import java.util.ArrayList;
 public class Richiesta {
     
     private String codicePaziente=null;
-    private String codiceRichiesta=null;
+    private int codiceRichiesta=0;
     private String nomePaziente=null;
     private String cognomePaziente=null;
     private String dataNascitaPaziente;
     private ArrayList<String> farmaci=null;
 
  
-    public Richiesta(String codicePaziente,String codiceRichiesta,String nomePaziente,String cognomePaziente,String dataNascitaPaziente,ArrayList<String> farmaci){
+    public Richiesta(String codicePaziente,int codiceRichiesta,String nomePaziente,String cognomePaziente,String dataNascitaPaziente,ArrayList<String> farmaci){
         this.codicePaziente=codicePaziente;
         this.codiceRichiesta=codiceRichiesta;
         this.nomePaziente=nomePaziente;
@@ -65,7 +65,7 @@ public class Richiesta {
         return codicePaziente;
     }
     
-    public String getCodiceRichiesta(){
+    public int getCodiceRichiesta(){
         return codiceRichiesta;
     }
     

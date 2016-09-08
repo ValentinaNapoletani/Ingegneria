@@ -98,7 +98,7 @@ public class MedicoController {
                 }
             } 
             if(autenticato){
-                for (String r: listaRichieste()){
+                for (Integer r: listaRichieste()){
                     richieste.add(richiestaConAnagraficaEFarmaco(r));
                 }
            
@@ -115,20 +115,40 @@ public class MedicoController {
     }
     
     //sbagliato con codice richiesta a 3 cifre
-    public static String oggettoSelezionato(int i,ArrayList<String> s){
-       System .out. println (" indice elem selezionato : " + i );
-       String richiesta=null;
-       //richiesta= s.get(i).substring(1,2);
+    public static String oggettoSelezionatoConHtml(int i,ArrayList<String> s){
+        System .out. println (" indice elem selezionato : " + i );
+        String richiesta=null;
+        //richiesta= s.get(i).substring(1,2);
         if(i>=0){         
-           if(s.get(i).substring(6,7).equals("0") || s.get(i).substring(1,2).equals("1") || s.get(i).substring(1,2).equals("2") || s.get(i).substring(1,2).equals("3") || s.get(i).substring(1,2).equals("4") || s.get(i).substring(1,2).equals("5") || s.get(i).substring(1,2).equals("6")|| s.get(i).substring(1,2).equals("7") || s.get(i).substring(1,2).equals("8") || s.get(i).substring(1,2).equals("9")){
-                richiesta=s.get(i).substring(6, 7);       
+            if(s.get(i).substring(7,8).equals("0") || s.get(i).substring(7,8).equals("1") || s.get(i).substring(7,8).equals("2") || s.get(i).substring(7,8).equals("3") || s.get(i).substring(7,8).equals("4") || s.get(i).substring(7,8).equals("5") || s.get(i).substring(7,8).equals("6")|| s.get(i).substring(7,8).equals("7") || s.get(i).substring(7,8).equals("8") || s.get(i).substring(7,8).equals("9")){
+                richiesta=s.get(i).substring(6, 8);       
                 System .out. println (" elem selezionato : " + richiesta );
-           }
+            }
            
-           else {
-               richiesta=s.get(i).substring(6, 8);       
-               System .out. println (" elem selezionato 2: " + richiesta );
-           }
+            else {
+                richiesta=s.get(i).substring(6, 7);       
+                System .out. println (" elem selezionato 2: " + richiesta );
+            }
+        }
+          
+       return richiesta; 
+      
+    }
+    
+    public static String oggettoSelezionato(int i,ArrayList<String> s){
+        System .out. println (" indice elem selezionato : " + i );
+        String richiesta=null;
+        //richiesta= s.get(i).substring(1,2);
+        if(i>=0){         
+            if(s.get(i).substring(2,3).equals("0") || s.get(i).substring(2,3).equals("1") || s.get(i).substring(2,3).equals("2") || s.get(i).substring(2,3).equals("3") || s.get(i).substring(2,3).equals("4") || s.get(i).substring(2,3).equals("5") || s.get(i).substring(2,3).equals("6")|| s.get(i).substring(2,3).equals("7") || s.get(i).substring(2,3).equals("8") || s.get(i).substring(2,3).equals("9")){
+                richiesta=s.get(i).substring(1, 3);       
+                System .out. println (" elem selezionato : " + richiesta );
+            }
+           
+            else {
+                richiesta=s.get(i).substring(1, 2);       
+                System .out. println (" elem selezionato 2: " + richiesta );
+            }
         }
           
        return richiesta; 
@@ -162,7 +182,7 @@ public class MedicoController {
                 dati.add(rs.getString(4));
                 dati.add(rs.getString(5));
                 dati.add(rs.getString(6));
-                dati.add(numeroPrescrizioni(c)+ "");
+                dati.add(ultimaPrescrizione(c)+ "");
             }
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
@@ -239,7 +259,7 @@ public class MedicoController {
         ArrayList<String> listaPrescrizioni = new ArrayList<String>();
         String s=new String();
         try {
-            String sql = "SELECT \"codice\", data, paziente FROM \"Prescrizione\" WHERE \"usata\"=false";
+            String sql = "SELECT \"codice\", data, paziente FROM \"Prescrizione\" WHERE \"usata\"=false ORDER BY codice";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
@@ -432,12 +452,12 @@ public class MedicoController {
     */
         
     //numero da assegnare al ocdice della prescrizione
-    public static int numeroPrescrizioni(Connection c){
+    public static int ultimaPrescrizione(Connection c){
         
         int n=0;
         
         try {
-            String sql = "SELECT count(*) as num FROM \"Prescrizione\"";
+            String sql = "SELECT max(codice) as num FROM \"Prescrizione\"";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             ResultSet rs=pst. executeQuery ();      
@@ -466,14 +486,14 @@ public class MedicoController {
             if(medico.listaPazienti().contains(codiceFiscale)) {
                
                 stmt.clearParameters(); 
-                stmt.setInt(1, numeroPrescrizioni(c));
+                stmt.setInt(1, ultimaPrescrizione(c));
                 stmt.setString(2, codiceFiscale);
                 stmt.setString(3, medico.getCodiceRegionale());        
                 stmt.executeUpdate();
 
                 for(String f :farmaci) {
                     stmt2.clearParameters(); 
-                    stmt2.setInt(1, numeroPrescrizioni(c));
+                    stmt2.setInt(1, ultimaPrescrizione(c)-1);
                     stmt2.setString(2, f.substring(1));
                     stmt2.executeUpdate();
                 }   
@@ -487,13 +507,14 @@ public class MedicoController {
             
         } catch (SQLException e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0); //perchè uscita qui? (vik)
+            //System.exit(0); //perchè uscita qui? (vik)
         }
+        
                   
     }
         
         
-    public static Richiesta ricavaDatiRichiesta(String codiceRichiesta, Connection c){
+    public static Richiesta ricavaDatiRichiesta(int codiceRichiesta, Connection c){
             
         Richiesta r=new Richiesta(null,codiceRichiesta,null,null,null,new ArrayList<String>());
            
@@ -501,7 +522,7 @@ public class MedicoController {
             PreparedStatement pst = c.prepareStatement ( "SELECT \"paziente\",\"nomefarmaco\",\"codice\" FROM \"Richiesta\" join \"farmacoInRichiesta\" on codice=codicerichiesta WHERE codice=?"); 
 
             pst.clearParameters(); 
-            pst.setInt(1, Integer.parseInt(codiceRichiesta.substring(0,1)));
+            pst.setInt(1, codiceRichiesta);
            
             ResultSet rs=pst.executeQuery ();                  
             while(rs.next()){
@@ -515,7 +536,7 @@ public class MedicoController {
         return r;
     }
         
-    public void effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
+    public void effettuaPrescrizioneSuRichiesta(int codiceRichiesta){ 
             
         ArrayList<String> farmaci=null; 
   
@@ -530,21 +551,21 @@ public class MedicoController {
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
             stmt3 = c.prepareStatement("UPDATE \"Richiesta\" SET prescritta=true WHERE paziente = ? AND codice = ? ");
             stmt.clearParameters();
-            stmt.setInt(1, numeroPrescrizioni(c));
+            stmt.setInt(1, ultimaPrescrizione(c));
             stmt.setString(2, codiceFiscale);
             stmt.setString(3, medico.getCodiceRegionale());  
-            stmt.setInt(4, Integer.parseInt(codiceRichiesta.substring(0,1)));
+            stmt.setInt(4, codiceRichiesta);
             if(medico.listaPazienti().contains(codiceFiscale)) {
                 stmt.executeUpdate();
             
                 for(String f :farmaci) {
                     stmt2.clearParameters(); 
-                    stmt2.setInt(1, numeroPrescrizioni(c));
+                    stmt2.setInt(1, ultimaPrescrizione(c)-1);
                     stmt2.setString(2, f );
                     stmt2.executeUpdate();
                 }
                 stmt3.setString(1, codiceFiscale);
-                stmt3.setString(2, codiceRichiesta);
+                stmt3.setInt(2, codiceRichiesta);
                 stmt3.executeUpdate();
                 System.out.println("Prescrizione su richiesta effettuata");
             }
@@ -561,16 +582,16 @@ public class MedicoController {
           
     }
         
-    public ArrayList<String> listaRichieste(){
+    public ArrayList<Integer> listaRichieste(){
             
-        ArrayList<String> lista=new ArrayList<>(); 
+        ArrayList<Integer> lista=new ArrayList<>(); 
         try {
             PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false AND paziente IN (SELECT \"CodiceSanitario\" FROM \"Paziente\" WHERE \"Medico\"=?)" ); 
             pst.clearParameters(); 
             pst.setString(1, medico.getCodiceRegionale());
             ResultSet rs=pst.executeQuery ();      
             while(rs.next()){
-                lista.add(rs.getInt("codice")+ ""); 
+                lista.add(rs.getInt("codice")); 
             }  
         }
         catch ( SQLException e) {
@@ -644,7 +665,7 @@ public class MedicoController {
     }
         
   
-    public Richiesta richiestaConAnagraficaEFarmaco(String codiceRichiesta){
+    public Richiesta richiestaConAnagraficaEFarmaco(int codiceRichiesta){
             
 
         ArrayList<String> farmaci=null; 
@@ -866,7 +887,7 @@ public class MedicoController {
             PreparedStatement stmt;
             stmt = c.prepareStatement("UPDATE \"Prescrizione\" SET rischio=true WHERE codice = ?  ");
            
-            stmt.setInt(1, numeroPrescrizioni(c));
+            stmt.setInt(1, ultimaPrescrizione(c));
             stmt.executeUpdate();
             stmt.close();
             System.out.println("Prescrizione modificata");
@@ -887,7 +908,7 @@ public class MedicoController {
             
             stmt.setString(1, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(0));
             stmt.setString(2, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(1));
-            stmt.setInt(3, numeroPrescrizioni(c)-1);
+            stmt.setInt(3, ultimaPrescrizione(c)-1);
            
             stmt.executeUpdate();
             stmt.close();

@@ -5,7 +5,6 @@
  */
 package View;
 
-import java.awt.BorderLayout;
 import java.awt.*;
 import javax.swing.*;
 import model.Richiesta;
@@ -29,7 +28,7 @@ public class RichiestaView extends JPanel{
     }
     
     public void setRichiesta(){
-       codiceRichiesta=new JLabel(richiesta.getCodiceRichiesta());
+       codiceRichiesta=new JLabel(richiesta.getCodiceRichiesta()+"");
        codiceRichiesta.setFont(new Font("Purisa",Font.BOLD,30));
   
     }
