@@ -273,13 +273,18 @@ public class SegreteriaView extends javax.swing.JFrame {
     } 
     
     private void jButton2ActionPerformed(ActionEvent evt) {
-        if(listaFarmaciSelezionati().size()<=5){
-            segreteriaController.inviaRichiestaPrescrizione(jTextField1.getText(), listaFarmaciSelezionati());
-            jList1.removeSelectionInterval(0, farmaci.size()-1);
-            jLabel4.setText("Richiesta prescrizione generata");
+        if(SegreteriaController.controlloPresenzaPaziente(c, jTextField1.getText())){
+            if(listaFarmaciSelezionati().size()<=5){
+                segreteriaController.inviaRichiestaPrescrizione(jTextField1.getText(), listaFarmaciSelezionati());
+                jList1.removeSelectionInterval(0, farmaci.size()-1);
+                jLabel4.setText("Richiesta prescrizione generata");
+            }
+            else{
+                jLabel4.setText("Una prescrizione non può contenere più di 5 farmaci");
+            }
         }
         else{
-            jLabel4.setText("Una prescrizione non può contenere più di 5 farmaci");
+            jLabel4.setText("Paziente non presente nella base di dati");
         }
         
     }

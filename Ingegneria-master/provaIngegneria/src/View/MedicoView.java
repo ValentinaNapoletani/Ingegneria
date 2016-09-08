@@ -6,7 +6,6 @@
 package View;
 
 import controller.MedicoController;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -229,10 +228,13 @@ public class MedicoView extends javax.swing.JFrame {
         jList2 = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
 
+<<<<<<< HEAD
         //  jTextField2 = new javax.swing.JTextField();
         //jScrollPane3 = new javax.swing.JScrollPane();
         //jTextPane1 = new javax.swing.JTextPane();
         JTextField jTextField2 = new javax.swing.JTextField();
+=======
+>>>>>>> origin/master
 
         jLabel1 = new javax.swing.JLabel();
        
@@ -241,7 +243,10 @@ public class MedicoView extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel12 = new javax.swing.JLabel();
         jTextFieldPaziente = new JTextField();
+<<<<<<< HEAD
         
+=======
+>>>>>>> origin/master
 
         richiesteConsorziati = new JCheckBox();
         richiesteTotali = new ArrayList<>();

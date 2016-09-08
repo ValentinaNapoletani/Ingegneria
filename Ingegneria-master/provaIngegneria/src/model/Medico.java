@@ -61,11 +61,10 @@ public class Medico{
             ArrayList<String> pazienti=new ArrayList<>();
         
         try {
-            PreparedStatement pst = c.prepareStatement ( "SELECT \"CodiceSanitario\"  FROM \"Paziente\" join \"Medico\" on \"Medico\"=\"CodiceRegione\" WHERE \"Password\"=? and \"CodiceRegione\"=?" ); 
+            PreparedStatement pst = c.prepareStatement ( "SELECT \"CodiceSanitario\"  FROM \"Paziente\" join \"Medico\" on \"Medico\"=\"CodiceRegione\" WHERE \"CodiceRegione\"=?" ); 
                                                 
             pst.clearParameters(); 
-            pst.setString(1,password);
-            pst.setString(2,codiceRegionale);
+            pst.setString(1,codiceRegionale);
                      
             ResultSet rs=pst.executeQuery ();      
             while(rs.next()){

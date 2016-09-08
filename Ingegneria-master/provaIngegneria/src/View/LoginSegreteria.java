@@ -44,6 +44,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,13 +70,14 @@ public class LoginSegreteria extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(jButton1)))
+                            .addComponent(jTextField2)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -87,7 +89,9 @@ public class LoginSegreteria extends javax.swing.JFrame {
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jButton1)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -106,7 +110,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
             stmt.setString(1, codice);
             ResultSet rs=stmt.executeQuery ();      
             while(rs.next()){
-                numRisultati=Integer.parseInt(rs.getString("num"));
+                numRisultati=rs.getInt("num");
             }
             System.out.println(numRisultati);
         }
@@ -114,14 +118,13 @@ public class LoginSegreteria extends javax.swing.JFrame {
             System.err.println("Errore esecuzione query");
         }
         if(numRisultati == 1){
-            //QUI aprire la finestra della segreteria
             Segreteria segreteria = new Segreteria(c,codice);
             SegreteriaController controller = new SegreteriaController(c,segreteria);
             SegreteriaView segreteriaView = new SegreteriaView(controller, c);
             segreteriaView.setVisible(true);
         }
         else{
-            System.err.println("Codice segreteria non trovato");
+            jLabel2.setText("Codice segreteria non trovato");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -163,6 +166,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

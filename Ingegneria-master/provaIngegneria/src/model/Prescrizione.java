@@ -18,11 +18,11 @@ import java.util.ArrayList;
 public class Prescrizione {
     
     private String codicePaziente=null;
-    private String codicePrescrizione=null;
+    private int codicePrescrizione=0;
     private boolean usata=false;
     
     
-    public Prescrizione(String codicePaziente,String codicePrescrizione){
+    public Prescrizione(String codicePaziente,int codicePrescrizione){
         this.codicePaziente=codicePaziente;
         this.codicePrescrizione=codicePrescrizione;
     }
@@ -30,7 +30,7 @@ public class Prescrizione {
     
     
     
-    public String getCodicePrescrizione(){
+    public int getCodicePrescrizione(){
         return codicePrescrizione;
     }
     
