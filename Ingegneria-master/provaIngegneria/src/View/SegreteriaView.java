@@ -160,6 +160,7 @@ public class SegreteriaView extends javax.swing.JFrame {
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
         jLabel4 = new JLabel();
+        
         jList1 = new javax.swing.JList<String>();
         jButton2.setText("Genera richiesta prescrizione");
         
@@ -167,22 +168,18 @@ public class SegreteriaView extends javax.swing.JFrame {
         impostaListaFarmaci();
         jList1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         aggiornaModelloListaFarmaci();
-        //jList1.addListSelectionListener(event -> listaFarmaciSelezionati());
         
         jScrollPane2.setViewportView(jList1);
         
-        
         jTextField1.setText("");
-        
-
         jLabel2.setText("Codice Fiscale");
-
         jLabel3.setText("Lista farmaci");
+        jLabel4.setText("");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel2Layout.createParallelGroup()
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(368, 368, 368)
                 
@@ -195,28 +192,25 @@ public class SegreteriaView extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63)
-                        .addComponent(jLabel4)
+                    .addGap(63, 63, 63)
+                    .addComponent(jLabel4)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(196, 196, 196))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel2Layout.createParallelGroup()
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                
+                    .addGap(60, 94, 94)
+                .addComponent(jLabel2)                
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
-                .addComponent(jLabel4)
-                .addGap(94, 94, 94)
                 .addComponent(jButton2)
-                
+                .addComponent(jLabel4)
+                )
                 .addContainerGap())
         );
         
