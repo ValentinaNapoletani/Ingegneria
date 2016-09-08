@@ -121,13 +121,13 @@ public class MedicoController {
        //richiesta= s.get(i).substring(1,2);
         if(i>=0){         
            if(s.get(i).substring(6,7).equals("0") || s.get(i).substring(1,2).equals("1") || s.get(i).substring(1,2).equals("2") || s.get(i).substring(1,2).equals("3") || s.get(i).substring(1,2).equals("4") || s.get(i).substring(1,2).equals("5") || s.get(i).substring(1,2).equals("6")|| s.get(i).substring(1,2).equals("7") || s.get(i).substring(1,2).equals("8") || s.get(i).substring(1,2).equals("9")){
-                richiesta=s.get(i).substring(0, 2);       
+                richiesta=s.get(i).substring(6, 7);       
                 System .out. println (" elem selezionato : " + richiesta );
            }
            
            else {
                richiesta=s.get(i).substring(6, 8);       
-               System .out. println (" elem selezionato : " + richiesta );
+               System .out. println (" elem selezionato 2: " + richiesta );
            }
         }
           
@@ -143,8 +143,7 @@ public class MedicoController {
         }
         return risultato;
     }
-       
-   	//NON VA vedi e aggiungi tutte le label
+
     public ArrayList<String> impostaDatiPerPrescrizione(String pazienteCF){
         
         ArrayList<String> dati = new ArrayList<String>();
@@ -217,8 +216,8 @@ public class MedicoController {
     }
     
     //ok
-    public ArrayList<String> listaPrescrizioniNonUsate(){
-        ArrayList<String> listaPrescrizioni = new ArrayList<String>();
+    public ArrayList<Integer> listaPrescrizioniNonUsate(){
+        ArrayList<Integer> listaPrescrizioni = new ArrayList<Integer>();
         try {
             String sql = "SELECT \"codice\" FROM \"Prescrizione\" WHERE \"usata\"=false";
             PreparedStatement pst;
@@ -226,7 +225,7 @@ public class MedicoController {
             pst.clearParameters();
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
-                listaPrescrizioni.add(rs.getString("codice"));
+                listaPrescrizioni.add(rs.getInt("codice"));
             }
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
@@ -238,6 +237,7 @@ public class MedicoController {
     //ok
     public ArrayList<String> listaPrescrizioniNonUsateConData(){
         ArrayList<String> listaPrescrizioni = new ArrayList<String>();
+        String s=new String();
         try {
             String sql = "SELECT \"codice\", data, paziente FROM \"Prescrizione\" WHERE \"usata\"=false";
             PreparedStatement pst;
@@ -245,7 +245,8 @@ public class MedicoController {
             pst.clearParameters();
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
-                listaPrescrizioni.add("Prescrizione n. "+rs.getString("codice")+" prescritta il "+rs.getString("data")+" al paziente con codice sanitario "+rs.getString("paziente"));
+                s= rs.getInt("codice") + "" ;
+                listaPrescrizioni.add("Prescrizione n. " + s  + " prescritta il "+rs.getString("data")+" al paziente con codice sanitario "+rs.getString("paziente"));
             }
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
@@ -433,7 +434,6 @@ public class MedicoController {
     //numero da assegnare al ocdice della prescrizione
     public static int numeroPrescrizioni(Connection c){
         
-        String nPres=null;
         int n=0;
         
         try {
@@ -442,8 +442,7 @@ public class MedicoController {
             pst = c.prepareStatement ( sql );
             ResultSet rs=pst. executeQuery ();      
             while(rs.next()){
-                 nPres=rs.getString("num");
-                 n = Integer.parseInt(nPres);
+                 n=rs.getInt("num");
             }
         }
         
@@ -456,7 +455,6 @@ public class MedicoController {
     
     public void effettuaPrescrizioneConVisita(String codiceFiscale, ArrayList<String> farmaci){ 
                 
-        String n=numeroPrescrizioni(c) + "";
         ArrayList<String> l=new ArrayList<>(); 
 
         try {
@@ -468,14 +466,14 @@ public class MedicoController {
             if(medico.listaPazienti().contains(codiceFiscale)) {
                
                 stmt.clearParameters(); 
-                stmt.setString(1, n);
+                stmt.setInt(1, numeroPrescrizioni(c));
                 stmt.setString(2, codiceFiscale);
                 stmt.setString(3, medico.getCodiceRegionale());        
                 stmt.executeUpdate();
 
                 for(String f :farmaci) {
                     stmt2.clearParameters(); 
-                    stmt2.setString(1, n);
+                    stmt2.setInt(1, numeroPrescrizioni(c));
                     stmt2.setString(2, f.substring(1));
                     stmt2.executeUpdate();
                 }   
@@ -503,7 +501,7 @@ public class MedicoController {
             PreparedStatement pst = c.prepareStatement ( "SELECT \"paziente\",\"nomefarmaco\",\"codice\" FROM \"Richiesta\" join \"farmacoInRichiesta\" on codice=codicerichiesta WHERE codice=?"); 
 
             pst.clearParameters(); 
-            pst.setString(1, codiceRichiesta);
+            pst.setInt(1, Integer.parseInt(codiceRichiesta.substring(0,1)));
            
             ResultSet rs=pst.executeQuery ();                  
             while(rs.next()){
@@ -517,11 +515,8 @@ public class MedicoController {
         return r;
     }
         
-    //modfica richiesta modello per ri settere modello lista dopo che il medico fa prescrizione(ma non è ancore tolta da ricieste) nuova lista basata sul modello non su query
-    //eh? (l'ho scritto io???)
     public void effettuaPrescrizioneSuRichiesta(String codiceRichiesta){ 
-             
-        String n=numeroPrescrizioni(c) + "";
+            
         ArrayList<String> farmaci=null; 
   
         farmaci=(ricavaDatiRichiesta(codiceRichiesta,c).getFarmaci());
@@ -535,16 +530,16 @@ public class MedicoController {
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
             stmt3 = c.prepareStatement("UPDATE \"Richiesta\" SET prescritta=true WHERE paziente = ? AND codice = ? ");
             stmt.clearParameters();
-            stmt.setString(1, n);
+            stmt.setInt(1, numeroPrescrizioni(c));
             stmt.setString(2, codiceFiscale);
             stmt.setString(3, medico.getCodiceRegionale());  
-            stmt.setString(4, codiceRichiesta);
+            stmt.setInt(4, Integer.parseInt(codiceRichiesta.substring(0,1)));
             if(medico.listaPazienti().contains(codiceFiscale)) {
                 stmt.executeUpdate();
             
                 for(String f :farmaci) {
                     stmt2.clearParameters(); 
-                    stmt2.setString(1, n);
+                    stmt2.setInt(1, numeroPrescrizioni(c));
                     stmt2.setString(2, f );
                     stmt2.executeUpdate();
                 }
@@ -575,7 +570,7 @@ public class MedicoController {
             pst.setString(1, medico.getCodiceRegionale());
             ResultSet rs=pst.executeQuery ();      
             while(rs.next()){
-                lista.add(rs.getString("codice")); 
+                lista.add(rs.getInt("codice")+ ""); 
             }  
         }
         catch ( SQLException e) {
@@ -593,7 +588,7 @@ public class MedicoController {
           
             ResultSet rs=pst.executeQuery ();      
             while(rs.next()){
-                lista.add(rs.getString("codice")); 
+                lista.add(rs.getInt("codice") + ""); 
             }  
         }
         catch ( SQLException e) {
@@ -638,8 +633,8 @@ public class MedicoController {
           
             ResultSet rs=pst.executeQuery ();      
             while(rs.next()){
-                lista.add(rs.getString("codice")); 
-                System.out.println(rs.getString("codice"));
+                lista.add(rs.getInt("codice") + ""); 
+                System.out.println(rs.getInt("codice"));
             }  
         }
         catch ( SQLException e) {
@@ -648,7 +643,7 @@ public class MedicoController {
         return lista;
     }
         
-    //non usato??
+  
     public Richiesta richiestaConAnagraficaEFarmaco(String codiceRichiesta){
             
 
@@ -776,7 +771,7 @@ public class MedicoController {
             pst.setString(1, paziente);
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
-                listaPrescrizioni.add("Prescrizione n. "+rs.getString("codice")+" prescritta il "+rs.getString("data"));
+                listaPrescrizioni.add("Prescrizione n. "+rs.getInt("codice")+" prescritta il "+rs.getString("data"));
             }
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
@@ -871,7 +866,7 @@ public class MedicoController {
             PreparedStatement stmt;
             stmt = c.prepareStatement("UPDATE \"Prescrizione\" SET rischio=true WHERE codice = ?  ");
            
-            stmt.setString(1, numeroPrescrizioni(c)+ "");
+            stmt.setInt(1, numeroPrescrizioni(c));
             stmt.executeUpdate();
             stmt.close();
             System.out.println("Prescrizione modificata");
@@ -892,14 +887,14 @@ public class MedicoController {
             
             stmt.setString(1, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(0));
             stmt.setString(2, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(1));
-            stmt.setString(3, numeroPrescrizioni(c)-1  + "");
+            stmt.setInt(3, numeroPrescrizioni(c)-1);
            
             stmt.executeUpdate();
             stmt.close();
             System.out.println("Farmaci in contrasto inseriti");
             
         } catch (SQLException e) {
-            System.out.println("ERRORE");
+            System.out.println("Errore nell'estrazione dei dati");
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
              
