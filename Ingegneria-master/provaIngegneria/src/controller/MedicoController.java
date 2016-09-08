@@ -476,7 +476,7 @@ public class MedicoController {
                 for(String f :farmaci) {
                     stmt2.clearParameters(); 
                     stmt2.setString(1, n);
-                    stmt2.setString(2, f );
+                    stmt2.setString(2, f.substring(1));
                     stmt2.executeUpdate();
                 }   
                 System.out.println("Prescrizione effettuata");
@@ -880,6 +880,49 @@ public class MedicoController {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             System.exit(0);
         }
+    }
+
+    public void aggiornaDbConFarmaciContrastanti() {
+        
+         try {
+            PreparedStatement stmt;
+            stmt = c.prepareStatement("INSERT INTO \"FarmaciContrastanti\" (farmaco1,farmaco2, prescrizione) VALUES (?, ?, ?)");
+             
+            System.out.println((farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(0));
+            
+            stmt.setString(1, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(0));
+            stmt.setString(2, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(1));
+            stmt.setString(3, numeroPrescrizioni(c)-1  + "");
+           
+            stmt.executeUpdate();
+            stmt.close();
+            System.out.println("Farmaci in contrasto inseriti");
+            
+        } catch (SQLException e) {
+            System.out.println("ERRORE");
+            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+            System.exit(0);
+             
+        }
+        
+    }
+
+    private ArrayList<String> farmaciInContrastoOrdinati(ArrayList<String> farmaciContrastanti) {
+                  
+       ArrayList<String> res=new ArrayList<>();   //primo minore
+       
+      if( (farmaciContrastanti.get(0).substring(1)).compareToIgnoreCase((farmaciContrastanti.get(1)).substring(1)) < 0  ) {
+          System.out.println(farmaciContrastanti.get(0).substring(1));        
+           
+          res.add((farmaciContrastanti.get(0)).substring(1)); 
+          res.add((farmaciContrastanti.get(1)).substring(1)); 
+      }
+      else {
+          res.add((farmaciContrastanti.get(1)).substring(1));
+          res.add((farmaciContrastanti.get(0)).substring(1));  
+      }
+       
+       return res;
     }
 
 }
