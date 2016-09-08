@@ -119,12 +119,15 @@ public class MedicoController {
         System .out. println (" indice elem selezionato : " + i );
         String richiesta=null;
         //richiesta= s.get(i).substring(1,2);
-        if(i>=0){         
-            if(s.get(i).substring(7,8).equals("0") || s.get(i).substring(7,8).equals("1") || s.get(i).substring(7,8).equals("2") || s.get(i).substring(7,8).equals("3") || s.get(i).substring(7,8).equals("4") || s.get(i).substring(7,8).equals("5") || s.get(i).substring(7,8).equals("6")|| s.get(i).substring(7,8).equals("7") || s.get(i).substring(7,8).equals("8") || s.get(i).substring(7,8).equals("9")){
+        if(i>=0){       
+            if(s.get(i).substring(8,9).equals("0") || s.get(i).substring(8,9).equals("1") || s.get(i).substring(8,9).equals("2") || s.get(i).substring(8,9).equals("3") || s.get(i).substring(8,9).equals("4") || s.get(i).substring(8,9).equals("5") || s.get(i).substring(8,9).equals("6")|| s.get(i).substring(8,9).equals("7") || s.get(i).substring(8,9).equals("8") || s.get(i).substring(8,9).equals("9")){
+                richiesta=s.get(i).substring(6, 9);       
+                System .out. println (" elem selezionato : " + richiesta );
+            }
+            else if(s.get(i).substring(7,8).equals("0") || s.get(i).substring(7,8).equals("1") || s.get(i).substring(7,8).equals("2") || s.get(i).substring(7,8).equals("3") || s.get(i).substring(7,8).equals("4") || s.get(i).substring(7,8).equals("5") || s.get(i).substring(7,8).equals("6")|| s.get(i).substring(7,8).equals("7") || s.get(i).substring(7,8).equals("8") || s.get(i).substring(7,8).equals("9")){
                 richiesta=s.get(i).substring(6, 8);       
                 System .out. println (" elem selezionato : " + richiesta );
             }
-           
             else {
                 richiesta=s.get(i).substring(6, 7);       
                 System .out. println (" elem selezionato 2: " + richiesta );
@@ -139,23 +142,26 @@ public class MedicoController {
         System .out. println (" indice elem selezionato : " + i );
         String richiesta=null;
         //richiesta= s.get(i).substring(1,2);
-        if(i>=0){         
+        if(i>=0){     
+            if(s.get(i).substring(2,4).equals("0") || s.get(i).substring(2,4).equals("1") || s.get(i).substring(2,4).equals("2") || s.get(i).substring(2,4).equals("3") || s.get(i).substring(2,4).equals("4") || s.get(i).substring(2,4).equals("5") || s.get(i).substring(2,4).equals("6")|| s.get(i).substring(2,4).equals("7") || s.get(i).substring(2,4).equals("8") || s.get(i).substring(2,4).equals("9")){
+                richiesta=s.get(i).substring(1, 4);       
+                System .out. println (" elem selezionato : " + richiesta );
+            }
             if(s.get(i).substring(2,3).equals("0") || s.get(i).substring(2,3).equals("1") || s.get(i).substring(2,3).equals("2") || s.get(i).substring(2,3).equals("3") || s.get(i).substring(2,3).equals("4") || s.get(i).substring(2,3).equals("5") || s.get(i).substring(2,3).equals("6")|| s.get(i).substring(2,3).equals("7") || s.get(i).substring(2,3).equals("8") || s.get(i).substring(2,3).equals("9")){
                 richiesta=s.get(i).substring(1, 3);       
                 System .out. println (" elem selezionato : " + richiesta );
             }
-           
             else {
                 richiesta=s.get(i).substring(1, 2);       
                 System .out. println (" elem selezionato 2: " + richiesta );
             }
         }
           
-       return richiesta; 
+        return richiesta; 
       
     }
    
-       public ArrayList<String> listaFarmaciSelezionati(int[] indici,ArrayList<String> farmaci){
+    public ArrayList<String> listaFarmaciSelezionati(int[] indici,ArrayList<String> farmaci){
         ArrayList<String> risultato = new ArrayList<String>();
         System.out.println(indici.length);
         for(int i=0;i<indici.length;i++){

@@ -929,7 +929,10 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             richiesteTotali=r;
         }
         
-        impostaStringaRichiesta();
+        
+    }
+    
+    public void aggiornaLista1(){
         jList1.updateUI();
     }
     

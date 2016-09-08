@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -218,8 +218,7 @@ public class frameConfermaPrescrizione extends JFrame {
         this.dispose();
     }
 
-    private void confermaActionPerformed(ActionEvent event) {
-        
+    private void confermaActionPerformed(ActionEvent event) {  
         if(modalità=="visita") 
             mv.getMedicoController().effettuaPrescrizioneConVisita(pazienteCF, farmaci);
         else 
@@ -231,6 +230,8 @@ public class frameConfermaPrescrizione extends JFrame {
             mv.getMedicoController().aggiornaDbConFarmaciContrastanti();
             premuto=false;
         }
+        mv.impostaStringaRichiesta();
+        mv.aggiornaLista1(); //non va ???
         this.dispose();
     }
 
