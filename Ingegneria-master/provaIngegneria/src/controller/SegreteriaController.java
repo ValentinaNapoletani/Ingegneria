@@ -100,7 +100,6 @@ public class SegreteriaController {
                 stmt.close();   
             } catch (SQLException e) {
                 System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-                System.exit(0);
             }
         }
         else{
@@ -126,7 +125,6 @@ public class SegreteriaController {
             stmt.close();   
         } catch (SQLException e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            //System.exit(0);
         }
         
         return prescrizioni;
@@ -137,24 +135,14 @@ public class SegreteriaController {
     public void consegnaPrescrizione(String codicePrescrizione){
  
         try {
-           //String rp=richiestaPrescritta(codicePrescrizione);
-           PreparedStatement stmt;
-           stmt = c.prepareStatement("UPDATE \"Richiesta\" SET consegnata=true WHERE \"codice\"=?");
-            
-            //if(rp!=null){
-               
-                stmt.clearParameters();
-                stmt.setString(1, codicePrescrizione);          
-                stmt.executeUpdate();
-                System.out.println("Richiesta prescrizione eliminata, prescrizione effettuata");
-           // }
-           //else {
-             //   System.out.println("Errore:La prescrizione non è pronta!");
-            //}            
+            PreparedStatement stmt;
+            stmt = c.prepareStatement("UPDATE \"Richiesta\" SET consegnata=true WHERE \"codice\"=?");
+            stmt.clearParameters();
+            stmt.setInt(1, Integer.parseInt(codicePrescrizione));          
+            stmt.executeUpdate();
             stmt.close();   
         } catch (SQLException e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
         }
     }
     
