@@ -10,9 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Farmaco;
+
 
 /**
  *
@@ -107,8 +105,7 @@ public class Farmacia {
         }
         
     }
-    
-    
+       
     public boolean compraFarmaco(String farmaco, String prescrizione){
         int numPezziFarmacoInFarmacia;
         if(controlloPresenzaFarmaco(farmaco)){
@@ -224,7 +221,7 @@ public class Farmacia {
     public static boolean controlloPrescrizione(Connection c, String codiceSanitario, String codicePrescrizione){
         int quantita=0;
         try {
-            String sql = "SELECT count(*) as cont FROM \"Prescrizione\" WHERE \"codice\"=? AND \"paziente\"=? ";
+            String sql = "SELECT count(*) as cont FROM \"Prescrizione\" WHERE \"codice\"=? AND \"paziente\"=? and datascadenza>=CURRENT_DATE";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();

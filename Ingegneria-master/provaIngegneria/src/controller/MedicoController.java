@@ -462,7 +462,7 @@ public class MedicoController {
         try {
             PreparedStatement stmt;
             PreparedStatement stmt2;
-            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data) VALUES (?, ?, ?,CURRENT_DATE)");
+            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data, datascadenza) VALUES (?, ?, ?,CURRENT_DATE, CURRENT_DATE+ interval '6 month')");
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
                       
             if(medico.listaPazienti().contains(codiceFiscale)) {
@@ -531,7 +531,7 @@ public class MedicoController {
             PreparedStatement stmt;
             PreparedStatement stmt2;
             PreparedStatement stmt3;
-            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data,\"CodiceRichiesta\") VALUES (?, ?, ?,CURRENT_DATE,?)");
+            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data,\"CodiceRichiesta\", datascadenza) VALUES (?, ?, ?,CURRENT_DATE,?, CURRENT_DATE + interval '6 month')");
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
             stmt3 = c.prepareStatement("UPDATE \"Richiesta\" SET prescritta=true WHERE paziente = ? AND codice = ? ");
             stmt.clearParameters();
@@ -570,7 +570,25 @@ public class MedicoController {
             
         ArrayList<String> lista=new ArrayList<>(); 
         try {
-            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false" ); 
+            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false AND paziente IN (SELECT \"CodiceSanitario\" FROM \"Paziente\" WHERE \"Medico\"=?)" ); 
+            pst.clearParameters(); 
+            pst.setString(1, medico.getCodiceRegionale());
+            ResultSet rs=pst.executeQuery ();      
+            while(rs.next()){
+                lista.add(rs.getString("codice")); 
+            }  
+        }
+        catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return lista;
+    }
+    
+    public ArrayList<String> listaRichiesteConsorzio(){
+            
+        ArrayList<String> lista=new ArrayList<>(); 
+        try {
+            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false AND paziente IN (SELECT medico FROM \"MedicoDelConsorzio\" WHERE consorzio IN (SELECT \"consorzio\" FROM \"MedicoDelConsorzio\" WHERE \"medico\"=?))" ); 
             pst.clearParameters(); 
           
             ResultSet rs=pst.executeQuery ();      
@@ -583,6 +601,8 @@ public class MedicoController {
         }
         return lista;
     }
+    
+    
     
     //funziona
     public ArrayList<String> farmaciPrescrittiDaMedicoNelPeriodo(String periodo){
@@ -767,15 +787,18 @@ public class MedicoController {
     public ArrayList<String> getListaReazioniAvverseSegnalate() {
         ArrayList<String> listaReazioni = new ArrayList<String>();
         try {
-            String sql = "SELECT \"Reazione\".descrizione as descrizione, \"ReazioneFarmaco\".farmaco as farmaco, \"Reazione\".titolo as titolo   FROM \"ReazioneFarmaco\" JOIN \"Reazione\" ON \"ReazioneFarmaco\".reazione = \"Reazione\".titolo ";
+            String sql = "SELECT \"Reazione\".descrizione as descrizione, \"ReazioneFarmaco\".farmaco as farmaco, \"Reazione\".titolo as titolo   FROM \"ReazioneFarmaco\" JOIN \"Reazione\" ON \"ReazioneFarmaco\".reazione = \"Reazione\".titolo ORDER BY farmaco ";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
-                
-                listaReazioni.add("<html>Farmaco: "+rs.getString("farmaco")+"<br>Reazione: "+rs.getString("titolo")+"<br>Descrizione: "+rs.getString("descrizione")+"<br><html>");
-                System.out.println("<html>Farmaco: "+rs.getString("farmaco")+"<br>Reazione: "+rs.getString("titolo")+"<br>Descrizione: "+rs.getString("descrizione")+"<br><html>");
+                if(rs.getString("descrizione") == null){
+                    listaReazioni.add("<html>Farmaco: "+rs.getString("farmaco")+"<table><br>Reazione: "+rs.getString("titolo")+"<br><html>");
+                }
+                else{
+                    listaReazioni.add("<html>Farmaco: "+rs.getString("farmaco")+"<table><br>Reazione: "+rs.getString("titolo")+"<br>Descrizione: "+rs.getString("descrizione")+"<br><html>");
+                }
             }
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );

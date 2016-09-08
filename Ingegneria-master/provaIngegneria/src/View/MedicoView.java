@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -33,6 +34,7 @@ public class MedicoView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private JCheckBox richiesteConsorziati;
     
     private javax.swing.JButton jButton2;
     private javax.swing.JList<String> jList2;
@@ -49,6 +51,7 @@ public class MedicoView extends javax.swing.JFrame {
          
     private MedicoController medicoController;
     private ArrayList<Richiesta> richieste;
+    private ArrayList<Richiesta> richiesteTotali;
     private ArrayList<String> strings= new ArrayList<>();
     private ArrayList<String> listaFarmaci= new ArrayList<>();
     private JList jList3;
@@ -149,14 +152,27 @@ public class MedicoView extends javax.swing.JFrame {
         
         String stringaFarmaci="";
         
-        for(Richiesta r: richieste){
-            for(String s:r.getFarmaci()) {
-                stringaFarmaci+="<br>•" + s; 
-            }
-            codric.add("<html>" + r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci +"<br><br>" + "<html>");
-            stringaFarmaci="";
+        if(!richiesteConsorziati.isSelected()){
+            for(Richiesta r: richieste){
+                for(String s:r.getFarmaci()) {
+                    stringaFarmaci+="<br>•" + s; 
+                }
+                codric.add("<html>" + r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci +"<br><br>" + "<html>");
+                stringaFarmaci="";
             
-            strings=codric;
+                strings=codric;
+            }
+        }
+        else{
+            for(Richiesta r: richiesteTotali){
+                for(String s:r.getFarmaci()) {
+                    stringaFarmaci+="<br>•" + s; 
+                }
+                codric.add("<html>" + r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci +"<br><br>" + "<html>");
+                stringaFarmaci="";
+            
+                strings=codric;
+            }
         }
     }
     
@@ -201,16 +217,25 @@ public class MedicoView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
         jButton2 = new javax.swing.JButton();
+<<<<<<< HEAD
       //  jTextField2 = new javax.swing.JTextField();
         //jScrollPane3 = new javax.swing.JScrollPane();
         //jTextPane1 = new javax.swing.JTextPane();
+=======
+        jTextField2 = new javax.swing.JTextField();
+>>>>>>> a2bc8fd12f1b6773a3e089f36217d00069bf2a3a
         jLabel1 = new javax.swing.JLabel();
        
         jLabel11 = new javax.swing.JLabel();
+<<<<<<< HEAD
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel12 = new javax.swing.JLabel();
         jTextFieldPaziente = new JTextField();
         
+=======
+        richiesteConsorziati = new JCheckBox();
+        richiesteTotali = new ArrayList<>();
+>>>>>>> a2bc8fd12f1b6773a3e089f36217d00069bf2a3a
         
         initTabRicercaPrescrizioniNonUsate();
         initTabFarmaciPrescrittiDalMedico();
@@ -235,10 +260,14 @@ public class MedicoView extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings.get(i); }
         });
         
-       // jList1.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings));
-
+        richiesteConsorziati.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listenerCheckBox(evt);
+            }
+        });
+        
         jScrollPane1.setViewportView(jList1);
-
+        richiesteConsorziati.setText("<html>Visualizza richieste anche<br>dei medici consorziati<html>");
         jButton1.setText("Effettua Prescrizione");
         jButton1.addActionListener(event -> jButton1ActionPerformed(event));
        // jButton1.addActionListener(event -> medicoController.effettuaPrescrizioneSuRichiesta(MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings)));
@@ -251,15 +280,20 @@ public class MedicoView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+               .addGroup(jPanel1Layout.createParallelGroup()
+                .addComponent(richiesteConsorziati)
+                .addComponent(jButton1))
                 .addGap(0, 10, Short.MAX_VALUE))
+                
         );
        jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(richiesteConsorziati)
+                .addComponent(jButton1))
                 .addContainerGap())
         );
        
@@ -819,6 +853,10 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         
     }
     
+    private void listenerCheckBox(ActionEvent evt){
+        impostaStringaRichiesta();
+    }
+    
     private void listenerButtonPrescrizioniNonUsate(){
         String testo = jTextField5.getText();
         if(testo.equals("")){
@@ -875,10 +913,19 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         
         medicoController.effettuaPrescrizioneSuRichiesta(MedicoController.oggettoSelezionato(jList1.getSelectedIndex(),strings));
  
-        for(String s:medicoController.listaRichieste())
-            r.add(medicoController.richiestaConAnagraficaEFarmaco(s));
+        if(!richiesteConsorziati.isSelected()){
+            for(String s:medicoController.listaRichieste()){
+                r.add(medicoController.richiestaConAnagraficaEFarmaco(s));
+            }
+            richieste=r;
+        }
+        else{
+            for(String s:medicoController.listaRichiesteConsorzio()){
+                r.add(medicoController.richiestaConAnagraficaEFarmaco(s));
+            }
+            richiesteTotali=r;
+        }
         
-        richieste=r;  
         impostaStringaRichiesta();
         jList1.updateUI();
     }
