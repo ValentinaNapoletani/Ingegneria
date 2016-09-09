@@ -350,7 +350,7 @@ public class FarmaciaView extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String codiceFiscale = jTextField3.getText();
-        String codicePrescrizione = jTextField4.getText();
+        int codicePrescrizione = Integer.parseInt(jTextField4.getText());
         jLabel11.setText("");
         if(Farmacia.controlloPrescrizione(c, codiceFiscale, codicePrescrizione)){
             jLabel8.setText("");
@@ -366,7 +366,7 @@ public class FarmaciaView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        String codicePrescrizione = jTextField4.getText();
+        int codicePrescrizione = Integer.parseInt(jTextField4.getText());
         ArrayList<String> lista = listaFarmaciSelezionati();
         ArrayList<String> listaFarmaciComprati = new ArrayList<>();
         int cont = 0;
@@ -390,7 +390,7 @@ public class FarmaciaView extends javax.swing.JFrame {
                 if(almenoUnFarmacoAssente){
                     jLabel8.setText("Uno o più farmaci tra quelli selezionati non è presente nella farmacia");
                 }
-                farmacia.impostaPrescrizioneUsata(jTextField4.getText());
+                farmacia.impostaPrescrizioneUsata(Integer.parseInt(jTextField4.getText()));
             }
             else{
                jLabel8.setText("Nessun farmaco tra quelli selezionati è presente nella farmacia"); 

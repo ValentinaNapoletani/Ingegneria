@@ -5,6 +5,7 @@
  */
 package View;
 
+import controller.MedicoController;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -34,14 +35,14 @@ public class frameConfermaPrescrizione extends JFrame {
     private javax.swing.JLabel labelInterazione;
     private ArrayList<String> farmaciContrastanti;
     private boolean premuto=false;
-    private final String modalità;
+    private final String modalita;
  
     
-    public frameConfermaPrescrizione(ArrayList<String> farmaci,String pazienteCF, MedicoView mv,String modalità){
+    public frameConfermaPrescrizione(ArrayList<String> farmaci,String pazienteCF, MedicoView mv,String modalita){
        this.farmaci=farmaci;
        this.pazienteCF=pazienteCF;
        this.mv=mv;
-       this.modalità=modalità;
+       this.modalita=modalita;
        initComponent();
        
     }
@@ -100,34 +101,14 @@ public class frameConfermaPrescrizione extends JFrame {
         labelInterazione  = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        
-       /* if(modalità=="visita") {
-            farmaciJList.setModel(new javax.swing.AbstractListModel<String>() {
+ 
+        farmaciJList.setModel(new javax.swing.AbstractListModel<String>() {
             
-                 @Override
-                 public int getSize() { return (mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci())).size(); }
-                 @Override
-                 public String getElementAt(int i) { return (mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci())).get(i); }
-             });
-        }
-        else if(modalità=="richiesta") {
-            farmaciJList.setModel(new javax.swing.AbstractListModel<String>() {
-            
-                 @Override
-                 public int getSize() { return farmaci.size(); }
-                 @Override
-                 public String getElementAt(int i) { return farmaci.get(i); }
-             });
-        }*/
-       
-       farmaciJList.setModel(new javax.swing.AbstractListModel<String>() {
-            
-                 @Override
-                 public int getSize() { return farmaci.size(); }
-                 @Override
-                 public String getElementAt(int i) { return farmaci.get(i); }
-             });
+            @Override
+            public int getSize() { return farmaci.size(); }
+            @Override
+            public String getElementAt(int i) { return farmaci.get(i); }
+        });
        
        
         jScrollPane1.setViewportView(farmaciJList);
@@ -138,9 +119,8 @@ public class frameConfermaPrescrizione extends JFrame {
         
         annulla.addActionListener(event -> annullaActionPerformed(event));
         conferma.addActionListener(event -> confermaActionPerformed(event));
-        
-      //  labelInterazione.setText("iao");
-        interazioneFarmaci.setText("Interazione farmaci");
+       
+        interazioneFarmaci.setText("<html>Interazione<br> farmaci<html>");
         interazioneFarmaci.addActionListener(event -> farmaciActionPerformed(event));
         
         
@@ -150,7 +130,7 @@ public class frameConfermaPrescrizione extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(interazioneFarmaci, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(interazioneFarmaci, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelInterazione, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -219,39 +199,54 @@ public class frameConfermaPrescrizione extends JFrame {
     }
 
     private void confermaActionPerformed(ActionEvent event) {  
-        if(modalità=="visita") 
+        if(modalita=="visita"){ 
             mv.getMedicoController().effettuaPrescrizioneConVisita(pazienteCF, farmaci);
-        else 
+            if(mv.getCheckBox1().isSelected())
+                mv.getMedicoController().impostaRischioPrescrizione();
+        }
+        else {
             mv.getMedicoController().effettuaPrescrizioneSuRichiesta(Integer.parseInt(mv.codiceRichiestaSelezionata()));
-            
-        if(mv.getRischio())
-            mv.getMedicoController().impostaRischioPrescrizione();
+            if(mv.getCheckBox2().isSelected())
+                mv.getMedicoController().impostaRischioPrescrizione();
+        }
         if(premuto) {
             mv.getMedicoController().aggiornaDbConFarmaciContrastanti();
             premuto=false;
         }
-        mv.impostaStringaRichiesta();
         mv.aggiornaLista1(); //non va ???
+        mv.deselezionaLista2();
         this.dispose();
     }
 
    
     private void farmaciActionPerformed(ActionEvent event) {
         
-       premuto=true;
-       ArrayList<String> farmaciPrescrizione= mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci());      
-       farmaciContrastanti=mv.getMedicoController().listaFarmaciSelezionati(farmaciJList.getSelectedIndices(), farmaciPrescrizione);
-     
-       if(farmaciContrastanti.size()==2) {
-            if(labelInterazione.getText().equals(""))
-                 labelInterazione.setText("Coppie di farmaci in contrasto:");
+        premuto=true;
+        String stringaFarmaci="";
+        ArrayList<String> farmaciPrescrizione=new ArrayList<>();
+        String richiesta;
+        richiesta = MedicoController.oggettoSelezionatoConHtml(mv.getLista().getSelectedIndex(),mv.getRichiesteNonPrescritte() );
        
-            labelInterazione.setText( "<html>" + labelInterazione.getText()+ "<br>-" + farmaciContrastanti.get(0).substring(1) + "," + farmaciContrastanti.get(1).substring(1) +  "<html>" );
+        if(modalita=="visita") 
+            farmaciPrescrizione= mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci());      
+        else if(modalita=="richiesta")
+            farmaciPrescrizione=mv.getMedicoController().richiestaConAnagraficaEFarmaco(Integer.parseInt(richiesta)).getFarmaci();
+                     
+        farmaciContrastanti=mv.getMedicoController().listaFarmaciSelezionati(farmaciJList.getSelectedIndices(), farmaciPrescrizione);
+        
+     
+       
+        if(farmaciContrastanti.size()==2) {
+            if(labelInterazione.getText().equals(""))          
+                stringaFarmaci="Coppie di farmaci in contrasto:";
+            stringaFarmaci+="<br> -" + farmaciContrastanti.get(0) + ", " + farmaciContrastanti.get(1) +  "<html>";
+            
+            labelInterazione.setText("<html>" + stringaFarmaci);
        }
        else if(farmaciContrastanti.size()>2)
            labelInterazione.setText("Selezionare solo 2 farmaci");
        else labelInterazione.setText("Devono essere presenti 2 farmaci");
-       
+       farmaciJList.clearSelection();
     }
     
     public ArrayList<String> getFarmaciContrastanti(){

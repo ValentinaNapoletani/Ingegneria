@@ -122,6 +122,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
             SegreteriaController controller = new SegreteriaController(c,segreteria);
             SegreteriaView segreteriaView = new SegreteriaView(controller, c);
             segreteriaView.setVisible(true);
+            this.dispose();
         }
         else{
             jLabel2.setText("Codice segreteria non trovato");

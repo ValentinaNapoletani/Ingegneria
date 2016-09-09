@@ -106,7 +106,7 @@ public class Farmacia {
         
     }
        
-    public boolean compraFarmaco(String farmaco, String prescrizione){
+    public boolean compraFarmaco(String farmaco, int prescrizione){
         int numPezziFarmacoInFarmacia;
         if(controlloPresenzaFarmaco(farmaco)){
             numPezziFarmacoInFarmacia = numeroPezziFarmacoDisponibili(farmaco);
@@ -126,7 +126,7 @@ public class Farmacia {
                     sql = "INSERT INTO \"Acquisto\" (\"prescrizione\", \"farmaco\") VALUES (?,?)";
                     pst = c.prepareStatement ( sql );
                     pst.clearParameters();
-                    pst.setString(1, prescrizione);
+                    pst.setInt(1, prescrizione);
                     pst.setString(2, farmaco);
                     pst.executeUpdate ();
                     return true;
@@ -218,14 +218,14 @@ public class Farmacia {
             return false;
     }
 
-    public static boolean controlloPrescrizione(Connection c, String codiceSanitario, String codicePrescrizione){
+    public static boolean controlloPrescrizione(Connection c, String codiceSanitario, int codicePrescrizione){
         int quantita=0;
         try {
             String sql = "SELECT count(*) as cont FROM \"Prescrizione\" WHERE \"codice\"=? AND \"paziente\"=? and datascadenza>=CURRENT_DATE";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
-            pst.setString(1, codicePrescrizione);        
+            pst.setInt(1, codicePrescrizione);        
             pst.setString(2, codiceSanitario);
 
             ResultSet rs=pst. executeQuery ();
@@ -243,13 +243,13 @@ public class Farmacia {
         }
     }
     
-    public void impostaPrescrizioneUsata(String numeroPrescrizione){
+    public void impostaPrescrizioneUsata(int numeroPrescrizione){
         try {
             String sql = "UPDATE \"Prescrizione\" SET usata=true WHERE codice=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
-            pst.setString(1, numeroPrescrizione);        
+            pst.setInt(1, numeroPrescrizione);        
             pst. executeUpdate ();
         } catch ( SQLException e) {
             System .out. println (" Problema durante inserimento dati : " + e.getMessage () );

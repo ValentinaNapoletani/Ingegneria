@@ -500,7 +500,7 @@ public class MedicoController {
                 for(String f :farmaci) {
                     stmt2.clearParameters(); 
                     stmt2.setInt(1, ultimaPrescrizione(c)-1);
-                    stmt2.setString(2, f.substring(1));
+                    stmt2.setString(2, f);
                     stmt2.executeUpdate();
                 }   
                 System.out.println("Prescrizione effettuata");
@@ -893,7 +893,7 @@ public class MedicoController {
             PreparedStatement stmt;
             stmt = c.prepareStatement("UPDATE \"Prescrizione\" SET rischio=true WHERE codice = ?  ");
            
-            stmt.setInt(1, ultimaPrescrizione(c));
+            stmt.setInt(1, ultimaPrescrizione(c)-1);
             stmt.executeUpdate();
             stmt.close();
             System.out.println("Prescrizione modificata");
@@ -933,15 +933,15 @@ public class MedicoController {
                   
        ArrayList<String> res=new ArrayList<>();   //primo minore
        
-      if( (farmaciContrastanti.get(0).substring(1)).compareToIgnoreCase((farmaciContrastanti.get(1)).substring(1)) < 0  ) {
-          System.out.println(farmaciContrastanti.get(0).substring(1));        
+      if( (farmaciContrastanti.get(0)).compareToIgnoreCase((farmaciContrastanti.get(1))) < 0  ) {
+          System.out.println(farmaciContrastanti.get(0));        
            
-          res.add((farmaciContrastanti.get(0)).substring(1)); 
-          res.add((farmaciContrastanti.get(1)).substring(1)); 
+          res.add((farmaciContrastanti.get(0))); 
+          res.add((farmaciContrastanti.get(1))); 
       }
       else {
-          res.add((farmaciContrastanti.get(1)).substring(1));
-          res.add((farmaciContrastanti.get(0)).substring(1));  
+          res.add((farmaciContrastanti.get(1)));
+          res.add((farmaciContrastanti.get(0)));  
       }
        
        return res;

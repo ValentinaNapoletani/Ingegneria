@@ -101,15 +101,15 @@ public class Prescrizione {
         return farmaci;
     }
     
-    public static ArrayList<String> getFarmaciEquivalenti(String codicePrescrizione, Connection c){
+    public static ArrayList<String> getFarmaciEquivalenti(int codicePrescrizione, Connection c){
         ArrayList<String> farmaci=new ArrayList<>();
          try {
             System.out.println("prova");
             PreparedStatement stmt;
             stmt = c.prepareStatement(" SELECT distinct \"farmaco\" FROM \"Contenuto\" WHERE \"principio\" IN (SELECT \"principio\" FROM \"FarmacoInRicetta\" JOIN \"Contenuto\" ON \"nomefarmaco\"=\"farmaco\"  WHERE  \"codiceprescrizione\"= ?) UNION SELECT \"nomefarmaco\" as farmaco FROM \"FarmacoInRicetta\" WHERE \"codiceprescrizione\"= ? ");
             stmt.clearParameters();
-            stmt.setString(1, codicePrescrizione); 
-            stmt.setString(2, codicePrescrizione); 
+            stmt.setInt(1, codicePrescrizione); 
+            stmt.setInt(2, codicePrescrizione); 
            
             ResultSet rs=stmt.executeQuery ();      
             while(rs.next()){
