@@ -273,7 +273,10 @@ public class SegreteriaView extends javax.swing.JFrame {
     
     private void jButton2ActionPerformed(ActionEvent evt) {
         if(SegreteriaController.controlloPresenzaPaziente(c, jTextField1.getText())){
-            if(listaFarmaciSelezionati().size()<=5){
+            if(listaFarmaciSelezionati().size()==0){
+                jLabel4.setText("Nessun farmaco selezionato");
+            }
+            else if(listaFarmaciSelezionati().size()<=5){
                 segreteriaController.inviaRichiestaPrescrizione(jTextField1.getText(), listaFarmaciSelezionati());
                 jList1.removeSelectionInterval(0, farmaci.size()-1);
                 jLabel4.setText("Richiesta prescrizione generata");

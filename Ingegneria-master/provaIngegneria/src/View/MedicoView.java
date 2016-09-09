@@ -904,6 +904,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     }
     
     private void jButton5ActionPerformed(ActionEvent evt) {
+        
         jLabel7.setText("Numero occorrenze: "+medicoController.quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(listaFarmaci.get(jComboBox2.getSelectedIndex()), jComboBox3.getSelectedIndex()));
         
     }

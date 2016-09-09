@@ -79,25 +79,20 @@ public class SegreteriaController {
                 stmt2 = c.prepareStatement("INSERT INTO \"farmacoInRichiesta\" (codicerichiesta,nomefarmaco) VALUES (?, ?)");
           
                 System.out.println(SegreteriaController.medicoDelPaziente(codiceFiscale,c));
-                if(((SegreteriaController.medicoDelPaziente(codiceFiscale,c)).listaPazienti()).contains(codiceFiscale)) {
+
+                stmt.clearParameters();
+                stmt.setString(1, codiceFiscale);        
+                stmt.setInt(2, n);
+                stmt.executeUpdate();
                 
-                    stmt.clearParameters();
-                    stmt.setString(1, codiceFiscale);        
-                    stmt.setInt(2, n);
-                    stmt.executeUpdate();
-                
-                    for(String f :farmaci) {
-                        stmt2.clearParameters();
-                        stmt2.setInt(1, n);        
-                        stmt2.setString(2, f);
-                        stmt2.executeUpdate();
-                    }
-                System.out.println("Richiesta prescrizione inserita");
+                for(String f :farmaci) {
+                    stmt2.clearParameters();
+                    stmt2.setInt(1, n);        
+                    stmt2.setString(2, f);
+                    stmt2.executeUpdate();
                 }
-                else {
-                    System.out.println("Paziente non presente ");
-                }            
-                stmt.close();   
+                System.out.println("Richiesta prescrizione inserita");
+                stmt.close();              
             } catch (SQLException e) {
                 System.err.println( e.getClass().getName()+": "+ e.getMessage() );
             }
