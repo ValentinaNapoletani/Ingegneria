@@ -6,6 +6,7 @@
 package View;
 
 import controller.MedicoController;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -122,6 +123,12 @@ public class MedicoView extends javax.swing.JFrame {
     private JList jList8;
     private JPanel jPanel10;
     private ArrayList<String> listaReazioni;
+    private JLabel jLabel14;
+    private JLabel jLabel15;
+    private JLabel jLabel16;
+    private JLabel jLabel17;
+    private JLabel jLabel18;
+    private JLabel jLabel19;
     
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
         this.richieste=richieste;
@@ -456,6 +463,11 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jTextField5 = new JTextField();
         prescrizioniNonUsate=new ArrayList<>();
         jButton3.setText("Verifica esistenza prescrizioni non usate");
+        jLabel14 = new JLabel();
+        jLabel14.setText("Codice fiscale paziente:");
+        jLabel19 = new JLabel();
+        
+        
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         
@@ -465,14 +477,18 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 .addGap(49, 49, 49)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addGap(20,20,20)
                         .addComponent(jTextField5)
                         .addGap(77, 77, 77)
                         .addComponent(jButton3)
                         .addGap(212, 212, 212))
+                    .addGroup(jPanel4Layout.createParallelGroup()  
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                            
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(55, Short.MAX_VALUE))))
+                        .addContainerGap(55, Short.MAX_VALUE))
+                        .addComponent(jLabel19))))
+             
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,9 +496,12 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 .addGap(32, 32, 32)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
+                    .addComponent(jLabel14)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(jLabel19)
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jList3.setModel(new javax.swing.AbstractListModel<String>() {
@@ -636,6 +655,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel7 = new JPanel();
         jScrollPane6 = new JScrollPane();
         listaPazientiPerFarmaco = new ArrayList<>();
+        jLabel16=new JLabel();
         
         jLabel8.setText("Farmaco");
 
@@ -673,8 +693,10 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(65, 65, 65)
-                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel16)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
+                       
                         .addGap(85, 85, 85)
                         .addComponent(jButton6)))
                 .addContainerGap(96, Short.MAX_VALUE))
@@ -688,6 +710,8 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(jButton6)
                 .addGap(43, 43, 43))
@@ -707,6 +731,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel8 = new JPanel();
         jTextField3 = new JTextField();
         listaFarmaciPaziente = new ArrayList<>();
+        jLabel17=new JLabel();
 
         jLabel10.setText("Periodo");
 
@@ -747,7 +772,10 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                             .addComponent(jComboBox5, 0, 146, Short.MAX_VALUE)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(178, 178, 178)
-                        .addComponent(jButton7)))
+                        .addComponent(jButton7))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel17)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -763,6 +791,8 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                     .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jButton7)
                 .addGap(30, 30, 30))
@@ -778,6 +808,9 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel9 = new JPanel(); 
         jTextField4 = new JTextField();
         listFarmaciGenericiAcquistati=new ArrayList<>();
+        jLabel15=new JLabel();
+        jLabel18=new JLabel();
+        
         
         jList7.setModel(new javax.swing.AbstractListModel<String>() {
             public int getSize() { return listFarmaciGenericiAcquistati.size(); }
@@ -791,6 +824,8 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 jButton8ActionPerformed(evt);
             }
         });
+        
+        jLabel15.setText("Codice fiscale paziente:");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel8Layout);
@@ -800,23 +835,31 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 .addGap(49, 49, 49)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addGap(20,20,20)
                         .addComponent(jTextField4)
                         .addGap(77, 77, 77)
                         .addComponent(jButton8)
                         .addGap(212, 212, 212))
                     .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup()
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel18))
                         .addContainerGap(55, Short.MAX_VALUE))))
+                    
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
                     .addComponent(jButton8)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20,20,20)   
+                .addComponent(jLabel18)
                 .addContainerGap(58, Short.MAX_VALUE))
         );
 
@@ -874,11 +917,23 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     
     private void listenerButtonPrescrizioniNonUsate(){
         String testo = jTextField5.getText();
+        boolean pazienteok=false;
+        
+        for(String paz: getMedicoController().getMedico().listaPazienti())
+            if(testo.equals(paz))
+                pazienteok=true;
+        
         if(testo.equals("")){
             prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData();
+            jLabel19.setText("");
+        }
+        else if(!testo.equals("") && pazienteok){
+            prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData(testo);
+            jLabel19.setText("");
         }
         else{
-            prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData(testo);
+            jLabel19.setText("Paziente non presente,codice fiscale errato");
+            prescrizioniNonUsate=new ArrayList<>();
         }
         jList3.updateUI();
         
@@ -888,7 +943,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         int indice = jComboBox1.getSelectedIndex();
         String periodo="";
         if(indice == 0)
-            periodo = "Ultimo mese";
+            periodo = "Ultimo mese";         
         else{
             if(indice == 1)
                 periodo = "Ultimo anno";
@@ -896,29 +951,50 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 System.out.println("Messaggio di errore, selezione sbagliata");
             }
         }
+                
         farmaciPrescrittiDaMedico=medicoController.farmaciPrescrittiDaMedicoNelPeriodo(periodo);
         jList4.updateUI();
        
     }
     
     private void jButton5ActionPerformed(ActionEvent evt) {
-        jLabel7.setText("Numero occorrenze: "+medicoController.quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(listaFarmaci.get(jComboBox2.getSelectedIndex()), jComboBox3.getSelectedIndex()));
-        
+        if(jComboBox2.getSelectedIndex()!= -1)
+            jLabel7.setText("Numero occorrenze: "+medicoController.quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(listaFarmaci.get(jComboBox2.getSelectedIndex()), jComboBox3.getSelectedIndex()));
+        else { jLabel7.setText("Selezionare almeno un farmaco");
+        }
     }
     
     private void jButton6ActionPerformed(ActionEvent evt) {
-        listaPazientiPerFarmaco=medicoController.pazientiPerFarmaco(listaFarmaci.get(jComboBox4.getSelectedIndex()));
-        jList6.updateUI();
+        if(jComboBox4.getSelectedIndex()!= -1){
+            jLabel16.setText("");
+            listaPazientiPerFarmaco=medicoController.pazientiPerFarmaco(listaFarmaci.get(jComboBox4.getSelectedIndex()));
+            jList6.updateUI();
+        }
+        else jLabel16.setText("Selezionare un farmaco");
     }
     
     private void jButton7ActionPerformed(ActionEvent evt) {
         String codice=jTextField3.getText();
+        boolean pazienteok=false;
+        
+       for(String paz: this.getMedicoController().getMedico().listaPazienti())
+           if(codice.equals(paz))
+               pazienteok=true;
+        
         if(!codice.isEmpty() && jComboBox5.getSelectedIndex()>= 0 ){
-            listaFarmaciPaziente=medicoController.farmacoPerPaziete(codice, jComboBox5.getSelectedIndex());
-            jList5.updateUI();
+            if(pazienteok) {
+                jLabel17.setText("");
+                listaFarmaciPaziente=medicoController.farmacoPerPaziete(codice, jComboBox5.getSelectedIndex());
+                jList5.updateUI();
+            }
+            else  {
+                jLabel17.setText("Il codice fiscale del paziente è errato, il paziente non esiste");
+                listaFarmaciPaziente=new ArrayList<>();
+                jList5.updateUI();
+            }
         }
         else{
-            System.err.println("Il codice fiscale non deve essere nullo e il periodo deve essere selezionato");
+            jLabel17.setText("Il codice fiscale non deve essere nullo e il periodo deve essere selezionato");
         }
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -994,12 +1070,23 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     
     private void jButton8ActionPerformed(ActionEvent evt) {
         String testo=jTextField4.getText();
-        if(testo.equals("")){
-            listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati();
+        boolean pazienteok=false;
+        
+        for(String paz: getMedicoController().getMedico().listaPazienti())
+            if(paz.equals(testo))
+                pazienteok=true;
             
+        if(testo.equals("")){
+            listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati(); 
+             jLabel18.setText("");
         }
-        else{
+        else if(!testo.equals("") && pazienteok) {
             listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati(testo);
+            jLabel18.setText("");
+        }    
+        else{
+            jLabel18.setText("Il codice fiscale è errato");
+            listFarmaciGenericiAcquistati=new ArrayList<>();
         }
         jList7.updateUI();
         

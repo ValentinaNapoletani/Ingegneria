@@ -198,7 +198,7 @@ public class Farmacia {
     public static boolean controlloPresenzaFarmacia(Connection c,String citta, String indirizzo, String cap){
         int risultato=0;
         try {
-            String sql = "SELECT count(*) as cont FROM \"Farmacia\" WHERE \"citta\"=? AND \"indirizzo\"=? AND \"cap\"=?";
+            String sql = "SELECT count(*) as cont FROM \"Farmacia\" WHERE \"citta\" ilike ? AND \"indirizzo\" ilike ? AND \"cap\"=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
