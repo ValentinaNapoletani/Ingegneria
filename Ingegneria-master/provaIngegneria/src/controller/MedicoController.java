@@ -109,7 +109,9 @@ public class MedicoController {
                 }
            
                 mv=new MedicoView(richieste,this);
+                mv.setResizable(false);
                 mv.setVisible(true);
+                
                 // mv.setConfiguration();
                 login.dispose();
             }

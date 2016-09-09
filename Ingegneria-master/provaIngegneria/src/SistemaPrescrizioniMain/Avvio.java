@@ -98,18 +98,21 @@ public class Avvio extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ls = new LoginSegreteria(c, this);
         ls.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        ls.setResizable(false);
         ls.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         lm = new LoginMedico(c);
         lm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        lm.setResizable(false);
         lm.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         lf = new LoginFarmacia(c);
         lf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        lf.setResizable(false);
         lf.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 

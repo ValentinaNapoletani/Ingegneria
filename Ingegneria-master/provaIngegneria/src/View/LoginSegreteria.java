@@ -124,6 +124,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
             Segreteria segreteria = new Segreteria(c,codice);
             SegreteriaController controller = new SegreteriaController(c,segreteria);
             SegreteriaView segreteriaView = new SegreteriaView(controller, c, avvio);
+            segreteriaView.setResizable(false);
             segreteriaView.setVisible(true);
             this.dispose();
         }
