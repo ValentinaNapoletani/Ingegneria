@@ -146,31 +146,28 @@ public class MedicoView extends javax.swing.JFrame {
     public void impostaStringaRichiesta(){
         
         ArrayList<String> codric=new ArrayList<>();
+        ArrayList<Richiesta> temp;
         
         String stringaFarmaci="";
         
         if(!richiesteConsorziati.isSelected()){
-            for(Richiesta r: richieste){
-                for(String s:r.getFarmaci()) {
-                    stringaFarmaci+="<br>•" + s; 
-                }
-                codric.add("<html>" + r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci +"<br><br>" + "<html>");
-                stringaFarmaci="";
-            
-                strings=codric;
-            }
+            temp= richieste;
         }
         else{
-            for(Richiesta r: richiesteTotali){
-                for(String s:r.getFarmaci()) {
-                    stringaFarmaci+="<br>•" + s; 
-                }
-                codric.add("<html>" + r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci +"<br><br>" + "<html>");
-                stringaFarmaci="";
-            
-                strings=codric;
-            }
+            temp= richiesteTotali;
         }
+        
+        for(Richiesta r: temp){
+            for(String s:r.getFarmaci()) {
+                stringaFarmaci+="<br>•" + s; 
+            }
+            codric.add("<html>" + r.getCodiceRichiesta()+ " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci +"<br><br>" + "<html>");
+            stringaFarmaci="";
+            
+            strings=codric;
+        }
+        
+
     }
     
        public void impostaListaFarmaci(){
@@ -258,7 +255,7 @@ public class MedicoView extends javax.swing.JFrame {
         initTabFarmaciGenericiComprati();
         initTabReazioniAvverse();
     
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
   
         impostaStringaRichiesta();
         
@@ -280,6 +277,7 @@ public class MedicoView extends javax.swing.JFrame {
                 listenerCheckBox(evt);
             }
         });
+        
         
         jScrollPane1.setViewportView(jList1);
         richiesteConsorziati.setText("<html>Visualizza richieste anche<br>dei medici consorziati<html>");
@@ -315,9 +313,8 @@ public class MedicoView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                
-                
                 .addComponent(richiesteConsorziati)
+                .addGap(10,10,10)
                 .addComponent(jButton1))
                 .addContainerGap())
         );
@@ -380,7 +377,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -418,8 +415,10 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11)
+                            
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
+        
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -869,7 +868,10 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     }
     
     private void listenerCheckBox(ActionEvent evt){
+        strings = new ArrayList<>();
+        updateQueryListaRichieste();
         impostaStringaRichiesta();
+        jList1.updateUI();
     }
     
     private void listenerButtonPrescrizioniNonUsate(){
@@ -953,10 +955,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     public void aggiornaLista1(){
         updateQueryListaRichieste();
         impostaStringaRichiesta();
-        //if(!jList1.isSelectionEmpty())
-            //jList1.removeSelectionInterval(prova, prova);
-            //jList1.setSelectionInterval(-1,-1);
-            jList1.clearSelection();
+        jList1.clearSelection();
         jList1.updateUI();
     }
     
@@ -983,7 +982,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 jLabel11.setText("<html>" + jLabel11.getText() + "<br>Selezionare almeno un farmaco<html>");
             else if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).size()<=5 && !(jTextFieldPaziente.getText().equals("")) )
                 creaFinestra();}  
-        else jLabel11.setText("Il paziente non esiste");   
+        else jLabel11.setText("Il paziente non esiste oppure ha un alto medico di base");   
         }      
         
         catch(Exception e){ 
@@ -1025,7 +1024,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 else jLabel12.setText(settaFattori(jTextFieldPaziente.getText()) );
             }
             else {
-                jLabel11.setText("Il paziente non esiste"); 
+                jLabel11.setText("<html>Il paziente non esiste oppure ha un altro medico di base</html>"); 
                 jLabel12.setText("");
             }
         } 
@@ -1068,6 +1067,8 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     public JCheckBox getCheckBox2(){
         return jCheckBox2;
     }
+    
+    
     
 }
 

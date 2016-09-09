@@ -1,4 +1,5 @@
 package controller;
+import SistemaPrescrizioniMain.Avvio;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -27,6 +28,7 @@ public class MedicoController {
     private Medico medico;
     private MedicoView mv;
     private boolean autenticato;
+    private Avvio avvio;
 
     
     public MedicoController(Connection c,Medico m,LoginMedico login){
@@ -34,9 +36,13 @@ public class MedicoController {
         this.medico=m; 
         this.login=login;
     }
-    //rivedi nome
-    public LoginMedico getMedicoView() {
+
+    public LoginMedico getMedicoLogin() {
         return login; 
+    }
+    
+    public MedicoView getMedicoView(){
+        return mv;
     }
 
     public Medico getMedico(){
@@ -143,7 +149,7 @@ public class MedicoController {
         String richiesta=null;
         //richiesta= s.get(i).substring(1,2);
         if(i>=0){     
-            if(s.get(i).substring(2,4).equals("0") || s.get(i).substring(2,4).equals("1") || s.get(i).substring(2,4).equals("2") || s.get(i).substring(2,4).equals("3") || s.get(i).substring(2,4).equals("4") || s.get(i).substring(2,4).equals("5") || s.get(i).substring(2,4).equals("6")|| s.get(i).substring(2,4).equals("7") || s.get(i).substring(2,4).equals("8") || s.get(i).substring(2,4).equals("9")){
+            if(s.get(i).substring(3,4).equals("0") || s.get(i).substring(3,4).equals("1") || s.get(i).substring(3,4).equals("2") || s.get(i).substring(3,4).equals("3") || s.get(i).substring(3,4).equals("4") || s.get(i).substring(3,4).equals("5") || s.get(i).substring(3,4).equals("6")|| s.get(i).substring(3,4).equals("7") || s.get(i).substring(3,4).equals("8") || s.get(i).substring(3,4).equals("9")){
                 richiesta=s.get(i).substring(1, 4);       
                 System .out. println (" elem selezionato : " + richiesta );
             }
@@ -153,6 +159,30 @@ public class MedicoController {
             }
             else {
                 richiesta=s.get(i).substring(1, 2);       
+                System .out. println (" elem selezionato 2: " + richiesta );
+            }
+        }
+          
+        return richiesta; 
+      
+    }
+    
+    
+    public static String oggettoSelezionatoSenzaPallino(int i,ArrayList<String> s){
+        System .out. println (" indice elem selezionato : " + i );
+        String richiesta=null;
+        //richiesta= s.get(i).substring(1,2);
+        if(i>=0){     
+            if(s.get(i).substring(2,3).equals("0") || s.get(i).substring(2,3).equals("1") || s.get(i).substring(2,3).equals("2") || s.get(i).substring(2,3).equals("3") || s.get(i).substring(2,3).equals("4") || s.get(i).substring(2,3).equals("5") || s.get(i).substring(2,3).equals("6")|| s.get(i).substring(2,3).equals("7") || s.get(i).substring(2,3).equals("8") || s.get(i).substring(2,3).equals("9")){
+                richiesta=s.get(i).substring(0, 3);       
+                System .out. println (" elem selezionato : " + richiesta );
+            }
+            if(s.get(i).substring(1,2).equals("0") || s.get(i).substring(1,2).equals("1") || s.get(i).substring(1,2).equals("2") || s.get(i).substring(1,2).equals("3") || s.get(i).substring(1,2).equals("4") || s.get(i).substring(1,2).equals("5") || s.get(i).substring(1,2).equals("6")|| s.get(i).substring(1,2).equals("7") || s.get(i).substring(1,2).equals("8") || s.get(i).substring(1,2).equals("9")){
+                richiesta=s.get(i).substring(0, 2);       
+                System .out. println (" elem selezionato : " + richiesta );
+            }
+            else {
+                richiesta=s.get(i).substring(0, 1);       
                 System .out. println (" elem selezionato 2: " + richiesta );
             }
         }
@@ -610,8 +640,9 @@ public class MedicoController {
             
         ArrayList<String> lista=new ArrayList<>(); 
         try {
-            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false AND paziente IN (SELECT medico FROM \"MedicoDelConsorzio\" WHERE consorzio IN (SELECT \"consorzio\" FROM \"MedicoDelConsorzio\" WHERE \"medico\"=?))" ); 
-            pst.clearParameters(); 
+            PreparedStatement pst = c.prepareStatement ("SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false AND paziente IN (SELECT \"CodiceSanitario\" FROM \"Paziente\" where \"Medico\" IN (SELECT medico FROM \"MedicoDelConsorzio\" WHERE consorzio IN (SELECT \"consorzio\" FROM \"MedicoDelConsorzio\" WHERE \"medico\"=?)))" ); 
+            pst.clearParameters();
+            pst.setString(1, medico.getCodiceRegionale());
           
             ResultSet rs=pst.executeQuery ();      
             while(rs.next()){
@@ -946,6 +977,5 @@ public class MedicoController {
        
        return res;
     }
-    
 
 }

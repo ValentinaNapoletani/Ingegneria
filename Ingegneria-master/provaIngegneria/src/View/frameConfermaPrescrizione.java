@@ -36,6 +36,7 @@ public class frameConfermaPrescrizione extends JFrame {
     private ArrayList<String> farmaciContrastanti;
     private boolean premuto=false;
     private final String modalita;
+    private String stringaFarmaci="";
  
     
     public frameConfermaPrescrizione(ArrayList<String> farmaci,String pazienteCF, MedicoView mv,String modalita){
@@ -222,7 +223,7 @@ public class frameConfermaPrescrizione extends JFrame {
     private void farmaciActionPerformed(ActionEvent event) {
         
         premuto=true;
-        String stringaFarmaci="";
+        
         ArrayList<String> farmaciPrescrizione=new ArrayList<>();
         String richiesta;
         richiesta = MedicoController.oggettoSelezionatoConHtml(mv.getLista().getSelectedIndex(),mv.getRichiesteNonPrescritte() );
@@ -237,11 +238,8 @@ public class frameConfermaPrescrizione extends JFrame {
      
        
         if(farmaciContrastanti.size()==2) {
-            if(labelInterazione.getText().equals(""))          
-                stringaFarmaci="Coppie di farmaci in contrasto:";
-            stringaFarmaci+="<br> -" + farmaciContrastanti.get(0) + ", " + farmaciContrastanti.get(1) +  "<html>";
-            
-            labelInterazione.setText("<html>" + stringaFarmaci);
+            stringaFarmaci+="<br> - " + farmaciContrastanti.get(0) + ", " + farmaciContrastanti.get(1);
+            labelInterazione.setText("<html>Coppie di farmaci in contrasto:" + stringaFarmaci+"</html>");
        }
        else if(farmaciContrastanti.size()>2)
            labelInterazione.setText("Selezionare solo 2 farmaci");

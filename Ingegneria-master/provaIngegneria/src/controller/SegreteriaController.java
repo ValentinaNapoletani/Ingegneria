@@ -113,7 +113,7 @@ public class SegreteriaController {
         try {
            
            PreparedStatement stmt;
-           stmt = c.prepareStatement("SELECT DISTINCT \"Richiesta\".codice as codice, \"Richiesta\".\"paziente\" as paziente FROM \"Richiesta\" JOIN \"Prescrizione\" ON \"Richiesta\".codice = \"Prescrizione\".\"CodiceRichiesta\" WHERE \"prescritta\"=true and \"consegnata\"=false AND medico IN (SELECT DISTINCT \"CodiceRegione\" FROM \"Medico\" WHERE codicesegreteria=?) ORDER BY codice");
+           stmt = c.prepareStatement("SELECT DISTINCT \"Prescrizione\".codice as codice, \"Richiesta\".\"paziente\" as paziente FROM \"Richiesta\" JOIN \"Prescrizione\" ON \"Richiesta\".codice = \"Prescrizione\".\"CodiceRichiesta\" WHERE \"prescritta\"=true and \"consegnata\"=false AND medico IN (SELECT DISTINCT \"CodiceRegione\" FROM \"Medico\" WHERE codicesegreteria=?) ORDER BY codice");
            stmt.clearParameters();
            stmt.setString(1, segreteria.getCodiceSegreteria()); 
            
@@ -136,7 +136,7 @@ public class SegreteriaController {
  
         try {
             PreparedStatement stmt;
-            stmt = c.prepareStatement("UPDATE \"Richiesta\" SET consegnata=true WHERE \"codice\"=?");
+            stmt = c.prepareStatement("UPDATE \"Prescrizione\" SET consegnata=true WHERE \"codice\"=?");
             stmt.clearParameters();
             stmt.setInt(1, Integer.parseInt(codicePrescrizione));          
             stmt.executeUpdate();
