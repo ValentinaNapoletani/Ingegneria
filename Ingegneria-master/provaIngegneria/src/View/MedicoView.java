@@ -960,16 +960,11 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     }
     
     private void jButton5ActionPerformed(ActionEvent evt) {
-<<<<<<< HEAD
-        
-        jLabel7.setText("Numero occorrenze: "+medicoController.quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(listaFarmaci.get(jComboBox2.getSelectedIndex()), jComboBox3.getSelectedIndex()));
-        
-=======
         if(jComboBox2.getSelectedIndex()!= -1)
             jLabel7.setText("Numero occorrenze: "+medicoController.quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(listaFarmaci.get(jComboBox2.getSelectedIndex()), jComboBox3.getSelectedIndex()));
         else { jLabel7.setText("Selezionare almeno un farmaco");
         }
->>>>>>> origin/master
+
     }
     
     private void jButton6ActionPerformed(ActionEvent evt) {
