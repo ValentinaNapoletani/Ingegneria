@@ -5,6 +5,7 @@
  */
 package View;
 
+import SistemaPrescrizioniMain.Avvio;
 import controller.MedicoController;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -18,7 +19,6 @@ import model.Medico;
  * @author Viktor
  */
 public class LoginMedico extends javax.swing.JFrame {
-
     private Medico medico;
     private MedicoController mc;
     private static Connection c;
@@ -62,6 +62,9 @@ public class LoginMedico extends javax.swing.JFrame {
 	return jPasswordField2;
     }
 
+    public MedicoController getMedicoController(){
+        return mc;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

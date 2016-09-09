@@ -5,6 +5,7 @@
  */
 package View;
 
+import SistemaPrescrizioniMain.Avvio;
 import controller.SegreteriaController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,10 +19,12 @@ import model.Segreteria;
  */
 public class LoginSegreteria extends javax.swing.JFrame {
     Connection c;
+    Avvio avvio;
     /**
      * Creates new form LoginSegreteria
      */
-    public LoginSegreteria(Connection c) {
+    public LoginSegreteria(Connection c, Avvio a) {
+        avvio=a;
         initComponents();
         this.c=c;
     }
@@ -120,7 +123,8 @@ public class LoginSegreteria extends javax.swing.JFrame {
         if(numRisultati == 1){
             Segreteria segreteria = new Segreteria(c,codice);
             SegreteriaController controller = new SegreteriaController(c,segreteria);
-            SegreteriaView segreteriaView = new SegreteriaView(controller, c);
+            SegreteriaView segreteriaView = new SegreteriaView(controller, c, avvio);
+            segreteriaView.setResizable(false);
             segreteriaView.setVisible(true);
             this.dispose();
         }

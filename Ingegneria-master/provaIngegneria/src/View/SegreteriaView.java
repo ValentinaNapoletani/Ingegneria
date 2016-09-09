@@ -5,6 +5,7 @@
  */
 package View;
 
+import SistemaPrescrizioniMain.Avvio;
 import controller.MedicoController;
 import controller.SegreteriaController;
 import java.awt.event.ActionEvent;
@@ -43,6 +44,7 @@ public class SegreteriaView extends javax.swing.JFrame {
     private JLabel jLabel3;
     private JLabel jLabel4;
     private ArrayList<String> listaPrescrizioniDaConsegnare;
+    private Avvio avvio;
     
     
     
@@ -54,8 +56,9 @@ public class SegreteriaView extends javax.swing.JFrame {
         initComponents();       
     }*/
     
-    public SegreteriaView(SegreteriaController s, Connection c){
+    public SegreteriaView(SegreteriaController s, Connection c, Avvio a){
         this.c=c;
+        avvio=a;
         richieste = s.prescrizioniDaConsegnareComePrescrizione();
         segreteriaController=s;
         initComponents(); 
@@ -226,7 +229,6 @@ public class SegreteriaView extends javax.swing.JFrame {
     
     public void impostaListaRichieste(){
         
-        //ArrayList<String> codric=new ArrayList<>();
         listaPrescrizioniDaConsegnare=new ArrayList<>();
         for(Prescrizione r: richieste){
             listaPrescrizioniDaConsegnare.add(r.getCodicePrescrizione()+ ". Paziente:  " + r.getPaziente() +" "+ r.getNomePaziente(c) +" "+ r.getCognomePaziente(c));
@@ -240,15 +242,11 @@ public class SegreteriaView extends javax.swing.JFrame {
     
     private void aggiornaModelloListaFarmaci(){
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            //ArrayList<String> strings= impostaStringaRichiesta();
-            
-
+           
             public int getSize() { return farmaci.size(); }
 
             @Override
             public String getElementAt(int index) {
-                //System.out.println(farmaci.get(index));
-                //return new Checkbox(strings2.get(index)).setLabel(label);
                 return farmaci.get(index);
             }
             
@@ -261,7 +259,7 @@ public class SegreteriaView extends javax.swing.JFrame {
         int[] arr=jList2.getSelectedIndices();
         
         for(int i=0;i<arr.length;i++){
-            segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionato(arr[i],listaPrescrizioniDaConsegnare));
+            segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionatoSenzaPallino(arr[i],listaPrescrizioniDaConsegnare));
         }
         richieste = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
         impostaListaRichieste();
@@ -270,6 +268,7 @@ public class SegreteriaView extends javax.swing.JFrame {
         }
         jList2.setSelectedIndices(arr);
         this.repaint();
+        
     } 
     
     private void jButton2ActionPerformed(ActionEvent evt) {
@@ -278,6 +277,8 @@ public class SegreteriaView extends javax.swing.JFrame {
                 segreteriaController.inviaRichiestaPrescrizione(jTextField1.getText(), listaFarmaciSelezionati());
                 jList1.removeSelectionInterval(0, farmaci.size()-1);
                 jLabel4.setText("Richiesta prescrizione generata");
+                if(avvio.getLoginMedico() != null)
+                    avvio.getLoginMedico().getMedicoController().getMedicoView().aggiornaLista1();
             }
             else{
                 jLabel4.setText("Una prescrizione non può contenere più di 5 farmaci");

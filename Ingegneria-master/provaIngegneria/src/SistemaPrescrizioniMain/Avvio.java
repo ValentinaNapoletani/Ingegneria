@@ -8,6 +8,7 @@ package SistemaPrescrizioniMain;
 import View.LoginFarmacia;
 import View.LoginMedico;
 import View.LoginSegreteria;
+import View.MedicoView;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import javax.swing.JFrame;
@@ -18,11 +19,16 @@ import javax.swing.JFrame;
  */
 public class Avvio extends javax.swing.JFrame {
     private static Connection c;
+    private LoginSegreteria ls;
+    private LoginMedico lm;
+    private LoginFarmacia lf;
+    private MedicoView mv;
     /**
      * Creates new form Avvio
      */
     public Avvio() {
         creaConnessione();
+        
         initComponents();
     }
 
@@ -90,20 +96,23 @@ public class Avvio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        LoginSegreteria ls = new LoginSegreteria(c);
+        ls = new LoginSegreteria(c, this);
         ls.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        ls.setResizable(false);
         ls.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        LoginMedico lm = new LoginMedico(c);
+        lm = new LoginMedico(c);
         lm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        lm.setResizable(false);
         lm.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        LoginFarmacia lf = new LoginFarmacia(c);
+        lf = new LoginFarmacia(c);
         lf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        lf.setResizable(false);
         lf.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -140,6 +149,10 @@ public class Avvio extends javax.swing.JFrame {
                 new Avvio().setVisible(true);
             }
         });
+    }
+    
+    public LoginMedico getLoginMedico(){
+        return lm;
     }
     
     public static void creaConnessione(){

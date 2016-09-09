@@ -122,6 +122,7 @@ public class LoginFarmacia extends javax.swing.JFrame {
         if(Farmacia.controlloPresenzaFarmacia(c, citta, indirizzo, cap)){
             Farmacia f = new Farmacia(c, indirizzo, cap, citta);
             FarmaciaView fv = new FarmaciaView(f,c);
+            fv.setResizable(false);
             fv.setVisible(true);
         }
         else{
