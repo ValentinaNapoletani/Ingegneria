@@ -6,11 +6,13 @@
 package View;
 
 import controller.MedicoController;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -129,6 +131,13 @@ public class MedicoView extends javax.swing.JFrame {
     private JLabel jLabel17;
     private JLabel jLabel18;
     private JLabel jLabel19;
+    
+    //tab10
+    private ArrayList<String> farmaciContrastanti;
+    private JButton jButton10;
+    private JPanel jPanel11;
+    private JScrollPane jScrollPane10;
+    private JList jList9;
     
     public MedicoView(ArrayList<Richiesta> richieste,MedicoController medicoController) {
         this.richieste=richieste;
@@ -261,6 +270,7 @@ public class MedicoView extends javax.swing.JFrame {
         initTabListaFarmaciPaziente();
         initTabFarmaciGenericiComprati();
         initTabReazioniAvverse();
+        initTabFarmaciContrastanti();
     
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
   
@@ -450,6 +460,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jTabbedPane1.addTab("Lista di farmaci prescritti ad un paziente", jPanel8);
         jTabbedPane1.addTab("Farmaci generici comprati", jPanel9);
         jTabbedPane1.addTab("Reazioni avverse comunicate", jPanel10);
+        jTabbedPane1.addTab("Farmaci contrastanti", jPanel11);
      
         pack();
     }
@@ -510,6 +521,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             @Override
             public String getElementAt(int i) { return prescrizioniNonUsate.get(i); }
         });
+        jList3.setSelectionModel(new DisabledItemSelectionModel());
         
         jScrollPane4.setViewportView(jList3);
         
@@ -537,6 +549,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             public int getSize() { return farmaciPrescrittiDaMedico.size(); }
             public String getElementAt(int i) { return farmaciPrescrittiDaMedico.get(i); }
         });
+        jList4.setSelectionModel(new DisabledItemSelectionModel());
         jScrollPane5.setViewportView(jList4);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ultimo mese", "Ultimo anno" }));
@@ -668,6 +681,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             public int getSize() { return listaPazientiPerFarmaco.size(); }
             public String getElementAt(int i) { return listaPazientiPerFarmaco.get(i); }
         });
+        jList6.setSelectionModel(new DisabledItemSelectionModel());
         jScrollPane6.setViewportView(jList6);
 
         jButton6.setText("Cerca pazienti ai quali è stato prescritto il farmaco selezionato");
@@ -741,6 +755,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             public int getSize() { return listaFarmaciPaziente.size(); }
             public String getElementAt(int i) { return listaFarmaciPaziente.get(i); }
         });
+        jList5.setSelectionModel(new DisabledItemSelectionModel());
         jScrollPane7.setViewportView(jList5);
 
         jButton7.setText("Cerca");
@@ -757,7 +772,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap(59, Short.MAX_VALUE)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(168, 168, 168))
+                .addGap(168, 300, 500))
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
@@ -815,6 +830,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             public int getSize() { return listFarmaciGenericiAcquistati.size(); }
             public String getElementAt(int i) { return listFarmaciGenericiAcquistati.get(i); }
         });
+        jList7.setSelectionModel(new DisabledItemSelectionModel());
         jScrollPane8.setViewportView(jList7);
 
         jButton8.setText("Controlla");
@@ -881,6 +897,7 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
             public int getSize() { return listaReazioni.size(); }
             public String getElementAt(int i) { return listaReazioni.get(i); }
         });
+        jList8.setSelectionModel(new DisabledItemSelectionModel());
         jScrollPane9.setViewportView(jList8);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel10);
@@ -910,10 +927,59 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         
     }
     
+    private void initTabFarmaciContrastanti(){
+        farmaciContrastanti = new ArrayList<>();
+        jButton10 = new JButton();
+        jList9 = new JList();
+        jScrollPane10 = new JScrollPane();
+        jPanel11 = new JPanel();
+        jButton10.setText("jButton9");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        jButton10.setText("Cerca");
+
+        jList9.setModel(new javax.swing.AbstractListModel<String>() {
+            public int getSize() { return farmaciContrastanti.size(); }
+            public String getElementAt(int i) { return farmaciContrastanti.get(i); }
+        });
+        jList9.setSelectionModel(new DisabledItemSelectionModel());
+        jScrollPane10.setViewportView(jList9);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap(90, Short.MAX_VALUE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                        .addComponent(jButton10)
+                        .addGap(100, 400, 500))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                        .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(79, 350, 500))))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jButton10)
+                .addGap(37, 37, 37)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+
+        
+    }
+    
     private void listenerCheckBox(ActionEvent evt){
         strings = new ArrayList<>();
         updateQueryListaRichieste();
         impostaStringaRichiesta();
+        jList1.clearSelection();
         jList1.updateUI();
     }
     
@@ -1144,6 +1210,11 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         }
     }
     
+    private void jButton10ActionPerformed(ActionEvent evt) {
+        farmaciContrastanti=medicoController.getFarmaciContrastanti();
+        jList9.updateUI();
+    }
+    
     public void deselezionaLista2(){
         jList2.clearSelection();
     }
@@ -1156,7 +1227,13 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         return jCheckBox2;
     }
     
-    
+    class DisabledItemSelectionModel extends DefaultListSelectionModel {
+
+        @Override
+        public void setSelectionInterval(int index0, int index1) {
+            super.setSelectionInterval(-1, -1);
+        }
+    }
     
 }
 

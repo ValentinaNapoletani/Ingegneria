@@ -288,7 +288,7 @@ public class SegreteriaView extends javax.swing.JFrame {
             }
         }
         else{
-            jLabel4.setText("Paziente non presente nella base di dati");
+            jLabel4.setText("Paziente non presente");
         }
         
     }

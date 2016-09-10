@@ -979,5 +979,23 @@ public class MedicoController {
        
        return res;
     }
+    
+    public ArrayList<String> getFarmaciContrastanti(){
+        ArrayList<String> risultato=new ArrayList<>();
+        try {
+            
+            String sql = "SELECT * FROM \"FarmaciContrastanti\" ";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                risultato.add("<html>Prescrizione n°: "+rs.getInt("prescrizione")+"<br><table>"+rs.getString("farmaco1")+", "+rs.getString("farmaco2")+"</html>");
+            }
+        } catch (SQLException e) {
+            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
+        } 
+        return risultato;
+    }
 
 }
