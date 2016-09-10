@@ -57,7 +57,7 @@ public class MedicoController {
    }   
     
     
-    private boolean autenticazione(String codiceRegione, String password){
+    public boolean autenticazione(String codiceRegione, String password){
         try {
             int occorrenze;
             String sql = "SELECT count(*) as num FROM \"Medico\" WHERE \"CodiceRegione\"=? AND \"Password\"=?";
@@ -112,7 +112,6 @@ public class MedicoController {
                 mv.setResizable(false);
                 mv.setVisible(true);
                 
-                // mv.setConfiguration();
                 login.dispose();
             }
              
@@ -122,7 +121,6 @@ public class MedicoController {
         }
     }
     
-    //sbagliato con codice richiesta a 3 cifre
     public static String oggettoSelezionatoConHtml(int i,ArrayList<String> s){
         System .out. println (" indice elem selezionato : " + i );
         String richiesta=null;
@@ -997,5 +995,11 @@ public class MedicoController {
         } 
         return risultato;
     }
+
+    public boolean getAutenticato() {
+       return autenticato;
+    }
+    
+   
 
 }

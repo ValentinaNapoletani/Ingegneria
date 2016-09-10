@@ -24,4 +24,8 @@ public class Segreteria {
   public String getCodiceSegreteria() {
       return codice;
   }
+
+    public void setCodice(String codice) {
+        this.codice=codice;
+    }
 }

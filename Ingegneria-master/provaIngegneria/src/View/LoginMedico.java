@@ -10,6 +10,7 @@ import controller.MedicoController;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import model.Medico;
@@ -170,8 +171,11 @@ public class LoginMedico extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    public JButton getJbutton1() {
+        return jButton1;
+    }
 
-
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
@@ -182,4 +186,17 @@ public class LoginMedico extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    public void simulaPressioneBottone() {
+        jButton1ActionPerformed(null);
+    }
+
+    public JTextField getJTextField1() {
+        return jTextField1;
+    }
+
+    public JPasswordField getJPassWordField2() {
+        return jPasswordField2;
+    }
+
 }

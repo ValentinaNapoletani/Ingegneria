@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import model.Segreteria;
 
 /**
@@ -20,13 +22,17 @@ import model.Segreteria;
 public class LoginSegreteria extends javax.swing.JFrame {
     Connection c;
     Avvio avvio;
+    Segreteria segreteria;
+    SegreteriaController sc;
     /**
      * Creates new form LoginSegreteria
      */
     public LoginSegreteria(Connection c, Avvio a) {
         avvio=a;
-        initComponents();
         this.c=c;
+        segreteria=new Segreteria(c,null);
+        sc=new SegreteriaController(c,segreteria,this);
+        initComponents();
     }
 
     private LoginSegreteria() {
@@ -34,6 +40,11 @@ public class LoginSegreteria extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public void setSegreteria(){
+        segreteria.setCodice(jTextField2.getText());
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,7 +60,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Inserisci il codice della segreteria");
 
@@ -105,32 +116,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String codice = jTextField2.getText();
-        int numRisultati=0;
-        try {
-            PreparedStatement stmt;
-            stmt = c.prepareStatement("SELECT COUNT(*) as num FROM \"Segreteria\" WHERE codice = ?");
-            stmt.setString(1, codice);
-            ResultSet rs=stmt.executeQuery ();      
-            while(rs.next()){
-                numRisultati=rs.getInt("num");
-            }
-            System.out.println(numRisultati);
-        }
-        catch (SQLException e){
-            System.err.println("Errore esecuzione query");
-        }
-        if(numRisultati == 1){
-            Segreteria segreteria = new Segreteria(c,codice);
-            SegreteriaController controller = new SegreteriaController(c,segreteria);
-            SegreteriaView segreteriaView = new SegreteriaView(controller, c, avvio);
-            segreteriaView.setResizable(false);
-            segreteriaView.setVisible(true);
-            this.dispose();
-        }
-        else{
-            jLabel2.setText("Codice segreteria non trovato");
-        }
+        sc.autentica();     
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -174,4 +160,16 @@ public class LoginSegreteria extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    public JTextField getJTextField2() {
+        return jTextField2;
+    }
+
+    public JLabel getJLabel2() {
+       return jLabel2;
+    }
+
+    public Avvio getAvvio() {
+        return avvio;
+    }
 }

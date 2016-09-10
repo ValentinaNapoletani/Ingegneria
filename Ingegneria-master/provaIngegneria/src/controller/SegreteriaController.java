@@ -21,9 +21,10 @@ public class SegreteriaController {
     private LoginSegreteria login;
 
     
-    public SegreteriaController(Connection c,Segreteria segreteria){
+    public SegreteriaController(Connection c,Segreteria segreteria,LoginSegreteria login){
         this.c=c;
         this.segreteria=segreteria;
+        this.login=login;
     }
     
     
@@ -164,6 +165,44 @@ public class SegreteriaController {
             return false;
         }
     }
-     
     
+    public void autentica(){
+        String codice = login.getJTextField2().getText();
+        
+        if(autenticazione(codice)){
+            login.setSegreteria();
+            System .out. println (" Autenticato" );
+            SegreteriaView segreteriaView = new SegreteriaView(this, c, login.getAvvio());
+            segreteriaView.setResizable(false);
+            segreteriaView.setVisible(true);
+            login.dispose(); 
+        }
+        else{
+            login.getJLabel2().setText("Codice segreteria non trovato");
+        }      
+    }
+    
+    public boolean autenticazione(String codice){
+        int numRisultati=0;
+        try {
+            PreparedStatement stmt;
+            stmt = c.prepareStatement("SELECT COUNT(*) as num FROM \"Segreteria\" WHERE codice = ?");
+            stmt.setString(1, codice);
+            ResultSet rs=stmt.executeQuery ();      
+            while(rs.next()){
+                numRisultati=rs.getInt("num");
+            }
+            System.out.println(numRisultati);
+        }
+        catch (SQLException e){
+            System.err.println("Errore esecuzione query");
+        }
+        if(numRisultati == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }
