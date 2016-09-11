@@ -77,7 +77,7 @@ public class Farmacia {
         try {
             String sql;
             if(controllaEsistenzaCampoFarmaco(farmaco)){
-                sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+                sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\" ilike ? AND \"capfarmacia\"=? AND \"farmaco\"=?";
                 PreparedStatement pst;
                 pst = c.prepareStatement ( sql );
                 pst.clearParameters();
@@ -92,7 +92,7 @@ public class Farmacia {
                 PreparedStatement pst;
                 pst = c.prepareStatement ( sql );
                 pst.clearParameters();
-                pst.setString(2, indirizzo);
+                pst.setString(2, getIndirizzoFarmacia());
                 pst.setString(3, cap);
                 pst.setString(4, farmaco);
                 pst.setInt(1, quantita);
@@ -104,6 +104,25 @@ public class Farmacia {
             return false;
         }
         
+    }
+    
+    private String getIndirizzoFarmacia(){
+       String indirizzoNew="";
+        try {
+            String sql = "SELECT \"indirizzo\" FROM \"Farmacia\" WHERE \"indirizzo\" ilike ? AND \"cap\"=?";
+            PreparedStatement pst;
+            pst = c.prepareStatement ( sql );
+            pst.clearParameters();
+            pst.setString(1, indirizzo);        
+            pst.setString(2, cap);
+            ResultSet rs=pst. executeQuery ();
+            while(rs.next()){
+                indirizzoNew=rs.getString("indirizzo");
+            }
+        } catch ( SQLException e) {
+            System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
+        }
+        return indirizzoNew;
     }
        
     public boolean compraFarmaco(String farmaco, int prescrizione){
@@ -148,7 +167,7 @@ public class Farmacia {
     private boolean controllaEsistenzaCampoFarmaco(String farmaco){
         int num=0;
         try {
-            String sql = "Select count(*) as cont FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+            String sql = "Select count(*) as cont FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\" ilike ? AND \"capfarmacia\"=? AND \"farmaco\"=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
@@ -178,7 +197,7 @@ public class Farmacia {
     private int numeroPezziFarmacoDisponibili(String farmaco){
         int quantita=0;
         try {
-            String sql = "SELECT \"quantita\" FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+            String sql = "SELECT \"quantita\" FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\" ilike ? AND \"capfarmacia\"=? AND \"farmaco\"=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
@@ -221,12 +240,13 @@ public class Farmacia {
     public static boolean controlloPrescrizione(Connection c, String codiceSanitario, int codicePrescrizione){
         int quantita=0;
         try {
-            String sql = "SELECT count(*) as cont FROM \"Prescrizione\" WHERE \"codice\"=? AND \"paziente\"=? and datascadenza>=CURRENT_DATE";
+            String sql = "SELECT count(*) as cont FROM \"Prescrizione\" WHERE \"codice\"=? AND \"paziente\"=? and datascadenza>=CURRENT_DATE and consegnata=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
             pst.clearParameters();
             pst.setInt(1, codicePrescrizione);        
             pst.setString(2, codiceSanitario);
+            pst.setBoolean(3, true);
 
             ResultSet rs=pst. executeQuery ();
             while(rs.next()){
@@ -273,4 +293,5 @@ public class Farmacia {
         }
         return risultato;
     }
+    
 }

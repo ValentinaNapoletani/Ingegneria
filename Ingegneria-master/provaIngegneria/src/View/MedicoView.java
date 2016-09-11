@@ -209,7 +209,6 @@ public class MedicoView extends javax.swing.JFrame {
     }
         
     private  void creaFinestra(){
-        ArrayList <String> prova =listaFarmaci;
         frameP= new frameConfermaPrescrizione(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci),jTextFieldPaziente.getText(),this,"visita");
         frameP.setVisible(true);
         frameP.setSize(600, 500);
@@ -983,19 +982,23 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jList1.updateUI();
     }
     
-    private void listenerButtonPrescrizioniNonUsate(){
-        String testo = jTextField5.getText();
-        boolean pazienteok=false;
-        
+    
+    private boolean pazienteOk(String testo){
         for(String paz: getMedicoController().getMedico().listaPazienti())
             if(testo.equals(paz))
-                pazienteok=true;
+               return true;
+         
+        return false;
+    }
+    
+    private void listenerButtonPrescrizioniNonUsate(){
+        String testo = jTextField5.getText();
         
         if(testo.equals("")){
             prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData();
             jLabel19.setText("");
         }
-        else if(!testo.equals("") && pazienteok){
+        else if(!testo.equals("") && pazienteOk(testo)){
             prescrizioniNonUsate=medicoController.listaPrescrizioniNonUsateConData(testo);
             jLabel19.setText("");
         }
@@ -1044,14 +1047,9 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     
     private void jButton7ActionPerformed(ActionEvent evt) {
         String codice=jTextField3.getText();
-        boolean pazienteok=false;
-        
-       for(String paz: this.getMedicoController().getMedico().listaPazienti())
-           if(codice.equals(paz))
-               pazienteok=true;
         
         if(!codice.isEmpty() && jComboBox5.getSelectedIndex()>= 0 ){
-            if(pazienteok) {
+            if(pazienteOk(codice)) {
                 jLabel17.setText("");
                 listaFarmaciPaziente=medicoController.farmacoPerPaziete(codice, jComboBox5.getSelectedIndex());
                 jList5.updateUI();
@@ -1103,16 +1101,12 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     }
     
     private void jButton2ActionPerformed(ActionEvent evt) {
-        boolean pazienteok=false;
-        for(String cf: medicoController.getlistaPazienti())
-            if(jTextFieldPaziente.getText().equals(cf))
-                pazienteok=true;
-       
+        
         try{
         if(!(jLabel11.getText().equals("")))
             jLabel11.setText("");
         
-        if(pazienteok){
+        if(pazienteOk(jTextFieldPaziente.getText())){
             if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).size()>=5 && jTextFieldPaziente.getText().equals("")) 
                 jLabel11.setText(  "<html>" + "•Una prescrizione non può contenere più di 5 farmaci<br>" + "•Inserire paziente <html>");
             else if(medicoController.listaFarmaciSelezionati(jList2.getSelectedIndices(),listaFarmaci).isEmpty() && jTextFieldPaziente.getText().equals("") )
@@ -1136,17 +1130,12 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     
     private void jButton8ActionPerformed(ActionEvent evt) {
         String testo=jTextField4.getText();
-        boolean pazienteok=false;
-        
-        for(String paz: getMedicoController().getMedico().listaPazienti())
-            if(paz.equals(testo))
-                pazienteok=true;
             
         if(testo.equals("")){
             listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati(); 
              jLabel18.setText("");
         }
-        else if(!testo.equals("") && pazienteok) {
+        else if(!testo.equals("") && pazienteOk(testo)) {
             listFarmaciGenericiAcquistati = medicoController.getFarmaciGenericiAcquistati(testo);
             jLabel18.setText("");
         }    
@@ -1164,14 +1153,10 @@ javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
     }
     
     private void jTextFieldPazienteKeyPressed(KeyEvent e) {   
-        boolean pazienteok=false;
+
          
-        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-            for(String cf: medicoController.getlistaPazienti())
-                if(jTextFieldPaziente.getText().equals(cf))
-                pazienteok=true;
-      
-            if(pazienteok){
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) {     
+            if(pazienteOk(jTextFieldPaziente.getText())){
                 jLabel11.setText(""); 
                 if( (medicoController.getFattoriDiRischio(jTextFieldPaziente.getText())).isEmpty())
                     jLabel12.setText("Il paziente non ha fattori di rischio");

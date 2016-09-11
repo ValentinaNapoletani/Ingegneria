@@ -347,20 +347,29 @@ public class FarmaciaView extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String codiceFiscale = jTextField3.getText();
-        int codicePrescrizione = Integer.parseInt(jTextField4.getText());
-        jLabel11.setText("");
-        if(Farmacia.controlloPrescrizione(c, codiceFiscale, codicePrescrizione)){
-            jLabel8.setText("");
-            //listaFarmaci=Prescrizione.getFarmaci(codicePrescrizione, c);
-            listaFarmaci=Prescrizione.getFarmaciEquivalenti(codicePrescrizione, c);
-            jList1.updateUI();
-            
+        int codicePrescrizione;
+             
+        if(!jTextField4.getText().equals("")) {
+            codicePrescrizione=Integer.parseInt(jTextField4.getText());                     
+            jLabel11.setText("");
+            if(Farmacia.controlloPrescrizione(c, codiceFiscale, codicePrescrizione)){
+                jLabel8.setText("");
+                //listaFarmaci=Prescrizione.getFarmaci(codicePrescrizione, c);
+                listaFarmaci=Prescrizione.getFarmaciEquivalenti(codicePrescrizione, c);
+                jList1.updateUI();
+            }
+            else{
+                jLabel8.setText("Non esiste il paziente con la seguente prescrizione oppure la prescrizione è scaduta");
+                listaFarmaci=new ArrayList<>();
+                jList1.updateUI();
+            }
         }
-        else{
-            jLabel8.setText("Non esiste il paziente con la seguente prescrizione oppure la prescrizione è scaduta");
+        else { jLabel8.setText("Inserire dati mancanti");
+               listaFarmaci=new ArrayList<>();
+               jList1.updateUI();
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -402,8 +411,9 @@ public class FarmaciaView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        String farmaco = farmaciEsistenti.get(jComboBox1.getSelectedIndex());
+
         try{
+            String farmaco = farmaciEsistenti.get(jComboBox1.getSelectedIndex());
             int quantita = Integer.parseInt(jTextField5.getText());
             if(farmacia.ordinaFarmaco(farmaco, quantita)){
                 jLabel10.setText(quantita+" confezioni di "+farmaco+" ordinati");
@@ -415,6 +425,10 @@ public class FarmaciaView extends javax.swing.JFrame {
         catch(NumberFormatException e){
             jLabel10.setText("La quantità deve essere un numero intero");
         }
+        catch(ArrayIndexOutOfBoundsException e){
+            jLabel10.setText("Selezionare un farmaco");
+        }
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private ArrayList<String> listaFarmaciSelezionati(){
