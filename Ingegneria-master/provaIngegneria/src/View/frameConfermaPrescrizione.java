@@ -1,8 +1,4 @@
- /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package View;
 
 import controller.MedicoController;
@@ -15,7 +11,7 @@ import javax.swing.JLabel;
  *
  * @author Valentina
  */
-public class frameConfermaPrescrizione extends JFrame {
+public final class frameConfermaPrescrizione extends JFrame {
     
     ArrayList<String> farmaci;
     String pazienteCF;
@@ -49,7 +45,7 @@ public class frameConfermaPrescrizione extends JFrame {
     }
     
     private void impostaLabel(){
-        ArrayList<String> dati = new ArrayList<String>();
+        ArrayList<String> dati = new ArrayList<>();
         dati=(mv.getMedicoController()).impostaDatiPerPrescrizione(pazienteCF);
          
         
@@ -203,7 +199,7 @@ public class frameConfermaPrescrizione extends JFrame {
     }
 
     private void confermaActionPerformed(ActionEvent event) {  
-        if(modalita=="visita"){ 
+        if("visita".equals(modalita)){ 
             mv.getMedicoController().effettuaPrescrizioneConVisita(pazienteCF, farmaci);
             if(mv.getCheckBox1().isSelected())
                 mv.getMedicoController().impostaRischioPrescrizione();
@@ -231,9 +227,9 @@ public class frameConfermaPrescrizione extends JFrame {
         String richiesta;
         richiesta = MedicoController.oggettoSelezionatoConHtml(mv.getLista().getSelectedIndex(),mv.getRichiesteNonPrescritte() );
        
-        if(modalita=="visita") 
+        if("visita".equals(modalita)) 
             farmaciPrescrizione= mv.getMedicoController().listaFarmaciSelezionati(mv.getLista2().getSelectedIndices(),mv.getListaFarmaci());      
-        else if(modalita=="richiesta")
+        else if("richiesta".equals(modalita))
             farmaciPrescrizione=mv.getMedicoController().richiestaConAnagraficaEFarmaco(Integer.parseInt(richiesta)).getFarmaci();
                      
         farmaciContrastanti=mv.getMedicoController().listaFarmaciSelezionati(farmaciJList.getSelectedIndices(), farmaciPrescrizione);

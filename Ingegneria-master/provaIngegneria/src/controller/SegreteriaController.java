@@ -15,11 +15,9 @@ import model.Segreteria;
  */
 public class SegreteriaController {
     
-    private Connection c=null;
-    private Segreteria segreteria=null;
-    private SegreteriaView sv;
-    private LoginSegreteria login;
-
+    private final Connection c;
+    private final Segreteria segreteria;
+    private final LoginSegreteria login;
     
     public SegreteriaController(Connection c,Segreteria segreteria,LoginSegreteria login){
         this.c=c;
@@ -49,7 +47,7 @@ public class SegreteriaController {
 //ok
     private int prossimaRichiesta(){
         
-        int nRichieste=0;
+        int nRichieste;
         int max=0;
         try {
             String sql = "SELECT codice as num FROM \"Richiesta\"";
@@ -158,16 +156,11 @@ public class SegreteriaController {
         } catch ( SQLException e) {
             System .out. println (" Problema durante estrazione dati : " + e.getMessage () );
         }
-        if(quantita>0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return quantita>0;
     }
     
     public void autentica(){
-        String codice = login.getJTextField2().getText();
+        String codice = login.getJTextFieldCodiceSegreteria().getText();
         
         if(autenticazione(codice)){
             login.setSegreteria();
@@ -178,7 +171,7 @@ public class SegreteriaController {
             login.dispose(); 
         }
         else{
-            login.getJLabel2().setText("Codice segreteria non trovato");
+            login.getJLabelErrore().setText("Codice segreteria non trovato");
         }      
     }
     
@@ -197,12 +190,7 @@ public class SegreteriaController {
         catch (SQLException e){
             System.err.println("Errore esecuzione query");
         }
-        if(numRisultati == 1){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return numRisultati == 1;
     }
 
 }

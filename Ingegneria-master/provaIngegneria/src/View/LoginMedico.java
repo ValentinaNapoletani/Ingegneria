@@ -36,7 +36,7 @@ public class LoginMedico extends javax.swing.JFrame {
     }
     
     public void setErrore(String errore){
-        this.jLabel4.setText(errore);
+        this.labelErrore.setText(errore);
     }
     
     public Medico getMedico(){
@@ -44,23 +44,23 @@ public class LoginMedico extends javax.swing.JFrame {
     }
     
     public boolean sostituto(){
-        if(jCheckBox1.isSelected())
+        if(checkBoxSostituto.isSelected())
             return true;
         else
             return false;
     }
     
     public void setMedico(){
-        medico.setCodiceRegionale(jTextField1.getText());
-        medico.setPassword(jPasswordField2.getText());
+        medico.setCodiceRegionale(campoLogin.getText());
+        medico.setPassword(campoPassword.getText());
     }
     
     public String getUser(){
-	return jTextField1.getText();
+	return campoLogin.getText();
     }
 	
     public JPasswordField getPassword(){
-	return jPasswordField2;
+	return campoPassword;
     }
 
     public MedicoController getMedicoController(){
@@ -75,38 +75,38 @@ public class LoginMedico extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        messaggioLabel = new javax.swing.JLabel();
+        loginLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
+        campoLogin = new javax.swing.JTextField();
+        checkBoxSostituto = new javax.swing.JCheckBox();
+        pulsanteAccedi = new javax.swing.JButton();
+        labelErrore = new javax.swing.JLabel();
+        campoPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Inserisci le tue credenziali:");
+        messaggioLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        messaggioLabel.setText("Inserisci le tue credenziali:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("Login");
+        loginLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        loginLabel.setText("Login");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Password");
+        passwordLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        passwordLabel.setText("Password");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        campoLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                campoLoginActionPerformed(evt);
             }
         });
 
-        jCheckBox1.setText("Sostituto");
+        checkBoxSostituto.setText("Sostituto");
 
-        jButton1.setText("Accedi");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        pulsanteAccedi.setText("Accedi");
+        pulsanteAccedi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                pulsanteAccediActionPerformed(evt);
             }
         });
 
@@ -118,85 +118,85 @@ public class LoginMedico extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(111, 111, 111)
-                        .addComponent(jLabel1))
+                        .addComponent(messaggioLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelErrore, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2))
+                                    .addComponent(passwordLabel)
+                                    .addComponent(loginLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                                    .addComponent(jPasswordField2)))))
+                                    .addComponent(campoLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                                    .addComponent(campoPassword)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addComponent(jCheckBox1))))
+                            .addComponent(pulsanteAccedi)
+                            .addComponent(checkBoxSostituto))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(jLabel1)
+                .addComponent(messaggioLabel)
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(loginLabel)
+                    .addComponent(campoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordLabel)
+                    .addComponent(campoPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
-                .addComponent(jCheckBox1)
+                .addComponent(checkBoxSostituto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(pulsanteAccedi)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(labelErrore, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void pulsanteAccediActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pulsanteAccediActionPerformed
         mc.autentica();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_pulsanteAccediActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void campoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLoginActionPerformed
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_campoLoginActionPerformed
 
     public JButton getJbutton1() {
-        return jButton1;
+        return pulsanteAccedi;
     }
 
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField campoLogin;
+    private javax.swing.JPasswordField campoPassword;
+    private javax.swing.JCheckBox checkBoxSostituto;
+    private javax.swing.JLabel labelErrore;
+    private javax.swing.JLabel loginLabel;
+    private javax.swing.JLabel messaggioLabel;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JButton pulsanteAccedi;
     // End of variables declaration//GEN-END:variables
 
     public void simulaPressioneBottone() {
-        jButton1ActionPerformed(null);
+        pulsanteAccediActionPerformed(null);
     }
 
     public JTextField getJTextField1() {
-        return jTextField1;
+        return campoLogin;
     }
 
     public JPasswordField getJPassWordField2() {
-        return jPasswordField2;
+        return campoPassword;
     }
 
 }

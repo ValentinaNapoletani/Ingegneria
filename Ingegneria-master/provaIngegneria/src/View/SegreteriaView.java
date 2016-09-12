@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package View;
 
 import SistemaPrescrizioniMain.Avvio;
@@ -17,44 +13,32 @@ import javax.swing.ListSelectionModel;
 import model.Farmaco;
 import model.Prescrizione;
 
-
 /**
  *
  * @author Valentina
  */
 public class SegreteriaView extends javax.swing.JFrame {
     
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton pulsanteConsegnaPrescrizione;
+    private javax.swing.JButton pulsanteGenerazioneRichiesta;
+    private javax.swing.JList<String> jListPrescrizioniDaConsegnare;
+    private javax.swing.JList<String> listaFarmaciRichiesta;
+    private javax.swing.JPanel pannelloConsegnaPrescrizione;
+    private javax.swing.JPanel pannelloCreazioneRichiesta;
+    private javax.swing.JScrollPane scrollPanePrescrizioniDaConsegnare;
+    private javax.swing.JScrollPane scrollPaneListaFarmaciRichiesta;
     private javax.swing.JTabbedPane jTabbedPane1;
-    
-    private SegreteriaController segreteriaController;
+    private final SegreteriaController segreteriaController;
     private ArrayList<Prescrizione> richieste;
-    //private ArrayList<String> strings= new ArrayList<>();
     private ArrayList<String> farmaci= new ArrayList<>();
-    private Connection c;
-    private JTextField jTextField1;
-    private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel jLabel4;
+    private final Connection c;
+    private JTextField campoCodiceFiscale;
+    private JLabel codiceFiscaleLabel;
+    private JLabel listaFarmaciLabel;
+    private JLabel labelErroreRichiesta;
     private ArrayList<String> listaPrescrizioniDaConsegnare;
-    private Avvio avvio;
+    private final Avvio avvio;
     
-    
-    
-
-    /*
-    public SegreteriaView(ArrayList<Prescrizione> richieste, SegreteriaController segreteriaController) {
-        this.prescrizioni=prescrizioni;
-        this.segreteriaController=segreteriaController;
-        initComponents();       
-    }*/
     
     public SegreteriaView(SegreteriaController s, Connection c, Avvio a){
         this.c=c;
@@ -70,27 +54,26 @@ public class SegreteriaView extends javax.swing.JFrame {
     private void initComponents() {
    
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        pannelloConsegnaPrescrizione = new javax.swing.JPanel();
+        pannelloCreazioneRichiesta = new javax.swing.JPanel();
+        scrollPanePrescrizioniDaConsegnare = new javax.swing.JScrollPane();
+        scrollPaneListaFarmaciRichiesta = new javax.swing.JScrollPane();
+        jListPrescrizioniDaConsegnare = new javax.swing.JList<>();
         
-        jButton1 = new javax.swing.JButton();
+        pulsanteConsegnaPrescrizione = new javax.swing.JButton();
         listaPrescrizioniDaConsegnare=new ArrayList<>();
        
         richieste = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
-        //listaPrescrizioniDaConsegnare = MedicoController.listaRichiestePrescritte(c);
-        
         
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
   
         impostaListaRichieste();
         
         
-        jList2.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jListPrescrizioniDaConsegnare.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+        jListPrescrizioniDaConsegnare.setModel(new javax.swing.AbstractListModel<String>() {
+            @Override
             public int getSize() { return listaPrescrizioniDaConsegnare.size(); }
 
             @Override
@@ -99,47 +82,40 @@ public class SegreteriaView extends javax.swing.JFrame {
             }
             
         });
-        //jList2.updateUI();
-        
-        //jList2.addListSelectionListener(event -> MedicoController.oggettoSelezionato(jList2.getSelectedIndex(),strings2));
-        
-        jScrollPane1.setViewportView(jList2);
-        
 
-        jButton1.setText("Consegna Prescrizione");
+        scrollPanePrescrizioniDaConsegnare.setViewportView(jListPrescrizioniDaConsegnare);
+        pulsanteConsegnaPrescrizione.setText("Consegna Prescrizione");
 
-        
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        pulsanteConsegnaPrescrizione.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                azioneConsegnaPrescrizione(evt);
             }
         });
         
 
         
        
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(pannelloConsegnaPrescrizione);
+        pannelloConsegnaPrescrizione.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollPanePrescrizioniDaConsegnare, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(pulsanteConsegnaPrescrizione)
                 .addGap(0, 10, Short.MAX_VALUE))
         );
-       jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+       jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollPanePrescrizioniDaConsegnare, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(pulsanteConsegnaPrescrizione)
                 .addContainerGap())
         );
        
 
-        jTabbedPane1.addTab("Creazione richiesta prescrizione", jPanel2);
-        jTabbedPane1.addTab("Consegna prescrizione", jPanel1);
+        jTabbedPane1.addTab("Creazione richiesta prescrizione", pannelloCreazioneRichiesta);
+        jTabbedPane1.addTab("Consegna prescrizione", pannelloConsegnaPrescrizione);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,68 +134,67 @@ public class SegreteriaView extends javax.swing.JFrame {
     }
     
     private void initTab(){
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new JTextField();
-        jLabel2 = new JLabel();
-        jLabel3 = new JLabel();
-        jLabel4 = new JLabel();
+        pulsanteGenerazioneRichiesta = new javax.swing.JButton();
+        campoCodiceFiscale = new JTextField();
+        codiceFiscaleLabel = new JLabel();
+        listaFarmaciLabel = new JLabel();
+        labelErroreRichiesta = new JLabel();
         
-        jList1 = new javax.swing.JList<String>();
-        jButton2.setText("Genera richiesta prescrizione");
+        listaFarmaciRichiesta = new javax.swing.JList<String>();
+        pulsanteGenerazioneRichiesta.setText("Genera richiesta prescrizione");
         
         impostaListaRichieste();
         impostaListaFarmaci();
-        jList1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        listaFarmaciRichiesta.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         aggiornaModelloListaFarmaci();
         
-        jScrollPane2.setViewportView(jList1);
+        scrollPaneListaFarmaciRichiesta.setViewportView(listaFarmaciRichiesta);
         
-        jTextField1.setText("");
-        jLabel2.setText("Codice Fiscale");
-        jLabel3.setText("Lista farmaci");
-        jLabel4.setText("");
+        campoCodiceFiscale.setText("");
+        codiceFiscaleLabel.setText("Codice Fiscale");
+        listaFarmaciLabel.setText("Lista farmaci");
+        labelErroreRichiesta.setText("");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup()
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(pannelloCreazioneRichiesta);
+        pannelloCreazioneRichiesta.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup()
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(368, 368, 368)
                 
-                .addComponent(jButton2)
+                .addComponent(pulsanteGenerazioneRichiesta)
                 .addGap(0, 0, Short.MAX_VALUE))
                 
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(listaFarmaciLabel)
+                    .addComponent(codiceFiscaleLabel)
+                    .addComponent(scrollPaneListaFarmaciRichiesta, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(63, 63, 63)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelErroreRichiesta)
+                    .addComponent(campoCodiceFiscale, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(196, 196, 196))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup()
+        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup()
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                     .addGap(60, 94, 94)
-                .addComponent(jLabel2)                
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(codiceFiscaleLabel)                
+                .addComponent(campoCodiceFiscale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addComponent(jLabel3)
+                .addComponent(listaFarmaciLabel)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollPaneListaFarmaciRichiesta, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
-                .addComponent(jButton2)
-                .addComponent(jLabel4)
+                .addComponent(pulsanteGenerazioneRichiesta)
+                .addComponent(labelErroreRichiesta)
                 )
                 .addContainerGap())
         );
         
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        pulsanteGenerazioneRichiesta.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                azioneGeneraRichiesta(evt);
             }
         });
         
@@ -230,9 +205,9 @@ public class SegreteriaView extends javax.swing.JFrame {
     public void impostaListaRichieste(){
         
         listaPrescrizioniDaConsegnare=new ArrayList<>();
-        for(Prescrizione r: richieste){
+        richieste.stream().forEach((r) -> {
             listaPrescrizioniDaConsegnare.add(r.getCodicePrescrizione()+ ". Paziente:  " + r.getPaziente() +" "+ r.getNomePaziente(c) +" "+ r.getCognomePaziente(c));
-        }
+        });
     }
     
     public void impostaListaFarmaci(){     
@@ -241,22 +216,20 @@ public class SegreteriaView extends javax.swing.JFrame {
     
     
     private void aggiornaModelloListaFarmaci(){
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listaFarmaciRichiesta.setModel(new javax.swing.AbstractListModel<String>() {
            
+            @Override
             public int getSize() { return farmaci.size(); }
 
             @Override
             public String getElementAt(int index) {
                 return farmaci.get(index);
-            }
-            
-        });
-        
-        
+            }           
+        }); 
     }
      
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {        
-        int[] arr=jList2.getSelectedIndices();
+    private void azioneConsegnaPrescrizione(java.awt.event.ActionEvent evt) {        
+        int[] arr=jListPrescrizioniDaConsegnare.getSelectedIndices();
         
         for(int i=0;i<arr.length;i++){
             segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionatoSenzaPallino(arr[i],listaPrescrizioniDaConsegnare));
@@ -266,41 +239,39 @@ public class SegreteriaView extends javax.swing.JFrame {
         for(int i=0;i<arr.length;i++){
             arr[i]=-1;
         }
-        jList2.setSelectedIndices(arr);
+        jListPrescrizioniDaConsegnare.setSelectedIndices(arr);
         this.repaint();
         
     } 
     
-    private void jButton2ActionPerformed(ActionEvent evt) {
-        if(SegreteriaController.controlloPresenzaPaziente(c, jTextField1.getText())){
-            if(listaFarmaciSelezionati().size()==0){
-                jLabel4.setText("Nessun farmaco selezionato");
+    private void azioneGeneraRichiesta(ActionEvent evt) {
+        if(SegreteriaController.controlloPresenzaPaziente(c, campoCodiceFiscale.getText())){
+            if(listaFarmaciSelezionati().isEmpty()){
+                labelErroreRichiesta.setText("Nessun farmaco selezionato");
             }
             else if(listaFarmaciSelezionati().size()<=5){
-                segreteriaController.inviaRichiestaPrescrizione(jTextField1.getText(), listaFarmaciSelezionati());
-                jList1.removeSelectionInterval(0, farmaci.size()-1);
-                jLabel4.setText("Richiesta prescrizione generata");
+                segreteriaController.inviaRichiestaPrescrizione(campoCodiceFiscale.getText(), listaFarmaciSelezionati());
+                listaFarmaciRichiesta.removeSelectionInterval(0, farmaci.size()-1);
+                labelErroreRichiesta.setText("Richiesta prescrizione generata");
                 if(avvio.getLoginMedico() != null)
                     avvio.getLoginMedico().getMedicoController().getMedicoView().aggiornaLista1();
             }
             else{
-                jLabel4.setText("Una prescrizione non può contenere più di 5 farmaci");
+                labelErroreRichiesta.setText("Una prescrizione non può contenere più di 5 farmaci");
             }
         }
         else{
-            jLabel4.setText("Paziente non presente");
+            labelErroreRichiesta.setText("Paziente non presente");
         }
         
     }
     
     private ArrayList<String> listaFarmaciSelezionati(){
-        ArrayList<String> risultato = new ArrayList<String>();
-        int[] indici=jList1.getSelectedIndices();
+        ArrayList<String> risultato = new ArrayList<>();
+        int[] indici=listaFarmaciRichiesta.getSelectedIndices();
         for(int i=0;i<indici.length;i++){
             risultato.add(farmaci.get(indici[i]));
         }
         return risultato;
     }
-    
-    
 }

@@ -41,30 +41,30 @@ public class Avvio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        pulsanteSegreteria = new javax.swing.JButton();
+        pulsanteMedico = new javax.swing.JButton();
+        pulsanteFarmacia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Segreteria");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        pulsanteSegreteria.setText("Segreteria");
+        pulsanteSegreteria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                pressionePulsanteSegreteria(evt);
             }
         });
 
-        jButton2.setText("Medico");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        pulsanteMedico.setText("Medico");
+        pulsanteMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                pressionePulsanteMedico(evt);
             }
         });
 
-        jButton3.setText("Farmacia");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        pulsanteFarmacia.setText("Farmacia");
+        pulsanteFarmacia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                pressionePulsanteFarmacia(evt);
             }
         });
 
@@ -74,11 +74,11 @@ public class Avvio extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(jButton1)
+                .addComponent(pulsanteSegreteria)
                 .addGap(44, 44, 44)
-                .addComponent(jButton2)
+                .addComponent(pulsanteMedico)
                 .addGap(43, 43, 43)
-                .addComponent(jButton3)
+                .addComponent(pulsanteFarmacia)
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -86,35 +86,35 @@ public class Avvio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(137, 137, 137)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(pulsanteSegreteria)
+                    .addComponent(pulsanteMedico)
+                    .addComponent(pulsanteFarmacia))
                 .addContainerGap(97, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void pressionePulsanteSegreteria(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressionePulsanteSegreteria
         ls = new LoginSegreteria(c, this);
         ls.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         ls.setResizable(false);
         ls.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_pressionePulsanteSegreteria
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void pressionePulsanteMedico(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressionePulsanteMedico
         lm = new LoginMedico(c);
         lm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         lm.setResizable(false);
         lm.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_pressionePulsanteMedico
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void pressionePulsanteFarmacia(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pressionePulsanteFarmacia
         lf = new LoginFarmacia(c);
         lf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         lf.setResizable(false);
         lf.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_pressionePulsanteFarmacia
 
     /**
      * @param args the command line arguments
@@ -172,8 +172,8 @@ public class Avvio extends javax.swing.JFrame {
         }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton pulsanteFarmacia;
+    private javax.swing.JButton pulsanteMedico;
+    private javax.swing.JButton pulsanteSegreteria;
     // End of variables declaration//GEN-END:variables
 }

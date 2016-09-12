@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controller;
 
 import java.sql.Connection;
@@ -17,16 +13,15 @@ import java.util.ArrayList;
  * @author Viktor
  */
 
-//TODO: aggiungere nella tabella farmacoInFarmacia il prezzo oppure nella tabella farmaco se tutte le farmacie vendono farmaci allo stesso prezzo
+
 public class Farmacia {
-    private static int numeroScontrino=0;
     private Connection c=null;
     String indirizzo;
     String cap;
     String citta;
     private int ultimoScontrino;
     
-    public int rilasciaScontrino(){
+    private int rilasciaScontrino(){
         ultimoScontrino++;
         return ultimoScontrino;
     }
@@ -57,19 +52,13 @@ public class Farmacia {
     public boolean controlloPresenzaFarmaco(String farmaco){
         int quantita;
         quantita=numeroPezziFarmacoDisponibili(farmaco);
-        if(quantita > 0)
-            return true;
-        else
-            return false;
+        return quantita > 0;
     }
     
     public boolean controlloPresenzaFarmaco(String farmaco, int quantita){
         int quantitaNelDb;    
         quantitaNelDb=numeroPezziFarmacoDisponibili(farmaco);
-        if (quantitaNelDb >= quantita)
-            return true;
-        else
-            return false;
+        return quantitaNelDb >= quantita;
     }
     
     public boolean ordinaFarmaco(String farmaco, int quantita){
@@ -181,10 +170,7 @@ public class Farmacia {
         } catch (SQLException e) {
             System .out. println (" Problema durante estrazione dati : " + e. getMessage () );
         }
-        if(num>0)
-            return true;
-        else
-            return false;
+        return num>0;
     }
     
     /*
@@ -231,10 +217,7 @@ public class Farmacia {
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
         } 
-        if(risultato>0)
-            return true;
-        else
-            return false;
+        return risultato>0;
     }
 
     public static boolean controlloPrescrizione(Connection c, String codiceSanitario, int codicePrescrizione){
@@ -255,12 +238,7 @@ public class Farmacia {
         } catch ( SQLException e) {
             System .out. println (" Problema durante estrazione dati : " + e.getMessage () );
         }
-        if(quantita>0){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return quantita>0;
     }
     
     public void impostaPrescrizioneUsata(int numeroPrescrizione){

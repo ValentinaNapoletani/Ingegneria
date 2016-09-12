@@ -1,20 +1,15 @@
 package controller;
 import SistemaPrescrizioniMain.Avvio;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import View.*;
 import model.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JList;
+
 
 /**
  *
@@ -24,8 +19,8 @@ public class MedicoController {
     
     
     private Connection c=null;
-    private LoginMedico login;
-    private Medico medico;
+    private final LoginMedico login;
+    private final Medico medico;
     private MedicoView mv;
     private boolean autenticato;
     private Avvio avvio;
@@ -58,8 +53,8 @@ public class MedicoController {
     
     
     public boolean autenticazione(String codiceRegione, String password){
+        int occorrenze=0;
         try {
-            int occorrenze;
             String sql = "SELECT count(*) as num FROM \"Medico\" WHERE \"CodiceRegione\"=? AND \"Password\"=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
@@ -70,15 +65,10 @@ public class MedicoController {
             rs.next();
             occorrenze = rs.getInt("num");
             System.out.println(occorrenze);
-            
-            if(occorrenze>0)
-                return true;
-            else
-                return false;
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
         } 
-        return false;
+        return occorrenze>0;
     }   
     
     public void autentica(){
@@ -104,9 +94,9 @@ public class MedicoController {
                 }
             } 
             if(autenticato){
-                for (Integer r: listaRichieste()){
+                listaRichieste().stream().forEach((r) -> {
                     richieste.add(richiestaConAnagraficaEFarmaco(r));
-                }
+                });
            
                 mv=new MedicoView(richieste,this);
                 mv.setResizable(false);
@@ -192,7 +182,7 @@ public class MedicoController {
     }
    
     public ArrayList<String> listaFarmaciSelezionati(int[] indici,ArrayList<String> farmaci){
-        ArrayList<String> risultato = new ArrayList<String>();
+        ArrayList<String> risultato = new ArrayList<>();
         System.out.println(indici.length);
         for(int i=0;i<indici.length;i++){
             risultato.add(farmaci.get(indici[i]));
@@ -202,7 +192,7 @@ public class MedicoController {
 
     public ArrayList<String> impostaDatiPerPrescrizione(String pazienteCF){
         
-        ArrayList<String> dati = new ArrayList<String>();
+        ArrayList<String> dati = new ArrayList<>();
         
         try {
             String sql = "SELECT \"Paziente\".\"Via\",\"Paziente\".\"Nome\",\"Paziente\".\"Cognome\",\"Medico\".\"Nome\",\"Medico\".\"Cognome\",CURRENT_DATE FROM \"Paziente\" JOIN \"Medico\" ON \"Medico\"=\"CodiceRegione\" WHERE \"CodiceSanitario\"=? ";
@@ -234,7 +224,7 @@ public class MedicoController {
 
     
     public ArrayList<String> pazientiPerFarmaco(String farmaco) { 
-        ArrayList<String> listaPazienti = new ArrayList<String>();
+        ArrayList<String> listaPazienti = new ArrayList<>();
         try {
             String sql = "SELECT DISTINCT \"Paziente\".\"Nome\" as nome, \"Paziente\".\"Cognome\" as cognome FROM \"FarmacoInRicetta\" JOIN \"Prescrizione\" ON \"FarmacoInRicetta\".\"codiceprescrizione\"=\"Prescrizione\".\"codice\" JOIN \"Paziente\" ON \"Prescrizione\".\"paziente\" = \"Paziente\".\"CodiceSanitario\" WHERE \"FarmacoInRicetta\".\"nomefarmaco\"=? AND \"Prescrizione\".\"medico\" =?";
             PreparedStatement pst;
@@ -255,7 +245,7 @@ public class MedicoController {
 
     
     public ArrayList<String> reazioniAvverse() { 
-        ArrayList<String> listaReazioni = new ArrayList<String>();
+        ArrayList<String> listaReazioni = new ArrayList<>();
         try {
             String sql = "SELECT DISTINCT \"nome\" FROM \"Reazione\"";
             PreparedStatement pst;
@@ -273,7 +263,7 @@ public class MedicoController {
     
     //ok
     public ArrayList<Integer> listaPrescrizioniNonUsate(){
-        ArrayList<Integer> listaPrescrizioni = new ArrayList<Integer>();
+        ArrayList<Integer> listaPrescrizioni = new ArrayList<>();
         try {
             String sql = "SELECT \"codice\" FROM \"Prescrizione\" WHERE \"usata\"=false";
             PreparedStatement pst;
@@ -292,8 +282,8 @@ public class MedicoController {
     
     //ok
     public ArrayList<String> listaPrescrizioniNonUsateConData(){
-        ArrayList<String> listaPrescrizioni = new ArrayList<String>();
-        String s=new String();
+        ArrayList<String> listaPrescrizioni = new ArrayList<>();
+        String s;
         try {
             String sql = "SELECT \"codice\", data, paziente FROM \"Prescrizione\" WHERE \"usata\"=false ORDER BY codice";
             PreparedStatement pst;
@@ -313,7 +303,7 @@ public class MedicoController {
 
     //metodo non usato (costo non usato?)
     public ArrayList<Farmaco> listaFarmaci() {
-        ArrayList<Farmaco> listaFarmaci = new ArrayList<Farmaco>();
+        ArrayList<Farmaco> listaFarmaci = new ArrayList<>();
         try {
             String sql = "SELECT \"nome\", \"costo\" FROM \"Farmaco\"";
             PreparedStatement pst;
@@ -343,10 +333,11 @@ public class MedicoController {
         String p="";
         ArrayList<String> risultato = new ArrayList<>();
         switch(periodo){
-            case 0: p="interval '1 month'";break;
-            case 1: p="interval '3 month'";break;
-            case 2: p="interval '6 month'";break;
-            case 3: p="interval '1 year'";break;
+            case 0: p=""; break;
+            case 1: p="AND data > CURRENT_DATE - interval '1 month'";break;
+            case 2: p="AND data > CURRENT_DATE - interval '3 month'";break;
+            case 3: p="AND data > CURRENT_DATE - interval '6 month'";break;
+            case 4: p="AND data > CURRENT_DATE - interval '1 year'";break;
             default: {
                 try {
                     throw new Exception("periodo errato");
@@ -355,7 +346,7 @@ public class MedicoController {
                 }
             }
         }
-        String sql="SELECT nomefarmaco, count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? AND paziente=? AND data > CURRENT_DATE - "+p+" GROUP BY nomefarmaco ORDER BY nomefarmaco"; 
+        String sql="SELECT nomefarmaco, count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? AND paziente=? "+p+" GROUP BY nomefarmaco ORDER BY nomefarmaco"; 
         try {
             PreparedStatement pst=c.prepareStatement(sql);
             pst.clearParameters(); 
@@ -372,120 +363,6 @@ public class MedicoController {
         
     }
         
-    /*
-    public ArrayList<String> farmacoPerPaziete(String codiceFiscale, String tipoPeriodo, int periodo) { 
-	ArrayList<String> listaFarmaci = new ArrayList<String>();
-        String dataInizio = null;
-        String dataFine = null;
-        Calendar calendar = GregorianCalendar.getInstance();
-        int giorno = calendar.get(Calendar.DAY_OF_MONTH);
-        int anno = calendar.get(Calendar.YEAR);
-        int mese = calendar.get(Calendar.MONTH);
-        Date data;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        
-        data = (Date) calendar.getTime();
-        switch(tipoPeriodo){
-            case("mese"): 
-                if(mese < periodo){
-                    data.setYear(data.getYear()-1);
-                }
-                data.setMonth(periodo);
-                data.setDate(1);
-                dataInizio = df.format(data);
-                data.setDate(31);
-                dataFine = df.format(data);
-                break;
-            case("semestre"):
-                if(mese < 6 && periodo == 2)
-                    data.setYear(anno-1);
-                if(periodo == 1){
-                    data.setMonth(1);
-                    data.setDate(1);
-                    dataInizio = df.format(data);
-                    data.setMonth(6);
-                    data.setDate(31);
-                    dataFine = df.format(data);
-                }
-                else {
-                    data.setMonth(7);
-                    data.setDate(1);
-                    dataInizio = df.format(data);
-                    data.setMonth(12);
-                    data.setDate(31);
-                    dataFine = df.format(data);
-                }
-                break;
-                
-            case("trimestre"):
-                if((periodo-1)*3 > mese){
-                    data.setYear(anno-1);
-                }
-                if(periodo == 1){
-                    data.setMonth(1);
-                    data.setDate(1);
-                    dataInizio = df.format(data);
-                    data.setMonth(3);
-                    data.setDate(31);
-                    dataFine = df.format(data);
-                }
-                if(periodo == 2){
-                    data.setMonth(4);
-                    data.setDate(1);
-                    dataInizio = df.format(data);
-                    data.setMonth(6);
-                    data.setDate(31);
-                    dataFine = df.format(data);
-                }
-                if(periodo == 3){
-                    data.setMonth(7);
-                    data.setDate(1);
-                    dataInizio = df.format(data);
-                    data.setMonth(9);
-                    data.setDate(31);
-                    dataFine = df.format(data);
-                }
-                if(periodo == 4){
-                    data.setMonth(10);
-                    data.setDate(1);
-                    dataInizio = df.format(data);
-                    data.setMonth(12);
-                    data.setDate(31);
-                    dataFine = df.format(data);
-                }
-                break;
-                
-            case("anno"):
-                data.setYear(periodo);
-                data.setMonth(1);
-                data.setDate(1);
-                dataInizio = df.format(data);
-                data.setMonth(12);
-                data.setDate(31);
-                dataFine = df.format(data);
-                break;
-            default : System.err.println("Tipo periodo non valido");
-        }
-        
-        try {
-            String sql = "SELECT \"nomefarmaco\" FROM \"FarmacoInRicetta\" JOIN \"Prescrizione\" ON \"Prescrizione.codice\"=\"FarmacoInRicetta.codiceprescrizione\" WHERE \"paziente\"=? AND \"data\" >= ? AND \"dat\" <= ?  " ;
-            PreparedStatement pst;
-            pst = c.prepareStatement ( sql );
-            pst.clearParameters();
-            pst.setString(1, codiceFiscale);
-            pst.setString(2, dataInizio);
-            pst.setString(3, dataFine);
-            ResultSet rs=pst. executeQuery ();
-            while(rs.next()){
-                listaFarmaci.add(rs.getString("nome"));
-            }
-        } catch (SQLException e) {
-            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
-        }
-
-        return listaFarmaci;
-    }
-    */
         
     //numero da assegnare al ocdice della prescrizione
     public static int ultimaPrescrizione(Connection c){
@@ -543,7 +420,6 @@ public class MedicoController {
             
         } catch (SQLException e) {
             System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            //System.exit(0); //perchè uscita qui? (vik)
         }
         
                   
@@ -552,7 +428,7 @@ public class MedicoController {
         
     public static Richiesta ricavaDatiRichiesta(int codiceRichiesta, Connection c){
             
-        Richiesta r=new Richiesta(null,codiceRichiesta,null,null,null,new ArrayList<String>());
+        Richiesta r=new Richiesta(null,codiceRichiesta,null,null,null,new ArrayList<>());
            
         try {
             PreparedStatement pst = c.prepareStatement ( "SELECT \"paziente\",\"nomefarmaco\",\"codice\" FROM \"Richiesta\" join \"farmacoInRichiesta\" on codice=codicerichiesta WHERE codice=?"); 
@@ -574,7 +450,7 @@ public class MedicoController {
         
     public void effettuaPrescrizioneSuRichiesta(int codiceRichiesta){ 
             
-        ArrayList<String> farmaci=null; 
+        ArrayList<String> farmaci; 
   
         farmaci=(ricavaDatiRichiesta(codiceRichiesta,c).getFarmaci());
         String codiceFiscale=ricavaDatiRichiesta(codiceRichiesta,c).getPaziente();
@@ -655,8 +531,6 @@ public class MedicoController {
         return lista;
     }
     
-    
-    
     //funziona
     public ArrayList<String> farmaciPrescrittiDaMedicoNelPeriodo(String periodo){
         PreparedStatement pst;
@@ -705,7 +579,7 @@ public class MedicoController {
     public Richiesta richiestaConAnagraficaEFarmaco(int codiceRichiesta){
             
 
-        ArrayList<String> farmaci=null; 
+        ArrayList<String> farmaci; 
        
         String paziente=ricavaDatiRichiesta(codiceRichiesta,c).getPaziente();
         farmaci=ricavaDatiRichiesta(codiceRichiesta,c).getFarmaci();
@@ -736,10 +610,11 @@ public class MedicoController {
         String p="";
         int risultato=0;
         switch(periodo){
-            case 0: p="interval '1 month'";break;
-            case 1: p="interval '3 month'";break;
-            case 2: p="interval '6 month'";break;
-            case 3: p="interval '1 year'";break;
+            case 0: p=""; break;
+            case 1: p="AND data > CURRENT_DATE - interval '1 month'";break;
+            case 2: p="AND data > CURRENT_DATE - interval '3 month'";break;
+            case 3: p="AND data > CURRENT_DATE - interval '6 month'";break;
+            case 4: p="AND data > CURRENT_DATE - interval '1 year'";break;
             default: {
                 try {
                     throw new Exception("periodo errato");
@@ -748,7 +623,7 @@ public class MedicoController {
                 }
             }
         }
-        String sql="SELECT count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? AND data > CURRENT_DATE - "+p+" AND nomefarmaco = ?"; 
+        String sql="SELECT count(*) as occorrenze FROM \"Prescrizione\" JOIN \"FarmacoInRicetta\" ON \"Prescrizione\".codice = \"FarmacoInRicetta\".codiceprescrizione WHERE \"medico\"=? "+p+" AND nomefarmaco = ?"; 
         try {
             PreparedStatement pst=c.prepareStatement(sql);
             pst.clearParameters(); 
@@ -820,7 +695,7 @@ public class MedicoController {
     }
 
     public ArrayList<String> listaPrescrizioniNonUsateConData(String paziente) {
-        ArrayList<String> listaPrescrizioni = new ArrayList<String>();
+        ArrayList<String> listaPrescrizioni = new ArrayList<>();
         try {
             String sql = "SELECT \"codice\", data FROM \"Prescrizione\" WHERE \"usata\"=false AND \"Prescrizione\".paziente =?";
             PreparedStatement pst;
@@ -838,7 +713,7 @@ public class MedicoController {
     }
 
     public ArrayList<String> getListaReazioniAvverseSegnalate() {
-        ArrayList<String> listaReazioni = new ArrayList<String>();
+        ArrayList<String> listaReazioni = new ArrayList<>();
         try {
             String sql = "SELECT \"Reazione\".descrizione as descrizione, \"ReazioneFarmaco\".farmaco as farmaco, \"Reazione\".titolo as titolo   FROM \"ReazioneFarmaco\" JOIN \"Reazione\" ON \"ReazioneFarmaco\".reazione = \"Reazione\".titolo ORDER BY farmaco ";
             PreparedStatement pst;
@@ -860,8 +735,8 @@ public class MedicoController {
     }
 
     private boolean autentica(String codiceRegione, String password){
+        int occorrenze=0;
         try {
-            int occorrenze;
             String sql = "SELECT count(*) as num FROM \"Medico\" WHERE \"CodiceRegione\"=? AND \"Password\"=?";
             PreparedStatement pst;
             pst = c.prepareStatement ( sql );
@@ -871,16 +746,11 @@ public class MedicoController {
             ResultSet rs=pst. executeQuery ();
             rs.next();
             occorrenze = rs.getInt("num");
-            System.out.println(occorrenze);
-            
-            if(occorrenze>0)
-                return true;
-            else
-                return false;
+            System.out.println(occorrenze);  
         } catch (SQLException e) {
             System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
         } 
-        return false;
+        return occorrenze>0;
     }  
     
     private String getCodiceSostituito(String sostituto){
@@ -999,7 +869,4 @@ public class MedicoController {
     public boolean getAutenticato() {
        return autenticato;
     }
-    
-   
-
 }

@@ -13,7 +13,7 @@ import java.sql.Connection;
  * @author Viktor
  */
 public class LoginFarmacia extends javax.swing.JFrame {
-    private Connection c;
+    private final Connection c;
     /**
      * Creates new form LoginFarmacia
      */
@@ -32,35 +32,35 @@ public class LoginFarmacia extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        campoIndirizzo = new javax.swing.JTextField();
+        campoCAP = new javax.swing.JTextField();
+        indirizzoLabel = new javax.swing.JLabel();
+        labelCAP = new javax.swing.JLabel();
+        pulsanteConferma = new javax.swing.JButton();
+        cittaLabel = new javax.swing.JLabel();
+        campoCitta = new javax.swing.JTextField();
+        messaggioErrore = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        campoIndirizzo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                campoIndirizzoActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Indirizzo");
+        indirizzoLabel.setText("Indirizzo");
 
-        jLabel2.setText("CAP");
+        labelCAP.setText("CAP");
 
-        jButton1.setText("Conferma");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        pulsanteConferma.setText("Conferma");
+        pulsanteConferma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                pulsanteConfermaActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Città");
+        cittaLabel.setText("Città");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -68,22 +68,22 @@ public class LoginFarmacia extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(messaggioErrore, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(17, 17, 17)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3))
+                                .addComponent(indirizzoLabel)
+                                .addComponent(labelCAP)
+                                .addComponent(cittaLabel))
                             .addGap(36, 36, 36)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(campoCAP, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campoIndirizzo, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campoCitta, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(122, 122, 122)
-                            .addComponent(jButton1))))
+                            .addComponent(pulsanteConferma))))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -91,34 +91,34 @@ public class LoginFarmacia extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cittaLabel)
+                    .addComponent(campoCitta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(campoIndirizzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(indirizzoLabel))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(campoCAP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelCAP))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(pulsanteConferma)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(messaggioErrore, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void campoIndirizzoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoIndirizzoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_campoIndirizzoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String citta=jTextField3.getText();
-        String indirizzo=jTextField1.getText();
-        String cap = jTextField2.getText();
+    private void pulsanteConfermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pulsanteConfermaActionPerformed
+        String citta=campoCitta.getText();
+        String indirizzo=campoIndirizzo.getText();
+        String cap = campoCAP.getText();
         if(Farmacia.controlloPresenzaFarmacia(c, citta, indirizzo, cap)){
             Farmacia f = new Farmacia(c, indirizzo, cap, citta);
             FarmaciaView fv = new FarmaciaView(f,c);
@@ -126,19 +126,19 @@ public class LoginFarmacia extends javax.swing.JFrame {
             fv.setVisible(true);
         }
         else{
-            jLabel4.setText("La farmacia non esiste");
+            messaggioErrore.setText("La farmacia non esiste");
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_pulsanteConfermaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField campoCAP;
+    private javax.swing.JTextField campoCitta;
+    private javax.swing.JTextField campoIndirizzo;
+    private javax.swing.JLabel cittaLabel;
+    private javax.swing.JLabel indirizzoLabel;
+    private javax.swing.JLabel labelCAP;
+    private javax.swing.JLabel messaggioErrore;
+    private javax.swing.JButton pulsanteConferma;
     // End of variables declaration//GEN-END:variables
 }
