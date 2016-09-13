@@ -70,7 +70,7 @@ public class Farmacia {
                 PreparedStatement pst;
                 pst = c.prepareStatement ( sql );
                 pst.clearParameters();
-                pst.setString(2, indirizzo);
+                pst.setString(2, getIndirizzoFarmacia());
                 pst.setString(3, cap);
                 pst.setString(4, farmaco);
                 pst.setInt(1, pezzi+quantita);
@@ -121,15 +121,14 @@ public class Farmacia {
             try {
                 String sql;
                 if(controllaEsistenzaCampoFarmaco(farmaco)){
-                    sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\"=? AND \"capfarmacia\"=? AND \"farmaco\"=?";
+                    sql = "UPDATE \"FarmacoInFarmacia\" SET \"quantita\"= ? WHERE \"indirizzofarmacia\" ilike ? AND \"capfarmacia\"=? AND \"farmaco\"=?";
                     PreparedStatement pst;
                     pst = c.prepareStatement ( sql );
                     pst.clearParameters();
-                    //vale:ho modificato l'ordine dei parametri che avev sbagliato :)
+                    pst.setInt(1, numPezziFarmacoInFarmacia-1);
                     pst.setString(2, indirizzo);
                     pst.setString(3, cap);
                     pst.setString(4, farmaco);
-                    pst.setInt(1, numPezziFarmacoInFarmacia-1);
                     pst.executeUpdate ();
                     sql = "INSERT INTO \"Acquisto\" (\"prescrizione\", \"farmaco\") VALUES (?,?)";
                     pst = c.prepareStatement ( sql );
