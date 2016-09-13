@@ -95,12 +95,6 @@ public class LoginMedico extends javax.swing.JFrame {
         passwordLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         passwordLabel.setText("Password");
 
-        campoLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoLoginActionPerformed(evt);
-            }
-        });
-
         checkBoxSostituto.setText("Sostituto");
 
         pulsanteAccedi.setText("Accedi");
@@ -109,6 +103,8 @@ public class LoginMedico extends javax.swing.JFrame {
                 pulsanteAccediActionPerformed(evt);
             }
         });
+
+        labelErrore.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,10 +162,6 @@ public class LoginMedico extends javax.swing.JFrame {
     private void pulsanteAccediActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pulsanteAccediActionPerformed
         mc.autentica();
     }//GEN-LAST:event_pulsanteAccediActionPerformed
-
-    private void campoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLoginActionPerformed
-
-    }//GEN-LAST:event_campoLoginActionPerformed
 
     public JButton getJbutton1() {
         return pulsanteAccedi;

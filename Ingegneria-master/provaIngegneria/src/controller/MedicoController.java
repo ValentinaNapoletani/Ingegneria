@@ -498,7 +498,7 @@ public class MedicoController {
             
         ArrayList<Integer> lista=new ArrayList<>(); 
         try {
-            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false AND paziente IN (SELECT \"CodiceSanitario\" FROM \"Paziente\" WHERE \"Medico\"=?)" ); 
+            PreparedStatement pst = c.prepareStatement ( "SELECT codice FROM \"Richiesta\" WHERE \"prescritta\"=false AND paziente IN (SELECT \"CodiceSanitario\" FROM \"Paziente\" WHERE \"Medico\"=?) ORDER BY codice" ); 
             pst.clearParameters(); 
             pst.setString(1, medico.getCodiceRegionale());
             ResultSet rs=pst.executeQuery ();      

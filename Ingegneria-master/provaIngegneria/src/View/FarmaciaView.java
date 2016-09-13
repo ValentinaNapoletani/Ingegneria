@@ -70,6 +70,8 @@ public class FarmaciaView extends JFrame {
             }
         });
 
+        erroreControlloPresenzaFarmaco.setForeground(new java.awt.Color(255, 0, 0));
+
         quantitaFarmacoPresenteLabel.setText("Quantità");
 
         comboBoxFarmaciDaControllare.setModel(new javax.swing.DefaultComboBoxModel<String>() {
@@ -91,11 +93,11 @@ public class FarmaciaView extends JFrame {
                                 .addComponent(quantitaFarmacoPresenteLabel)
                                 .addGap(104, 104, 104)
                                 .addComponent(campoQuantitaFarmaciDaControllare, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(erroreControlloPresenzaFarmaco, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pannelloControlloPresenzaFarmaciLayout.createSequentialGroup()
                                 .addGap(89, 89, 89)
-                                .addComponent(pulsanteControllaPresenzaFarmaco)))
-                        .addContainerGap(132, Short.MAX_VALUE))
+                                .addComponent(pulsanteControllaPresenzaFarmaco))
+                            .addComponent(erroreControlloPresenzaFarmaco, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(23, Short.MAX_VALUE))
                     .addGroup(pannelloControlloPresenzaFarmaciLayout.createSequentialGroup()
                         .addComponent(nomeFarmacoPresenteLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -139,6 +141,8 @@ public class FarmaciaView extends JFrame {
             }
         });
 
+        erroreOrdinazioneFarmaci.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout pannelloOrdinazioneFarmaciLayout = new javax.swing.GroupLayout(pannelloOrdinazioneFarmaci);
         pannelloOrdinazioneFarmaci.setLayout(pannelloOrdinazioneFarmaciLayout);
         pannelloOrdinazioneFarmaciLayout.setHorizontalGroup(
@@ -163,8 +167,8 @@ public class FarmaciaView extends JFrame {
                         .addComponent(pulsanteOrdina))
                     .addGroup(pannelloOrdinazioneFarmaciLayout.createSequentialGroup()
                         .addGap(64, 64, 64)
-                        .addComponent(erroreOrdinazioneFarmaci, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                        .addComponent(erroreOrdinazioneFarmaci, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         pannelloOrdinazioneFarmaciLayout.setVerticalGroup(
             pannelloOrdinazioneFarmaciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,24 +265,24 @@ public class FarmaciaView extends JFrame {
                     .addComponent(labelNumeroPrescrizione)
                     .addComponent(campoNumeroPrescrizione, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pulsanteVerificaPrescrizione))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(messaggioErrore, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pannelloVenditaFarmaciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pannelloVenditaFarmaciLayout.createSequentialGroup()
-                        .addComponent(etichetta)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGroup(pannelloVenditaFarmaciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pannelloVenditaFarmaciLayout.createSequentialGroup()
+                                .addGap(73, 73, 73)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pannelloVenditaFarmaciLayout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(messaggioErrore, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(etichetta)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                         .addGap(34, 34, 34))
                     .addGroup(pannelloVenditaFarmaciLayout.createSequentialGroup()
-                        .addGroup(pannelloVenditaFarmaciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pannelloVenditaFarmaciLayout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 108, Short.MAX_VALUE))
-                            .addGroup(pannelloVenditaFarmaciLayout.createSequentialGroup()
-                                .addComponent(jScrollPane3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pulsanteVendi))))
         );
 
@@ -315,7 +319,7 @@ public class FarmaciaView extends JFrame {
                     erroreControlloPresenzaFarmaco.setText("Il farmaco è presente nella farmacia");
                 }
                 else{
-                    erroreControlloPresenzaFarmaco.setText("Il farmaco non è presente nella farmacia oppure non ci sono abbastanza confezioni disponibili");
+                    erroreControlloPresenzaFarmaco.setText("<html>Il farmaco non è presente nella farmacia oppure non ci sono abbastanza confezioni disponibili</html>");
                 }
             }
             catch(NumberFormatException e){
@@ -324,7 +328,7 @@ public class FarmaciaView extends JFrame {
             
         }
         else{
-            erroreControlloPresenzaFarmaco.setText("Entrambi i campi devono essere compilati");
+            erroreControlloPresenzaFarmaco.setText("<html>Entrambi i campi devono essere compilati</html>");
         }
     }//GEN-LAST:event_pulsanteControllaPresenzaFarmacoActionPerformed
     
@@ -342,7 +346,7 @@ public class FarmaciaView extends JFrame {
                 listaFarmaciPrescrizione.updateUI();
             }
             else{
-                messaggioErrore.setText("Non esiste il paziente con la seguente prescrizione oppure la prescrizione è scaduta");
+                messaggioErrore.setText("<html>Non esiste il paziente con la seguente prescrizione oppure la prescrizione è scaduta</html>");
                 listaFarmaci=new ArrayList<>();
                 listaFarmaciPrescrizione.updateUI();
             }
@@ -377,12 +381,12 @@ public class FarmaciaView extends JFrame {
             if(cont>0){
                 labelScontrino.setText(farmacia.rilasciaScontrino(listaFarmaciComprati));
                 if(almenoUnFarmacoAssente){
-                    messaggioErrore.setText("Uno o più farmaci tra quelli selezionati non è presente nella farmacia");
+                    messaggioErrore.setText("<html>Uno o più farmaci tra quelli selezionati non è presente nella farmacia</html>");
                 }
                 farmacia.impostaPrescrizioneUsata(Integer.parseInt(campoNumeroPrescrizione.getText()));
             }
             else{
-               messaggioErrore.setText("Nessun farmaco tra quelli selezionati è presente nella farmacia"); 
+               messaggioErrore.setText("<html>Nessun farmaco tra quelli selezionati è presente nella farmacia</html>"); 
             }
         }
         else{
@@ -396,7 +400,7 @@ public class FarmaciaView extends JFrame {
             String farmaco = farmaciEsistenti.get(farmaciDaOrdinare.getSelectedIndex());
             int quantita = Integer.parseInt(campoQuantitaFarmaciDaOrdinare.getText());
             if(farmacia.ordinaFarmaco(farmaco, quantita)){
-                erroreOrdinazioneFarmaci.setText(quantita+" confezioni di "+farmaco+" ordinati");
+                erroreOrdinazioneFarmaci.setText("<html>"+quantita+" confezioni di "+farmaco+" ordinate</html>");
             }
             else{
                 erroreOrdinazioneFarmaci.setText("Non è stato possibile ordinare il farmaco");
