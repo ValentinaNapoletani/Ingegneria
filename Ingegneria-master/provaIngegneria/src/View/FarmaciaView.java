@@ -70,8 +70,6 @@ public class FarmaciaView extends JFrame {
             }
         });
 
-        erroreControlloPresenzaFarmaco.setForeground(new java.awt.Color(255, 0, 0));
-
         quantitaFarmacoPresenteLabel.setText("Quantità");
 
         comboBoxFarmaciDaControllare.setModel(new javax.swing.DefaultComboBoxModel<String>() {
@@ -115,8 +113,8 @@ public class FarmaciaView extends JFrame {
                 .addGroup(pannelloControlloPresenzaFarmaciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(quantitaFarmacoPresenteLabel)
                     .addComponent(campoQuantitaFarmaciDaControllare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
-                .addComponent(erroreControlloPresenzaFarmaco, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(erroreControlloPresenzaFarmaco, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pulsanteControllaPresenzaFarmaco)
                 .addContainerGap(65, Short.MAX_VALUE))
@@ -140,8 +138,6 @@ public class FarmaciaView extends JFrame {
                 pulsanteOrdinaActionPerformed(evt);
             }
         });
-
-        erroreOrdinazioneFarmaci.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout pannelloOrdinazioneFarmaciLayout = new javax.swing.GroupLayout(pannelloOrdinazioneFarmaci);
         pannelloOrdinazioneFarmaci.setLayout(pannelloOrdinazioneFarmaciLayout);
@@ -209,8 +205,6 @@ public class FarmaciaView extends JFrame {
                 pulsanteVendiActionPerformed(evt);
             }
         });
-
-        messaggioErrore.setForeground(new java.awt.Color(255, 0, 0));
 
         listaFarmaciPrescrizione.setModel(new javax.swing.AbstractListModel<String>() {
             //String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };

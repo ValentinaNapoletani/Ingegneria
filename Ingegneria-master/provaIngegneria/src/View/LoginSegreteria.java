@@ -59,8 +59,6 @@ public class LoginSegreteria extends javax.swing.JFrame {
             }
         });
 
-        jLabelErrore.setForeground(new java.awt.Color(255, 0, 0));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

@@ -95,8 +95,8 @@
                           <Component id="quantitaFarmacoPresenteLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="campoQuantitaFarmaciDaControllare" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      <Component id="erroreControlloPresenzaFarmaco" min="-2" pref="13" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                      <Component id="erroreControlloPresenzaFarmaco" min="-2" pref="26" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="pulsanteControllaPresenzaFarmaco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="65" max="32767" attributes="0"/>
@@ -119,11 +119,6 @@
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="erroreControlloPresenzaFarmaco">
-              <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="ff" type="rgb"/>
-                </Property>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="quantitaFarmacoPresenteLabel">
               <Properties>
@@ -243,11 +238,6 @@
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="erroreOrdinazioneFarmaci">
-              <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="ff" type="rgb"/>
-                </Property>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -382,11 +372,6 @@
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="messaggioErrore">
-              <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" red="ff" type="rgb"/>
-                </Property>
-              </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane2">
               <AuxValues>

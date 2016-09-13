@@ -56,7 +56,6 @@ public class SegreteriaView extends javax.swing.JFrame {
     
     private void initComponents() {
         labelErrore = new JLabel();
-        labelErrore.setForeground(Color.red);
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pannelloConsegnaPrescrizione = new javax.swing.JPanel();
         pannelloCreazioneRichiesta = new javax.swing.JPanel();
@@ -149,7 +148,6 @@ public class SegreteriaView extends javax.swing.JFrame {
         codiceFiscaleLabel = new JLabel();
         listaFarmaciLabel = new JLabel();
         labelErroreRichiesta = new JLabel();
-        labelErroreRichiesta.setForeground(Color.red);
         
         listaFarmaciRichiesta = new JList<String>();
         pulsanteGenerazioneRichiesta.setText("Genera richiesta prescrizione");

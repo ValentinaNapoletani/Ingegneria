@@ -237,7 +237,6 @@ public class MedicoView extends javax.swing.JFrame {
         labelInserisciCodiceFiscale = new javax.swing.JLabel();
 
         messaggioErroreSelezioneFarmaco = new javax.swing.JLabel();
-        messaggioErroreSelezioneFarmaco.setForeground(Color.red);
         checkBoxControindicazioni = new javax.swing.JCheckBox();
         labelFattoriDiRischio2 = new javax.swing.JLabel();
         jTextFieldPaziente = new JTextField();
@@ -447,7 +446,7 @@ public class MedicoView extends javax.swing.JFrame {
         codiceFiscaleLabel = new JLabel();
         codiceFiscaleLabel.setText("Codice fiscale paziente:");
         errorePrescrizioniNonUsate = new JLabel();
-        errorePrescrizioniNonUsate.setForeground(Color.red);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(pannelloPrescrizioniNonUsate);
         pannelloPrescrizioniNonUsate.setLayout(jPanel4Layout);
 
@@ -641,7 +640,7 @@ public class MedicoView extends javax.swing.JFrame {
         scrollPanePazientiPerFrmaco = new JScrollPane();
         listaPazientiPerFarmaco = new ArrayList<>();
         errorePazientiPerFarmaco = new JLabel();
-        errorePazientiPerFarmaco.setForeground(Color.red);
+
         labelFrmaco.setText("Farmaco");
         
         comboBoxListaFarmaci.setModel(new javax.swing.DefaultComboBoxModel<String>() {
@@ -724,7 +723,7 @@ public class MedicoView extends javax.swing.JFrame {
         codiceSanitarioTabFarmaciPaziente = new JTextField();
         listaFarmaciPaziente = new ArrayList<>();
         erroreTabListaFarmaciPaziente = new JLabel();
-        erroreTabListaFarmaciPaziente.setForeground(Color.red);
+
         labelPeriodo.setText("Periodo");
 
         comboBoxPeriodoFarmaciPaziente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"In generale", "Ultimo mese", "Ultimo trimestre", "Ultimo semestre", "Ultimo anno"}));
