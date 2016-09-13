@@ -139,30 +139,6 @@ public class MedicoController {
         String richiesta=null;
         //richiesta= s.get(i).substring(1,2);
         if(i>=0){     
-            if(s.get(i).substring(3,4).equals("0") || s.get(i).substring(3,4).equals("1") || s.get(i).substring(3,4).equals("2") || s.get(i).substring(3,4).equals("3") || s.get(i).substring(3,4).equals("4") || s.get(i).substring(3,4).equals("5") || s.get(i).substring(3,4).equals("6")|| s.get(i).substring(3,4).equals("7") || s.get(i).substring(3,4).equals("8") || s.get(i).substring(3,4).equals("9")){
-                richiesta=s.get(i).substring(1, 4);       
-                System .out. println (" elem selezionato : " + richiesta );
-            }
-            if(s.get(i).substring(2,3).equals("0") || s.get(i).substring(2,3).equals("1") || s.get(i).substring(2,3).equals("2") || s.get(i).substring(2,3).equals("3") || s.get(i).substring(2,3).equals("4") || s.get(i).substring(2,3).equals("5") || s.get(i).substring(2,3).equals("6")|| s.get(i).substring(2,3).equals("7") || s.get(i).substring(2,3).equals("8") || s.get(i).substring(2,3).equals("9")){
-                richiesta=s.get(i).substring(1, 3);       
-                System .out. println (" elem selezionato : " + richiesta );
-            }
-            else {
-                richiesta=s.get(i).substring(1, 2);       
-                System .out. println (" elem selezionato 2: " + richiesta );
-            }
-        }
-          
-        return richiesta; 
-      
-    }
-    
-    
-    public static String oggettoSelezionatoSenzaPallino(int i,ArrayList<String> s){
-        System .out. println (" indice elem selezionato : " + i );
-        String richiesta=null;
-        //richiesta= s.get(i).substring(1,2);
-        if(i>=0){     
             if(s.get(i).substring(2,3).equals("0") || s.get(i).substring(2,3).equals("1") || s.get(i).substring(2,3).equals("2") || s.get(i).substring(2,3).equals("3") || s.get(i).substring(2,3).equals("4") || s.get(i).substring(2,3).equals("5") || s.get(i).substring(2,3).equals("6")|| s.get(i).substring(2,3).equals("7") || s.get(i).substring(2,3).equals("8") || s.get(i).substring(2,3).equals("9")){
                 richiesta=s.get(i).substring(0, 3);       
                 System .out. println (" elem selezionato : " + richiesta );
@@ -180,6 +156,7 @@ public class MedicoController {
         return richiesta; 
       
     }
+    
    
     public ArrayList<String> listaFarmaciSelezionati(int[] indici,ArrayList<String> farmaci){
         ArrayList<String> risultato = new ArrayList<>();

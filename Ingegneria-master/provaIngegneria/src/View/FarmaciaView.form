@@ -95,8 +95,8 @@
                           <Component id="quantitaFarmacoPresenteLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="campoQuantitaFarmaciDaControllare" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                      <Component id="erroreControlloPresenzaFarmaco" min="-2" pref="26" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <Component id="erroreControlloPresenzaFarmaco" min="-2" pref="37" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="pulsanteControllaPresenzaFarmaco" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="65" max="32767" attributes="0"/>
@@ -197,8 +197,8 @@
                           <Component id="quantitaFarmacoDaOrdinareLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="campoQuantitaFarmaciDaOrdinare" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="81" max="32767" attributes="0"/>
-                      <Component id="erroreOrdinazioneFarmaci" min="-2" pref="21" max="-2" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <Component id="erroreOrdinazioneFarmaci" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="pulsanteOrdina" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>

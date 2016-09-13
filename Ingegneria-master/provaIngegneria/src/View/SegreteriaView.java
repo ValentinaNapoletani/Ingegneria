@@ -238,7 +238,7 @@ public class SegreteriaView extends javax.swing.JFrame {
         int[] arr=jListPrescrizioniDaConsegnare.getSelectedIndices();
         if(arr.length>0){
             for(int i=0;i<arr.length;i++){
-                segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionatoSenzaPallino(arr[i],listaPrescrizioniDaConsegnare));
+                segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionato(arr[i],listaPrescrizioniDaConsegnare));
             }
             prescrizioni = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
             impostaListaRichieste();
