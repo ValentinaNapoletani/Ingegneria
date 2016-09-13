@@ -133,32 +133,8 @@ public class MedicoController {
        return richiesta; 
       
     }
-    
-    public static String oggettoSelezionato(int i,ArrayList<String> s){
-        System .out. println (" indice elem selezionato : " + i );
-        String richiesta=null;
-        //richiesta= s.get(i).substring(1,2);
-        if(i>=0){     
-            if(s.get(i).substring(3,4).equals("0") || s.get(i).substring(3,4).equals("1") || s.get(i).substring(3,4).equals("2") || s.get(i).substring(3,4).equals("3") || s.get(i).substring(3,4).equals("4") || s.get(i).substring(3,4).equals("5") || s.get(i).substring(3,4).equals("6")|| s.get(i).substring(3,4).equals("7") || s.get(i).substring(3,4).equals("8") || s.get(i).substring(3,4).equals("9")){
-                richiesta=s.get(i).substring(1, 4);       
-                System .out. println (" elem selezionato : " + richiesta );
-            }
-            if(s.get(i).substring(2,3).equals("0") || s.get(i).substring(2,3).equals("1") || s.get(i).substring(2,3).equals("2") || s.get(i).substring(2,3).equals("3") || s.get(i).substring(2,3).equals("4") || s.get(i).substring(2,3).equals("5") || s.get(i).substring(2,3).equals("6")|| s.get(i).substring(2,3).equals("7") || s.get(i).substring(2,3).equals("8") || s.get(i).substring(2,3).equals("9")){
-                richiesta=s.get(i).substring(1, 3);       
-                System .out. println (" elem selezionato : " + richiesta );
-            }
-            else {
-                richiesta=s.get(i).substring(1, 2);       
-                System .out. println (" elem selezionato 2: " + richiesta );
-            }
-        }
-          
-        return richiesta; 
-      
-    }
-    
-    
-    public static String oggettoSelezionatoSenzaPallino(int i,ArrayList<String> s){
+       
+   public static String oggettoSelezionatoSenzaPallino(int i,ArrayList<String> s){
         System .out. println (" indice elem selezionato : " + i );
         String richiesta=null;
         //richiesta= s.get(i).substring(1,2);
@@ -217,11 +193,6 @@ public class MedicoController {
         return dati;
     }
     
-    //return null???
-    public Prescrizione getPrescrizionenonusata() {     
-	 	 return null; 
-    }
-
     
     public ArrayList<String> pazientiPerFarmaco(String farmaco) { 
         ArrayList<String> listaPazienti = new ArrayList<>();
@@ -300,35 +271,7 @@ public class MedicoController {
         return listaPrescrizioni;
         
     }
-
-    //metodo non usato (costo non usato?)
-    public ArrayList<Farmaco> listaFarmaci() {
-        ArrayList<Farmaco> listaFarmaci = new ArrayList<>();
-        try {
-            String sql = "SELECT \"nome\", \"costo\" FROM \"Farmaco\"";
-            PreparedStatement pst;
-            pst = c.prepareStatement ( sql );
-            pst.clearParameters();
-            ResultSet rs=pst. executeQuery ();
-            while(rs.next()){
-                listaFarmaci.add(new Farmaco(rs.getString("nome"),rs.getDouble("costo")));
-            }
-        } catch (SQLException e) {
-            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
-        }
-        return listaFarmaci;
-    }
-
-    //non implementato, credo non serva
-    public int quantitaFarmacoPrescritto( String tipoPeriodo, String periodo) { 
-        return 0; 
-    }
-
-    //cosa deve fare questo metodo???
-    public boolean farmacoGenerico(String codicePrescrizione){ 
-	return false;
-    } 
-    
+  
     public ArrayList<String> farmacoPerPaziete(String codiceFiscale, int periodo) {
         String p="";
         ArrayList<String> risultato = new ArrayList<>();
