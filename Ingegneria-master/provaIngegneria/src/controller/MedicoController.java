@@ -134,7 +134,7 @@ public class MedicoController {
       
     }
        
-   public static String oggettoSelezionatoSenzaPallino(int i,ArrayList<String> s){
+   public static String oggettoSelezionato(int i,ArrayList<String> s){
         System .out. println (" indice elem selezionato : " + i );
         String richiesta=null;
         //richiesta= s.get(i).substring(1,2);

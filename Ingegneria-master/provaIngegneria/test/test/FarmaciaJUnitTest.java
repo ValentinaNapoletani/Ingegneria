@@ -38,10 +38,12 @@ public class FarmaciaJUnitTest {
         
         int num=f.numeroPezziFarmacoDisponibili("Buscopan");
         f.ordinaFarmaco("Buscopan", 2);
-              
+        
         assertTrue(f.numeroPezziFarmacoDisponibili("Buscopan")==num+2);
         
-        for(int i=0;i<f.numeroPezziFarmacoDisponibili("Buscopan");i++)
+        int disp=f.numeroPezziFarmacoDisponibili("Buscopan");
+        
+        for(int i=0;i<disp;i++)
             f.compraFarmaco("Buscopan", 37);
         
         boolean b= f.controlloPresenzaFarmaco("Buscopan",1);
