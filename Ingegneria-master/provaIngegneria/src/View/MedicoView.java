@@ -1,6 +1,7 @@
 package View;
 
 import controller.MedicoController;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -236,7 +237,7 @@ public class MedicoView extends javax.swing.JFrame {
         labelInserisciCodiceFiscale = new javax.swing.JLabel();
 
         messaggioErroreSelezioneFarmaco = new javax.swing.JLabel();
-
+        messaggioErroreSelezioneFarmaco.setForeground(Color.red);
         checkBoxControindicazioni = new javax.swing.JCheckBox();
         labelFattoriDiRischio2 = new javax.swing.JLabel();
         jTextFieldPaziente = new JTextField();
@@ -273,7 +274,7 @@ public class MedicoView extends javax.swing.JFrame {
             }
         });
 
-        listaRichiestePrescrizione.addListSelectionListener(event -> jList1Selection(event));
+        listaRichiestePrescrizione.addListSelectionListener(event -> selezioneNellaLista(event));
 
         richiesteConsorziati.addActionListener(new ActionListener() {
             @Override
@@ -285,7 +286,7 @@ public class MedicoView extends javax.swing.JFrame {
         scrollPanelistaRichiestePrescrizione.setViewportView(listaRichiestePrescrizione);
         richiesteConsorziati.setText("<html>Visualizza richieste anche<br>dei medici consorziati<html>");
         pulsanteTabRichiestePrescrizione.setText("Effettua Prescrizione");
-        pulsanteTabRichiestePrescrizione.addActionListener(event -> jButton1ActionPerformed(event));
+        pulsanteTabRichiestePrescrizione.addActionListener(event -> azioneRichiestaPrescrizione(event));
 
         checkBoxPresenzaFarmaciConControindicazioni.setText("<html> Alcuni farmaci potrebbero provocare<br> controindicazioni date dai fattori di rischio<br> del paziente<html>");
 
@@ -350,13 +351,13 @@ public class MedicoView extends javax.swing.JFrame {
         scrollPaneListaFarmaci.setViewportView(listaFarmaci2);
 
         pulsanteConferma.setText("Conferma");
-        pulsanteConferma.addActionListener(event -> jButton2ActionPerformed(event));
+        pulsanteConferma.addActionListener(event -> azioneConfermaListaFarmaciDaPrescrivere(event));
 
         labelInserisciCodiceFiscale.setText("Inserisci codice fiscale del paziente:");
 
         jTextFieldPaziente.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                jTextFieldPazienteKeyPressed(e);
+                pressioneCampoPaziente(e);
             }
         });
 
@@ -446,7 +447,7 @@ public class MedicoView extends javax.swing.JFrame {
         codiceFiscaleLabel = new JLabel();
         codiceFiscaleLabel.setText("Codice fiscale paziente:");
         errorePrescrizioniNonUsate = new JLabel();
-
+        errorePrescrizioniNonUsate.setForeground(Color.red);
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(pannelloPrescrizioniNonUsate);
         pannelloPrescrizioniNonUsate.setLayout(jPanel4Layout);
 
@@ -586,11 +587,8 @@ public class MedicoView extends javax.swing.JFrame {
         labelRispostaQuantitaFarmaci.setText("");
 
         controllaQuantitaFarmaci.setText("Controlla");
-        controllaQuantitaFarmaci.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
+        controllaQuantitaFarmaci.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azioneControlloQuantitaFarmaci(evt);
         });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(pannelloQuantitaFarmaciPrescrittiDalMedico);
@@ -643,9 +641,9 @@ public class MedicoView extends javax.swing.JFrame {
         scrollPanePazientiPerFrmaco = new JScrollPane();
         listaPazientiPerFarmaco = new ArrayList<>();
         errorePazientiPerFarmaco = new JLabel();
-
+        errorePazientiPerFarmaco.setForeground(Color.red);
         labelFrmaco.setText("Farmaco");
-
+        
         comboBoxListaFarmaci.setModel(new javax.swing.DefaultComboBoxModel<String>() {
             @Override
             public int getSize() {
@@ -674,12 +672,8 @@ public class MedicoView extends javax.swing.JFrame {
         scrollPanePazientiPerFrmaco.setViewportView(listaPazientiPerFarmaco2);
 
         pulsanteRicercaPazienti.setText("Cerca pazienti ai quali è stato prescritto il farmaco selezionato");
-        pulsanteRicercaPazienti.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-
+        pulsanteRicercaPazienti.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azioneRicercaPazienti(evt);
         });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(pannelloPazientiPerFarmaco);
@@ -730,7 +724,7 @@ public class MedicoView extends javax.swing.JFrame {
         codiceSanitarioTabFarmaciPaziente = new JTextField();
         listaFarmaciPaziente = new ArrayList<>();
         erroreTabListaFarmaciPaziente = new JLabel();
-
+        erroreTabListaFarmaciPaziente.setForeground(Color.red);
         labelPeriodo.setText("Periodo");
 
         comboBoxPeriodoFarmaciPaziente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"In generale", "Ultimo mese", "Ultimo trimestre", "Ultimo semestre", "Ultimo anno"}));
@@ -751,11 +745,8 @@ public class MedicoView extends javax.swing.JFrame {
         scrollPaneFarmaciPaziente.setViewportView(listaFarmaciPaziente2);
 
         cercaFarmaciPaziente.setText("Cerca");
-        cercaFarmaciPaziente.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
+        cercaFarmaciPaziente.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azioneRicercaFarmaciPaziente(evt);
         });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(pannelloFarmaciPerPaziente);
@@ -830,12 +821,8 @@ public class MedicoView extends javax.swing.JFrame {
         scrollPaneFarmaciGenerici.setViewportView(listaFarmaciGenerici);
 
         controlloFarmaciGenerici.setText("Controlla");
-        controlloFarmaciGenerici.addActionListener(new ActionListener() {
-            
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
+        controlloFarmaciGenerici.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azioneControlloFarmaciGenerici(evt);
         });
 
         codiceFiscaleTabFarmaciGenericiComprati.setText("Codice fiscale paziente:");
@@ -882,11 +869,8 @@ public class MedicoView extends javax.swing.JFrame {
         pannelloReazioniAvverse = new JPanel();
         listaReazioni = new ArrayList<>();
         pulsanteControlloReazioniAvverse.setText("Controlla reazioni avverse comunicate");
-        pulsanteControlloReazioniAvverse.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
+        pulsanteControlloReazioniAvverse.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azioneControlloReazioniAvverse(evt);
         });
 
         listaReazioni2.setModel(new javax.swing.AbstractListModel<String>() {
@@ -933,11 +917,8 @@ public class MedicoView extends javax.swing.JFrame {
         listaFarmacicontrastanti = new JList();
         scrollPaneFarmaciContrastanti = new JScrollPane();
         pannelloFarmaciContrastanti = new JPanel();
-        pulsanteCercaFarmaciContrastanti.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
+        pulsanteCercaFarmaciContrastanti.addActionListener((java.awt.event.ActionEvent evt) -> {
+            aggiornamentoFarmaciContrastanti(evt);
         });
         pulsanteCercaFarmaciContrastanti.setText("Cerca");
 
@@ -988,13 +969,7 @@ public class MedicoView extends javax.swing.JFrame {
     }
 
     private boolean pazienteOk(String testo) {
-        for (String paz : getMedicoController().getMedico().listaPazienti()) {
-            if (testo.equals(paz)) {
-                return true;
-            }
-        }
-
-        return false;
+        return getMedicoController().getMedico().listaPazienti().stream().anyMatch((paz) -> (testo.equals(paz)));
     }
 
     private void listenerButtonPrescrizioniNonUsate() {
@@ -1030,7 +1005,7 @@ public class MedicoView extends javax.swing.JFrame {
 
     }
 
-    private void jButton5ActionPerformed(ActionEvent evt) {
+    private void azioneControlloQuantitaFarmaci(ActionEvent evt) {
         if (comboBoxPeriodoQuantitaFarmaci.getSelectedIndex() != -1) {
             labelRispostaQuantitaFarmaci.setText("Numero occorrenze: " + medicoController.quantitaFarmacoPrescrittoDaUnMedicoNelPeriodo(listaFarmaci.get(comboBoxPeriodoQuantitaFarmaci.getSelectedIndex()), comboBoxPeriodiQuantitaFarmaci.getSelectedIndex()));
         } else {
@@ -1039,7 +1014,7 @@ public class MedicoView extends javax.swing.JFrame {
 
     }
 
-    private void jButton6ActionPerformed(ActionEvent evt) {
+    private void azioneRicercaPazienti(ActionEvent evt) {
         if (comboBoxListaFarmaci.getSelectedIndex() != -1) {
             errorePazientiPerFarmaco.setText("");
             listaPazientiPerFarmaco = medicoController.pazientiPerFarmaco(listaFarmaci.get(comboBoxListaFarmaci.getSelectedIndex()));
@@ -1049,7 +1024,7 @@ public class MedicoView extends javax.swing.JFrame {
         }
     }
 
-    private void jButton7ActionPerformed(ActionEvent evt) {
+    private void azioneRicercaFarmaciPaziente(ActionEvent evt) {
         String codice = codiceSanitarioTabFarmaciPaziente.getText();
 
         if (!codice.isEmpty() && comboBoxPeriodoFarmaciPaziente.getSelectedIndex() >= 0) {
@@ -1083,7 +1058,7 @@ public class MedicoView extends javax.swing.JFrame {
         }
     }
 
-    private void jButton1ActionPerformed(ActionEvent evt) {
+    private void azioneRichiestaPrescrizione(ActionEvent evt) {
         creaFinestra2();
         updateQueryListaRichieste();
     }
@@ -1095,7 +1070,7 @@ public class MedicoView extends javax.swing.JFrame {
         listaRichiestePrescrizione.updateUI();
     }
 
-    private void jButton2ActionPerformed(ActionEvent evt) {
+    private void azioneConfermaListaFarmaciDaPrescrivere(ActionEvent evt) {
 
         try {
             if (!(messaggioErroreSelezioneFarmaco.getText().equals(""))) {
@@ -1125,7 +1100,7 @@ public class MedicoView extends javax.swing.JFrame {
 
     }
 
-    private void jButton8ActionPerformed(ActionEvent evt) {
+    private void azioneControlloFarmaciGenerici(ActionEvent evt) {
         String testo = codiceFiscaleFarmaciGenericiComprati.getText();
 
         if (testo.equals("")) {
@@ -1142,12 +1117,12 @@ public class MedicoView extends javax.swing.JFrame {
 
     }
 
-    private void jButton9ActionPerformed(ActionEvent evt) {
+    private void azioneControlloReazioniAvverse(ActionEvent evt) {
         listaReazioni = medicoController.getListaReazioniAvverseSegnalate();
         listaReazioni2.updateUI();
     }
 
-    private void jTextFieldPazienteKeyPressed(KeyEvent e) {
+    private void pressioneCampoPaziente(KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (pazienteOk(jTextFieldPaziente.getText())) {
@@ -1170,10 +1145,10 @@ public class MedicoView extends javax.swing.JFrame {
         return s;
     }
 
-    private void jList1Selection(ListSelectionEvent e) {
+    private void selezioneNellaLista(ListSelectionEvent e) {
         labelFattoriDiRischio.setText("");
         if (!listaRichiestePrescrizione.isSelectionEmpty()) {
-            String richiesta = medicoController.oggettoSelezionatoConHtml(listaRichiestePrescrizione.getSelectedIndex(), richiesteNonPrescritte);
+            String richiesta = MedicoController.oggettoSelezionatoConHtml(listaRichiestePrescrizione.getSelectedIndex(), richiesteNonPrescritte);
 
             int richiestaInt = Integer.parseInt(richiesta);
 
@@ -1187,7 +1162,7 @@ public class MedicoView extends javax.swing.JFrame {
         }
     }
 
-    private void jButton10ActionPerformed(ActionEvent evt) {
+    private void aggiornamentoFarmaciContrastanti(ActionEvent evt) {
         farmaciContrastanti = medicoController.getFarmaciContrastanti();
         listaFarmacicontrastanti.updateUI();
     }

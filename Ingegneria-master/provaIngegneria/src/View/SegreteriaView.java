@@ -4,10 +4,12 @@ package View;
 import SistemaPrescrizioniMain.Avvio;
 import controller.MedicoController;
 import controller.SegreteriaController;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import model.Farmaco;
@@ -29,7 +31,7 @@ public class SegreteriaView extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollPaneListaFarmaciRichiesta;
     private javax.swing.JTabbedPane jTabbedPane1;
     private final SegreteriaController segreteriaController;
-    private ArrayList<Prescrizione> richieste;
+    private ArrayList<Prescrizione> prescrizioni;
     private ArrayList<String> farmaci= new ArrayList<>();
     private final Connection c;
     private JTextField campoCodiceFiscale;
@@ -38,12 +40,13 @@ public class SegreteriaView extends javax.swing.JFrame {
     private JLabel labelErroreRichiesta;
     private ArrayList<String> listaPrescrizioniDaConsegnare;
     private final Avvio avvio;
+    private JLabel labelErrore;
     
     
     public SegreteriaView(SegreteriaController s, Connection c, Avvio a){
         this.c=c;
         avvio=a;
-        richieste = s.prescrizioniDaConsegnareComePrescrizione();
+        prescrizioni = s.prescrizioniDaConsegnareComePrescrizione();
         segreteriaController=s;
         initComponents(); 
         initTab();
@@ -52,7 +55,8 @@ public class SegreteriaView extends javax.swing.JFrame {
     }
     
     private void initComponents() {
-   
+        labelErrore = new JLabel();
+        labelErrore.setForeground(Color.red);
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pannelloConsegnaPrescrizione = new javax.swing.JPanel();
         pannelloCreazioneRichiesta = new javax.swing.JPanel();
@@ -63,7 +67,7 @@ public class SegreteriaView extends javax.swing.JFrame {
         pulsanteConsegnaPrescrizione = new javax.swing.JButton();
         listaPrescrizioniDaConsegnare=new ArrayList<>();
        
-        richieste = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
+        prescrizioni = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
         
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
   
@@ -102,11 +106,17 @@ public class SegreteriaView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(scrollPanePrescrizioniDaConsegnare, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pulsanteConsegnaPrescrizione)
+                .addGroup(jPanel1Layout.createParallelGroup()
+                .addComponent(labelErrore)
+                .addComponent(pulsanteConsegnaPrescrizione))
                 .addGap(0, 10, Short.MAX_VALUE))
         );
        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createParallelGroup()
             .addComponent(scrollPanePrescrizioniDaConsegnare, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGap(10,10,10)
+            .addComponent(labelErrore)))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pulsanteConsegnaPrescrizione)
@@ -139,8 +149,9 @@ public class SegreteriaView extends javax.swing.JFrame {
         codiceFiscaleLabel = new JLabel();
         listaFarmaciLabel = new JLabel();
         labelErroreRichiesta = new JLabel();
+        labelErroreRichiesta.setForeground(Color.red);
         
-        listaFarmaciRichiesta = new javax.swing.JList<String>();
+        listaFarmaciRichiesta = new JList<String>();
         pulsanteGenerazioneRichiesta.setText("Genera richiesta prescrizione");
         
         impostaListaRichieste();
@@ -191,11 +202,8 @@ public class SegreteriaView extends javax.swing.JFrame {
                 .addContainerGap())
         );
         
-        pulsanteGenerazioneRichiesta.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                azioneGeneraRichiesta(evt);
-            }
+        pulsanteGenerazioneRichiesta.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azioneGeneraRichiesta(evt);
         });
         
         pack();
@@ -205,7 +213,7 @@ public class SegreteriaView extends javax.swing.JFrame {
     public void impostaListaRichieste(){
         
         listaPrescrizioniDaConsegnare=new ArrayList<>();
-        richieste.stream().forEach((r) -> {
+        prescrizioni.stream().forEach((r) -> {
             listaPrescrizioniDaConsegnare.add(r.getCodicePrescrizione()+ ". Paziente:  " + r.getPaziente() +" "+ r.getNomePaziente(c) +" "+ r.getCognomePaziente(c));
         });
     }
@@ -230,17 +238,21 @@ public class SegreteriaView extends javax.swing.JFrame {
      
     private void azioneConsegnaPrescrizione(java.awt.event.ActionEvent evt) {        
         int[] arr=jListPrescrizioniDaConsegnare.getSelectedIndices();
-        
-        for(int i=0;i<arr.length;i++){
-            segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionatoSenzaPallino(arr[i],listaPrescrizioniDaConsegnare));
+        if(arr.length>0){
+            for(int i=0;i<arr.length;i++){
+                segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionatoSenzaPallino(arr[i],listaPrescrizioniDaConsegnare));
+            }
+            prescrizioni = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
+            impostaListaRichieste();
+            for(int i=0;i<arr.length;i++){
+                arr[i]=-1;
+            }
+            jListPrescrizioniDaConsegnare.setSelectedIndices(arr);
+            this.repaint();
         }
-        richieste = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
-        impostaListaRichieste();
-        for(int i=0;i<arr.length;i++){
-            arr[i]=-1;
+        else{
+            labelErrore.setText("<html>Nessuna prescrizione selezionata</html>");
         }
-        jListPrescrizioniDaConsegnare.setSelectedIndices(arr);
-        this.repaint();
         
     } 
     

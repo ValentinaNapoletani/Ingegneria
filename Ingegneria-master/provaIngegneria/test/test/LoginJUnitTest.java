@@ -26,7 +26,7 @@ public class LoginJUnitTest {
      
     @Test
      public void testLoginSegreteria() throws SQLException {
-        Connection connection=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
+        Connection connection=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
         Avvio avvio=new Avvio();
         LoginSegreteria login=new LoginSegreteria(connection,avvio);
         Segreteria segreteria=new Segreteria(connection,"1");
@@ -37,7 +37,7 @@ public class LoginJUnitTest {
      
     @Test
      public void testLoginSegreteriaFail() throws SQLException {
-        Connection connection=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
+        Connection connection=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
         Avvio avvio=new Avvio();
         LoginSegreteria login=new LoginSegreteria(connection,avvio);
         Segreteria segreteria=new Segreteria(connection,null);
@@ -49,7 +49,7 @@ public class LoginJUnitTest {
      
     @Test
      public void testLoginMedicoFail() throws SQLException {
-        Connection connection=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
+        Connection connection=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
         LoginMedico login=new LoginMedico(connection);
         Medico medico=new Medico(connection,null,null);
         MedicoController mc=new MedicoController(connection,medico,login);

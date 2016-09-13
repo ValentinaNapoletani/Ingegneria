@@ -114,11 +114,11 @@ public final class frameConfermaPrescrizione extends JFrame {
         conferma.setText("Conferma");
         impostaLabel();
         
-        annulla.addActionListener(event -> annullaActionPerformed(event));
-        conferma.addActionListener(event -> confermaActionPerformed(event));
+        annulla.addActionListener(event -> azioneAnnulla(event));
+        conferma.addActionListener(event -> azioneConferma(event));
        
         interazioneFarmaci.setText("Interazione farmaci");
-        interazioneFarmaci.addActionListener(event -> farmaciActionPerformed(event));
+        interazioneFarmaci.addActionListener(event -> aggiuntaFarmaciContrastanti(event));
         
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -194,11 +194,11 @@ public final class frameConfermaPrescrizione extends JFrame {
         
     }
 
-    private void annullaActionPerformed(ActionEvent event) {
+    private void azioneAnnulla(ActionEvent event) {
         this.dispose();
     }
 
-    private void confermaActionPerformed(ActionEvent event) {  
+    private void azioneConferma(ActionEvent event) {  
         if("visita".equals(modalita)){ 
             mv.getMedicoController().effettuaPrescrizioneConVisita(pazienteCF, farmaci);
             if(mv.getCheckBox1().isSelected())
@@ -219,7 +219,7 @@ public final class frameConfermaPrescrizione extends JFrame {
     }
 
    
-    private void farmaciActionPerformed(ActionEvent event) {
+    private void aggiuntaFarmaciContrastanti(ActionEvent event) {
         
         premuto=true;
         

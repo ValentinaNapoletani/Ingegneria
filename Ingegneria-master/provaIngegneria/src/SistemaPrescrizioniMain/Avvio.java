@@ -11,6 +11,7 @@ import View.LoginSegreteria;
 import View.MedicoView;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 
 /**
@@ -159,16 +160,15 @@ public class Avvio extends javax.swing.JFrame {
          
             try {
                 Class.forName("org.postgresql.Driver");
-                c=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
-                //c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
+                //c=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
+                c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
                 //c=DriverManager.getConnection("jdbc:postgresql://192.168.1.3:5432/Ingegneria","postgres","123123");
             }    
-            catch (Exception e) {
-                e.printStackTrace();
+            catch (ClassNotFoundException | SQLException e) {
                 System.err.println(e.getClass().getName()+": "+e.getMessage());
                 System.exit(0);
             }
-            System.out.println("Opened database successfully");
+            System.out.println("Connessione al databse effettuata");
         }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
