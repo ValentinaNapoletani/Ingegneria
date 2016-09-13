@@ -269,7 +269,7 @@ public class SegreteriaView extends javax.swing.JFrame {
                     avvio.getLoginMedico().getMedicoController().getMedicoView().aggiornaLista1();
             }
             else{
-                labelErroreRichiesta.setText("Una prescrizione non può contenere più di 5 farmaci");
+                labelErroreRichiesta.setText("<html>Una prescrizione non può contenere più di 5 farmaci</html>");
             }
         }
         else{

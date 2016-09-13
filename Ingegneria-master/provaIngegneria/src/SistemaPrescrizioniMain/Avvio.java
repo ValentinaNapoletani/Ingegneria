@@ -163,6 +163,7 @@ public class Avvio extends javax.swing.JFrame {
                 //c=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
                 c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
                 //c=DriverManager.getConnection("jdbc:postgresql://192.168.1.3:5432/Ingegneria","postgres","123123");
+                //c=DriverManager.getConnection("jdbc:postgresql://157.27.129.8:5432/Ingegneria","postgres","123");
             }    
             catch (ClassNotFoundException | SQLException e) {
                 System.err.println(e.getClass().getName()+": "+e.getMessage());

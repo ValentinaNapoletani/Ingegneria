@@ -117,7 +117,7 @@ public final class frameConfermaPrescrizione extends JFrame {
         annulla.addActionListener(event -> azioneAnnulla(event));
         conferma.addActionListener(event -> azioneConferma(event));
        
-        interazioneFarmaci.setText("Interazione farmaci");
+        interazioneFarmaci.setText("<html>Interazione farmaci</html>");
         interazioneFarmaci.addActionListener(event -> aggiuntaFarmaciContrastanti(event));
         
         
