@@ -187,8 +187,11 @@ public class LoginMedico extends javax.swing.JFrame {
     private javax.swing.JButton pulsanteAccedi;
     // End of variables declaration//GEN-END:variables
 
-    public void simulaPressioneBottone() {
+    public boolean simulaPressioneBottone() {
         pulsanteAccediActionPerformed(null);
+        if(mc.getAutenticato()==true)
+            return true;
+        else return false;
     }
 
     public JTextField getJTextField1() {

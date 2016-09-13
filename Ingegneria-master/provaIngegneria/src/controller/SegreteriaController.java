@@ -18,6 +18,7 @@ public class SegreteriaController {
     private final Connection c;
     private final Segreteria segreteria;
     private final LoginSegreteria login;
+    private boolean autenticato;
     
     public SegreteriaController(Connection c,Segreteria segreteria,LoginSegreteria login){
         this.c=c;
@@ -161,6 +162,7 @@ public class SegreteriaController {
     
     public void autentica(){
         String codice = login.getJTextFieldCodiceSegreteria().getText();
+        autenticato = false;
         
         if(autenticazione(codice)){
             login.setSegreteria();
@@ -169,6 +171,8 @@ public class SegreteriaController {
             segreteriaView.setResizable(false);
             segreteriaView.setVisible(true);
             login.dispose(); 
+            autenticato = true;
+            
         }
         else{
             login.getJLabelErrore().setText("Codice segreteria non trovato");
@@ -191,6 +195,10 @@ public class SegreteriaController {
             System.err.println("Errore esecuzione query");
         }
         return numRisultati == 1;
+    }
+
+    public boolean getAutenticato() {
+        return autenticato;
     }
 
 }

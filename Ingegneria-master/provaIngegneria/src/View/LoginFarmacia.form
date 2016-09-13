@@ -80,9 +80,6 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JTextField" name="campoIndirizzo">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="campoIndirizzoActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="campoCAP">
     </Component>

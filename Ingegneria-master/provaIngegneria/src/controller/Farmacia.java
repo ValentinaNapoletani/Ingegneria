@@ -180,7 +180,7 @@ public class Farmacia {
     }
     */
     
-    private int numeroPezziFarmacoDisponibili(String farmaco){
+    public int numeroPezziFarmacoDisponibili(String farmaco){
         int quantita=0;
         try {
             String sql = "SELECT \"quantita\" FROM \"FarmacoInFarmacia\" WHERE \"indirizzofarmacia\" ilike ? AND \"capfarmacia\"=? AND \"farmaco\"=?";

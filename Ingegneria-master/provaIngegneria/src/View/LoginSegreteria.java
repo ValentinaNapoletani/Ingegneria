@@ -116,4 +116,11 @@ public class LoginSegreteria extends javax.swing.JFrame {
     public Avvio getAvvio() {
         return avvio;
     }
+
+    public boolean simulaPressioneBottone() {
+        pulsanteConfermaActionPerformed(null);
+        if(sc.getAutenticato()==true)
+            return true;
+        else return false;
+    }
 }

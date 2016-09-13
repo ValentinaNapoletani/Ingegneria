@@ -23,42 +23,60 @@ import static org.junit.Assert.*;
  * @author Valentina
  */
 public class LoginJUnitTest {
+    
+   private final Connection connection;
+
+    public LoginJUnitTest() throws SQLException {
+        this.connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
+    }
      
     @Test
      public void testLoginSegreteria() throws SQLException {
-        Connection connection=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
-        Avvio avvio=new Avvio();
-        LoginSegreteria login=new LoginSegreteria(connection,avvio);
-        Segreteria segreteria=new Segreteria(connection,"1");
-        SegreteriaController sc=new SegreteriaController(connection,segreteria,login);
-        assertTrue(sc.autenticazione("1"));
-         
-     }
-     
-    @Test
-     public void testLoginSegreteriaFail() throws SQLException {
-        Connection connection=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
         Avvio avvio=new Avvio();
         LoginSegreteria login=new LoginSegreteria(connection,avvio);
         Segreteria segreteria=new Segreteria(connection,null);
         SegreteriaController sc=new SegreteriaController(connection,segreteria,login);
-        assertFalse(sc.autenticazione("12f"));
+        login.getJTextFieldCodiceSegreteria().setText("1");
+        assertTrue(login.simulaPressioneBottone());
+     }
+     
+    @Test
+     public void testLoginSegreteriaFail() throws SQLException {
+        Avvio avvio=new Avvio();
+        LoginSegreteria login=new LoginSegreteria(connection,avvio);
+        Segreteria segreteria=new Segreteria(connection,null);
+        SegreteriaController sc=new SegreteriaController(connection,segreteria,login);
+        login.getJTextFieldCodiceSegreteria().setText("10");
+        assertFalse(login.simulaPressioneBottone());
          
      }
    
      
     @Test
      public void testLoginMedicoFail() throws SQLException {
-        Connection connection=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
+       
         LoginMedico login=new LoginMedico(connection);
         Medico medico=new Medico(connection,null,null);
         MedicoController mc=new MedicoController(connection,medico,login);
-        login.getJTextField1().setText("1");
+        login.getJTextField1().setText("10");
         login.getJPassWordField2().setText("10maco");
-        login.simulaPressioneBottone();
-        boolean pr=mc.getAutenticato();
-        assertTrue(mc.getAutenticato());
+        
+        assertFalse( login.simulaPressioneBottone());
         
     }
      
+     
+    @Test
+     public void testLoginFarmacia() throws SQLException {
+        
+        LoginFarmacia login=new LoginFarmacia(connection);
+       
+        login.getCampoCitta().setText("verona");
+        login.getCampoIndirizzo().setText("via mazzini");
+        login.getCampoCAP().setText("37100");
+          
+        assertTrue( Farmacia.controlloPresenzaFarmacia(connection, login.getCampoCitta().getText(), login.getCampoIndirizzo().getText(),  login.getCampoCAP().getText()));
+        
+    } 
+    
 }
