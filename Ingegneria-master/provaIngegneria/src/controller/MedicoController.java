@@ -194,10 +194,6 @@ public class MedicoController {
         return dati;
     }
     
-    //return null???
-    public Prescrizione getPrescrizionenonusata() {     
-	 	 return null; 
-    }
 
     
     public ArrayList<String> pazientiPerFarmaco(String farmaco) { 
@@ -278,33 +274,6 @@ public class MedicoController {
         
     }
 
-    //metodo non usato (costo non usato?)
-    public ArrayList<Farmaco> listaFarmaci() {
-        ArrayList<Farmaco> listaFarmaci = new ArrayList<>();
-        try {
-            String sql = "SELECT \"nome\", \"costo\" FROM \"Farmaco\"";
-            PreparedStatement pst;
-            pst = c.prepareStatement ( sql );
-            pst.clearParameters();
-            ResultSet rs=pst. executeQuery ();
-            while(rs.next()){
-                listaFarmaci.add(new Farmaco(rs.getString("nome"),rs.getDouble("costo")));
-            }
-        } catch (SQLException e) {
-            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
-        }
-        return listaFarmaci;
-    }
-
-    //non implementato, credo non serva
-    public int quantitaFarmacoPrescritto( String tipoPeriodo, String periodo) { 
-        return 0; 
-    }
-
-    //cosa deve fare questo metodo???
-    public boolean farmacoGenerico(String codicePrescrizione){ 
-	return false;
-    } 
     
     public ArrayList<String> farmacoPerPaziete(String codiceFiscale, int periodo) {
         String p="";
