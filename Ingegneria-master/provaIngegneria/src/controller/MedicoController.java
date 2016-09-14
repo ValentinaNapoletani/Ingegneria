@@ -750,45 +750,29 @@ public class MedicoController {
 
     public void aggiornaDbConFarmaciContrastanti() {
         
-         try {
-            PreparedStatement stmt;
-            stmt = c.prepareStatement("INSERT INTO \"FarmaciContrastanti\" (farmaco1,farmaco2, prescrizione) VALUES (?, ?, ?)");
-             
-            System.out.println((farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(0));
-            
-            stmt.setString(1, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(0));
-            stmt.setString(2, (farmaciInContrastoOrdinati(mv.getFrameP().getFarmaciContrastanti())).get(1));
-            stmt.setInt(3, ultimaPrescrizione(c)-1);
+        
+        for (int i=0; i< (mv.getFrameP().getFarmaciContrastanti()).size() ;i=i+2){
+            try {
+                PreparedStatement stmt;
+                stmt = c.prepareStatement("INSERT INTO \"FarmaciContrastanti\" (farmaco1,farmaco2, prescrizione) VALUES (?, ?, ?)");
+                         
+                stmt.setString(1, (mv.getFrameP().getFarmaciContrastanti()).get(i));
+                stmt.setString(2, (mv.getFrameP().getFarmaciContrastanti()).get(i+1));
+                stmt.setInt(3, ultimaPrescrizione(c)-1);
            
-            stmt.executeUpdate();
-            stmt.close();
-            System.out.println("Farmaci in contrasto inseriti");
+                stmt.executeUpdate();
+                stmt.close();
+                System.out.println("Farmaci in contrasto inseriti");
             
-        } catch (SQLException e) {
-            System.out.println("Errore nell'estrazione dei dati");
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-             
+            } 
+            
+            catch (SQLException e) {
+                System.out.println("Errore nell'estrazione dei dati");
+                System.err.println( e.getClass().getName()+": "+ e.getMessage() );
+                System.exit(0);            
+            }
         }
         
-    }
-
-    private ArrayList<String> farmaciInContrastoOrdinati(ArrayList<String> farmaciContrastanti) {
-                  
-       ArrayList<String> res=new ArrayList<>();   //primo minore
-       
-      if( (farmaciContrastanti.get(0)).compareToIgnoreCase((farmaciContrastanti.get(1))) < 0  ) {
-          System.out.println(farmaciContrastanti.get(0));        
-           
-          res.add((farmaciContrastanti.get(0))); 
-          res.add((farmaciContrastanti.get(1))); 
-      }
-      else {
-          res.add((farmaciContrastanti.get(1)));
-          res.add((farmaciContrastanti.get(0)));  
-      }
-       
-       return res;
     }
     
     public ArrayList<String> getFarmaciContrastanti(){

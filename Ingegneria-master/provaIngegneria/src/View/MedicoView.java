@@ -1091,7 +1091,7 @@ public class MedicoView extends javax.swing.JFrame {
                     creaFinestra();
                 }
             } else {
-                messaggioErroreSelezioneFarmaco.setText("Il paziente non esiste oppure ha un alto medico di base");
+                messaggioErroreSelezioneFarmaco.setText("Il paziente non esiste oppure ha un altro medico di base");
             }
         } catch (Exception e) {
             messaggioErroreSelezioneFarmaco.setText("<html>" + messaggioErroreSelezioneFarmaco.getText() + "<br>eccez<html>");
