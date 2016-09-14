@@ -303,17 +303,22 @@ public class FarmaciaView extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pulsanteControllaPresenzaFarmacoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pulsanteControllaPresenzaFarmacoActionPerformed
-        //System.out.println(jComboBox2.getSelectedIndex());
+        
         if(comboBoxFarmaciDaControllare.getSelectedIndex() >= 0 && !campoQuantitaFarmaciDaControllare.getText().isEmpty()){
             String nome  = farmaciEsistenti.get(comboBoxFarmaciDaControllare.getSelectedIndex());
             try{
                 int quantita = Integer.parseInt(campoQuantitaFarmaciDaControllare.getText());
-                boolean ris = farmacia.controlloPresenzaFarmaco(nome,quantita);
-                if (ris){
-                    erroreControlloPresenzaFarmaco.setText("Il farmaco è presente nella farmacia");
+                if(quantita > 0){
+                    boolean ris = farmacia.controlloPresenzaFarmaco(nome,quantita);
+                    if (ris){
+                        erroreControlloPresenzaFarmaco.setText("Il farmaco è presente nella farmacia");
+                    }
+                    else{
+                        erroreControlloPresenzaFarmaco.setText("<html>Il farmaco non è presente nella farmacia oppure non ci sono abbastanza confezioni disponibili</html>");
+                    }
                 }
                 else{
-                    erroreControlloPresenzaFarmaco.setText("<html>Il farmaco non è presente nella farmacia oppure non ci sono abbastanza confezioni disponibili</html>");
+                    erroreControlloPresenzaFarmaco.setText("<html>La quantità deve essere un numero maggiore di 0</html>");
                 }
             }
             catch(NumberFormatException e){
@@ -335,7 +340,6 @@ public class FarmaciaView extends JFrame {
             labelScontrino.setText("");
             if(Farmacia.controlloPrescrizione(c, codiceFiscale, codicePrescrizione)){
                 messaggioErrore.setText("");
-                //listaFarmaci=Prescrizione.getFarmaci(codicePrescrizione, c);
                 listaFarmaci=Prescrizione.getFarmaciEquivalenti(codicePrescrizione, c);
                 listaFarmaciPrescrizione.updateUI();
             }
@@ -393,12 +397,17 @@ public class FarmaciaView extends JFrame {
         try{
             String farmaco = farmaciEsistenti.get(farmaciDaOrdinare.getSelectedIndex());
             int quantita = Integer.parseInt(campoQuantitaFarmaciDaOrdinare.getText());
-            if(farmacia.ordinaFarmaco(farmaco, quantita)){
-                erroreOrdinazioneFarmaci.setText("<html>"+quantita+" confezioni di "+farmaco+" ordinate</html>");
+            if(quantita > 0){
+                if(farmacia.ordinaFarmaco(farmaco, quantita)){
+                    erroreOrdinazioneFarmaci.setText("<html>"+quantita+" confezioni di "+farmaco+" ordinate</html>");
+                }
+                else{
+                    erroreOrdinazioneFarmaci.setText("Non è stato possibile ordinare il farmaco");
+                }  
             }
             else{
-                erroreOrdinazioneFarmaci.setText("Non è stato possibile ordinare il farmaco");
-            }  
+                erroreOrdinazioneFarmaci.setText("<html>La quantità deve essere un numero maggiore di 0</html>");
+            }
         }
         catch(NumberFormatException e){
             erroreOrdinazioneFarmaci.setText("La quantità deve essere un numero intero");

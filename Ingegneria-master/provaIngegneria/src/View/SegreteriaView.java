@@ -254,12 +254,12 @@ public class SegreteriaView extends javax.swing.JFrame {
         
     } 
     
-    private void azioneGeneraRichiesta(ActionEvent evt) {
-        if(SegreteriaController.controlloPresenzaPaziente(c, campoCodiceFiscale.getText())){
-            if(listaFarmaciSelezionati().isEmpty()){
-                labelErroreRichiesta.setText("Nessun farmaco selezionato");
-            }
-            else if(listaFarmaciSelezionati().size()<=5){
+    private void azioneGeneraRichiesta(ActionEvent evt) {       
+        if(listaFarmaciSelezionati().isEmpty()){
+            labelErroreRichiesta.setText("Nessun farmaco selezionato");
+        }
+        else if(listaFarmaciSelezionati().size()<=5){
+            if(SegreteriaController.controlloPresenzaPaziente(c, campoCodiceFiscale.getText())){
                 segreteriaController.inviaRichiestaPrescrizione(campoCodiceFiscale.getText(), listaFarmaciSelezionati());
                 listaFarmaciRichiesta.removeSelectionInterval(0, farmaci.size()-1);
                 labelErroreRichiesta.setText("Richiesta prescrizione generata");
@@ -267,13 +267,12 @@ public class SegreteriaView extends javax.swing.JFrame {
                     avvio.getLoginMedico().getMedicoController().getMedicoView().aggiornaLista1();
             }
             else{
-                labelErroreRichiesta.setText("<html>Una prescrizione non può contenere più di 5 farmaci</html>");
+                labelErroreRichiesta.setText("Paziente non presente");
             }
         }
         else{
-            labelErroreRichiesta.setText("Paziente non presente");
+            labelErroreRichiesta.setText("<html>Una prescrizione non può contenere più di 5 farmaci</html>");
         }
-        
     }
     
     private ArrayList<String> listaFarmaciSelezionati(){
