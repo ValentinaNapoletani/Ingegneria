@@ -133,8 +133,8 @@ public class MedicoController {
        return richiesta; 
       
     }
-    
-    public static String oggettoSelezionato(int i,ArrayList<String> s){
+       
+   public static String oggettoSelezionato(int i,ArrayList<String> s){
         System .out. println (" indice elem selezionato : " + i );
         String richiesta=null;
         //richiesta= s.get(i).substring(1,2);
@@ -156,7 +156,6 @@ public class MedicoController {
         return richiesta; 
       
     }
-    
    
     public ArrayList<String> listaFarmaciSelezionati(int[] indici,ArrayList<String> farmaci){
         ArrayList<String> risultato = new ArrayList<>();
@@ -194,7 +193,6 @@ public class MedicoController {
         return dati;
     }
     
-
     
     public ArrayList<String> pazientiPerFarmaco(String farmaco) { 
         ArrayList<String> listaPazienti = new ArrayList<>();
@@ -273,8 +271,7 @@ public class MedicoController {
         return listaPrescrizioni;
         
     }
-
-    
+  
     public ArrayList<String> farmacoPerPaziete(String codiceFiscale, int periodo) {
         String p="";
         ArrayList<String> risultato = new ArrayList<>();
