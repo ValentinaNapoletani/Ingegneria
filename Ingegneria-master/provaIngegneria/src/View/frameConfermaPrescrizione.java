@@ -239,11 +239,11 @@ public final class frameConfermaPrescrizione extends JFrame {
         if(farmaciContrastanti.size()==2) {
             stringaFarmaci+="<br> - " + farmaciContrastanti.get(0) + ", " + farmaciContrastanti.get(1);
             labelInterazione.setText("<html>Coppie di farmaci in contrasto:" + stringaFarmaci+"</html>");
-       }
-       else if(farmaciContrastanti.size()>2)
-           labelInterazione.setText("Selezionare solo 2 farmaci");
-       else labelInterazione.setText("Devono essere selezionati 2 farmaci");
-       farmaciJList.clearSelection();
+        }
+        else if(farmaciContrastanti.size()>2)
+            labelInterazione.setText("Selezionare solo 2 farmaci");
+        else labelInterazione.setText("Devono essere selezionati 2 farmaci");
+            farmaciJList.clearSelection();
     }
     
     public ArrayList<String> getFarmaciContrastanti(){

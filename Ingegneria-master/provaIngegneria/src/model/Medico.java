@@ -29,10 +29,6 @@ public class Medico{
          
   } 
   
-  public Medico(Connection c){
-         this.c=c;    
-  } 
-  
   public void setCodiceRegionale(String codiceRegionale) { 
       this.codiceRegionale=codiceRegionale;           
   }

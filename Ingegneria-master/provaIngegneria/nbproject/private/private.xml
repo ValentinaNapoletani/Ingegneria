@@ -5,16 +5,17 @@
         <group>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/controller/Farmacia.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/FarmaciaView.java</file>
+            <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/LoginFarmacia.java</file>
+            <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/model/Farmaco.java</file>
+            <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/frameConfermaPrescrizione.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/MedicoView.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/LoginMedico.java</file>
-            <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/LoginFarmacia.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/SegreteriaView.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/SistemaPrescrizioniMain/Avvio.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/controller/MedicoController.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/LoginSegreteria.java</file>
-            <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/model/Farmaco.java</file>
             <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/model/Prescrizione.java</file>
-            <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/View/frameConfermaPrescrizione.java</file>
+            <file>file:/C:/Users/Viktor/Documents/GitHub/Ingegneria/Ingegneria-master/provaIngegneria/src/model/Medico.java</file>
         </group>
     </open-files>
 </project-private>
