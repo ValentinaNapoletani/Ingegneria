@@ -991,12 +991,16 @@ public class MedicoView extends javax.swing.JFrame {
     private void azionePulsanteFarmaciNelPeriodo(ActionEvent evt) {
         int indice = comboBoxPeriodoPrescrizione.getSelectedIndex();
         String periodo = "";
-        if (indice == 0) {
-            periodo = "Ultimo mese";
-        } else if (indice == 1) {
-            periodo = "Ultimo anno";
-        } else {
-            System.out.println("Messaggio di errore, selezione sbagliata");
+        switch (indice) {
+            case 0:
+                periodo = "Ultimo mese";
+                break;
+            case 1:
+                periodo = "Ultimo anno";
+                break;
+            default:
+                System.err.println("Messaggio di errore, selezione sbagliata");
+                break;
         }
 
         farmaciPrescrittiDaMedico = medicoController.farmaciPrescrittiDaMedicoNelPeriodo(periodo);
