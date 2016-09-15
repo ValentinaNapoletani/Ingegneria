@@ -356,6 +356,7 @@ public class MedicoView extends javax.swing.JFrame {
         labelInserisciCodiceFiscale.setText("Inserisci codice fiscale del paziente:");
 
         jTextFieldPaziente.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent e) {
                 pressioneCampoPaziente(e);
             }
@@ -508,11 +509,8 @@ public class MedicoView extends javax.swing.JFrame {
         pannelloFarmaciPrescrittiInGenerale = new JPanel();
         farmaciPrescrittiDaMedico = new ArrayList<>();
         pulsanteFarmaciNelPerido.setText("Verifica farmaci prescritti nel periodo...");
-        pulsanteFarmaciNelPerido.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                azionePulsanteFarmaciNelPeriodo(evt);
-            }
+        pulsanteFarmaciNelPerido.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azionePulsanteFarmaciNelPeriodo(evt);
         });
 
         listaFarmaciPrescrittiDaMedico.setModel(new javax.swing.AbstractListModel<String>() {
@@ -1051,9 +1049,9 @@ public class MedicoView extends javax.swing.JFrame {
     private void updateQueryListaRichieste() {
         ArrayList<Richiesta> r = new ArrayList<>();
         if (!richiesteConsorziati.isSelected()) {
-            for (Integer s : medicoController.listaRichieste()) {
+            medicoController.listaRichieste().stream().forEach((s) -> {
                 r.add(medicoController.richiestaConAnagraficaEFarmaco(s));
-            }
+            });
             richieste = r;
         } else {
             for (String s : medicoController.listaRichiesteConsorzio()) {
