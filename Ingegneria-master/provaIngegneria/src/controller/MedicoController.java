@@ -81,7 +81,6 @@ public class MedicoController {
         if(autenticazione(user,password)){
             if(!login.sostituto()) {
                 login.setMedico();
-                System .out. println (" Autenticato" );
                 autenticato = true;
             }
             else{
@@ -677,24 +676,6 @@ public class MedicoController {
         return listaReazioni;
     }
 
-    private boolean autentica(String codiceRegione, String password){
-        int occorrenze=0;
-        try {
-            String sql = "SELECT count(*) as num FROM \"Medico\" WHERE \"CodiceRegione\"=? AND \"Password\"=?";
-            PreparedStatement pst;
-            pst = c.prepareStatement ( sql );
-            pst.clearParameters();
-            pst.setString(1, codiceRegione);
-            pst.setString(2, password);
-            ResultSet rs=pst. executeQuery ();
-            rs.next();
-            occorrenze = rs.getInt("num");
-            System.out.println(occorrenze);  
-        } catch (SQLException e) {
-            System .err. println (" Problema durante estrazione dati : " + e. getMessage () );
-        } 
-        return occorrenze>0;
-    }  
     
     private String getCodiceSostituito(String sostituto){
         String risultato="";
