@@ -35,7 +35,7 @@ public class Farmaco {
     
     public static ArrayList<String> getListaFarmaci(Connection c){
         PreparedStatement stmt;
-        ArrayList<String> listaRisultati= new ArrayList<String>();
+        ArrayList<String> listaRisultati= new ArrayList<>();
         try{
             stmt=c.prepareStatement("SELECT DISTINCT nome FROM \"Farmaco\"");
             ResultSet rs;

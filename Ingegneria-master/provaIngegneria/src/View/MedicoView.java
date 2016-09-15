@@ -288,7 +288,8 @@ public class MedicoView extends javax.swing.JFrame {
         pulsanteTabRichiestePrescrizione.addActionListener(event -> azioneRichiestaPrescrizione(event));
 
         checkBoxPresenzaFarmaciConControindicazioni.setText("<html> Alcuni farmaci potrebbero provocare<br> controindicazioni date dai fattori di rischio<br> del paziente<html>");
-
+        checkBoxPresenzaFarmaciConControindicazioni.setEnabled(false);
+        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(pannelloPrescrizioniDaEffettuare);
         pannelloPrescrizioniDaEffettuare.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,6 +362,7 @@ public class MedicoView extends javax.swing.JFrame {
         });
 
         checkBoxControindicazioni.setText("Alcuni farmaci potrebbero provocare controindicazioni date dai fattori di rischio del paziente");
+        checkBoxControindicazioni.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(pannelloPrescrizioniConVisita2);
         pannelloPrescrizioniConVisita2.setLayout(jPanel3Layout);
@@ -1093,6 +1095,7 @@ public class MedicoView extends javax.swing.JFrame {
                     messaggioErroreSelezioneFarmaco.setText("<html>" + messaggioErroreSelezioneFarmaco.getText() + "<br>Selezionare almeno un farmaco<html>");
                 } else if (medicoController.listaFarmaciSelezionati(listaFarmaci2.getSelectedIndices(), listaFarmaci).size() <= 5 && !(jTextFieldPaziente.getText().equals(""))) {
                     creaFinestra();
+                    checkBoxPresenzaFarmaciConControindicazioni.setEnabled(false);
                 }
             } else {
                 messaggioErroreSelezioneFarmaco.setText("Il paziente non esiste oppure ha un altro medico di base");
@@ -1132,12 +1135,15 @@ public class MedicoView extends javax.swing.JFrame {
                 messaggioErroreSelezioneFarmaco.setText("");
                 if ((medicoController.getFattoriDiRischio(jTextFieldPaziente.getText())).isEmpty()) {
                     labelFattoriDiRischio2.setText("Il paziente non ha fattori di rischio");
+                     checkBoxControindicazioni.setEnabled(false);
                 } else {
                     labelFattoriDiRischio2.setText(settaFattori(jTextFieldPaziente.getText()));
+                    checkBoxControindicazioni.setEnabled(true);
                 }
             } else {
                 messaggioErroreSelezioneFarmaco.setText("<html>Il paziente non esiste oppure ha un altro medico di base</html>");
                 labelFattoriDiRischio2.setText("");
+                checkBoxControindicazioni.setEnabled(false);
             }
         }
     }
@@ -1159,8 +1165,10 @@ public class MedicoView extends javax.swing.JFrame {
 
             if ((medicoController.getFattoriDiRischio(paziente)).isEmpty()) {
                 labelFattoriDiRischio.setText("Il paziente non ha fattori di rischio");
+                checkBoxPresenzaFarmaciConControindicazioni.setEnabled(false);
             } else {
                 labelFattoriDiRischio.setText(settaFattori(paziente));
+                checkBoxPresenzaFarmaciConControindicazioni.setEnabled(true);
             }
         }
     }
