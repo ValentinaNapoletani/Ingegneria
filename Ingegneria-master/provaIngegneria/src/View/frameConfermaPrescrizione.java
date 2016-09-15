@@ -29,7 +29,7 @@ public final class frameConfermaPrescrizione extends JFrame {
     private javax.swing.JList<String> farmaciJList;
     private javax.swing.JButton interazioneFarmaci;
     private javax.swing.JLabel labelInterazione;
-    private ArrayList<String> farmaciContrastanti;
+    private ArrayList<String> farmaciContrastanti=new ArrayList<>();
     private boolean premuto=false;
     private final String modalita;
     private String stringaFarmaci="";
@@ -222,6 +222,7 @@ public final class frameConfermaPrescrizione extends JFrame {
     private void aggiuntaFarmaciContrastanti(ActionEvent event) {
         
         premuto=true;
+        boolean coppiaRipetuta=false;
         
         ArrayList<String> farmaciPrescrizione=new ArrayList<>();
         String richiesta;
@@ -232,18 +233,56 @@ public final class frameConfermaPrescrizione extends JFrame {
         else if("richiesta".equals(modalita))
             farmaciPrescrizione=mv.getMedicoController().richiestaConAnagraficaEFarmaco(Integer.parseInt(richiesta)).getFarmaci();
                      
-        farmaciContrastanti=mv.getMedicoController().listaFarmaciSelezionati(farmaciJList.getSelectedIndices(), farmaciPrescrizione);
+        ArrayList<String> farmaciSelezionati=mv.getMedicoController().listaFarmaciSelezionati(farmaciJList.getSelectedIndices(), farmaciPrescrizione);
         
-     
-       
-        if(farmaciContrastanti.size()==2) {
-            stringaFarmaci+="<br> - " + farmaciContrastanti.get(0) + ", " + farmaciContrastanti.get(1);
-            labelInterazione.setText("<html>Coppie di farmaci in contrasto:" + stringaFarmaci+"</html>");
+        if(farmaciSelezionati.size()==2){
+            ArrayList<String> farmaciOrdinati=farmaciInContrastoOrdinati(farmaciSelezionati);
+            System.out.print("ciao");
+            if(!farmaciContrastanti.isEmpty()){
+               
+                for(String s:farmaciContrastanti)
+                    System.out.print(s + ",");
+                    
+                for(int i=0;i<farmaciContrastanti.size();i=i+2){
+                    System.out.print("  A" + farmaciContrastanti.get(i) +farmaciContrastanti.get(i+1));
+                    System.out.print(" B" +farmaciOrdinati.get(0) +farmaciOrdinati.get(1));
+                    if(farmaciContrastanti.get(i).equals(farmaciOrdinati.get(0)) && farmaciContrastanti.get(i+1).equals(farmaciOrdinati.get(1))){
+                        coppiaRipetuta=true;
+                     System.out.print(coppiaRipetuta);
+                    }               
+                }
+            }    
+                   
+            if(!coppiaRipetuta) {  
+                farmaciContrastanti.add(farmaciOrdinati.get(0));
+                farmaciContrastanti.add(farmaciOrdinati.get(1));           
+                stringaFarmaci+="<br> - " + farmaciOrdinati.get(0) + ", " + farmaciOrdinati.get(1);
+                labelInterazione.setText("<html>Coppie di farmaci in contrasto:" + stringaFarmaci+"</html>");
+            }
         }
-        else if(farmaciContrastanti.size()>2)
-            labelInterazione.setText("Selezionare solo 2 farmaci");
+        else if(farmaciSelezionati.size()>2)
+             labelInterazione.setText("Selezionare solo 2 farmaci");
         else labelInterazione.setText("Devono essere selezionati 2 farmaci");
-            farmaciJList.clearSelection();
+             farmaciJList.clearSelection();
+    }
+    
+    
+    public ArrayList<String> farmaciInContrastoOrdinati(ArrayList<String> farmaciContrastanti) {
+                  
+       ArrayList<String> res=new ArrayList<>();   //primo minore
+       
+      if( (farmaciContrastanti.get(0)).compareToIgnoreCase((farmaciContrastanti.get(1))) < 0  ) {
+          System.out.println(farmaciContrastanti.get(0));        
+           
+          res.add((farmaciContrastanti.get(0))); 
+          res.add((farmaciContrastanti.get(1))); 
+      }
+      else {
+          res.add((farmaciContrastanti.get(1)));
+          res.add((farmaciContrastanti.get(0)));  
+      }
+       
+       return res;
     }
     
     public ArrayList<String> getFarmaciContrastanti(){
