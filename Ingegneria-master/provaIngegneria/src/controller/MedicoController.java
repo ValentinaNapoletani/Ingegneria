@@ -1,5 +1,4 @@
 package controller;
-import SistemaPrescrizioniMain.Avvio;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +22,6 @@ public class MedicoController {
     private final Medico medico;
     private MedicoView mv;
     private boolean autenticato;
-    private Avvio avvio;
 
     
     public MedicoController(Connection c,Medico m,LoginMedico login){
