@@ -336,7 +336,7 @@ public class MedicoController {
         try {
             PreparedStatement stmt;
             PreparedStatement stmt2;
-            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data, datascadenza) VALUES (?, ?, ?,CURRENT_DATE, CURRENT_DATE+ interval '6 month')");
+            stmt = c.prepareStatement("INSERT INTO \"Prescrizione\" (Codice,Paziente,Medico,Data, datascadenza,consegnata) VALUES (?, ?, ?,CURRENT_DATE, CURRENT_DATE+ interval '6 month',true)");
             stmt2 = c.prepareStatement("INSERT INTO \"FarmacoInRicetta\" (codiceprescrizione,nomefarmaco) VALUES (?, ?)");
                       
             if(medico.listaPazienti().contains(codiceFiscale)) {
