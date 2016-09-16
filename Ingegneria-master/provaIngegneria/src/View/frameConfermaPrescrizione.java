@@ -45,7 +45,7 @@ public final class frameConfermaPrescrizione extends JFrame {
     }
     
     private void impostaLabel(){
-        ArrayList<String> dati = new ArrayList<>();
+        ArrayList<String> dati;
         dati=(mv.getMedicoController()).impostaDatiPerPrescrizione(pazienteCF);
          
         
@@ -240,8 +240,9 @@ public final class frameConfermaPrescrizione extends JFrame {
             System.out.print("ciao");
             if(!farmaciContrastanti.isEmpty()){
                
-                for(String s:farmaciContrastanti)
+                farmaciContrastanti.stream().forEach((s) -> {
                     System.out.print(s + ",");
+                });
                     
                 for(int i=0;i<farmaciContrastanti.size();i=i+2){
                     System.out.print("  A" + farmaciContrastanti.get(i) +farmaciContrastanti.get(i+1));

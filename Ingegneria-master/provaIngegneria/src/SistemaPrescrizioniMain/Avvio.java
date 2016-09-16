@@ -11,6 +11,7 @@ import View.LoginSegreteria;
 import View.MedicoView;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 
 /**
@@ -132,22 +133,16 @@ public class Avvio extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Avvio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Avvio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Avvio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Avvio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Avvio().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Avvio().setVisible(true);
         });
     }
     
@@ -160,11 +155,10 @@ public class Avvio extends javax.swing.JFrame {
             try {
                 Class.forName("org.postgresql.Driver");
                //c=DriverManager.getConnection("jdbc:postgresql://151.62.110.35:5432/Ingegneria","postgres","123123");
-                c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123");
+                c=DriverManager.getConnection("jdbc:postgresql://localhost:5432/Ingegneria","postgres","123123");
                 //c=DriverManager.getConnection("jdbc:postgresql://192.168.1.3:5432/Ingegneria","postgres","123123");
             }    
-            catch (Exception e) {
-                e.printStackTrace();
+            catch (ClassNotFoundException | SQLException e) {
                 System.err.println(e.getClass().getName()+": "+e.getMessage());
                 System.exit(0);
             }

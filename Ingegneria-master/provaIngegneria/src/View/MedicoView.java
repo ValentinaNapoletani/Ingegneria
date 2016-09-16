@@ -1,9 +1,7 @@
 package View;
 
 import controller.MedicoController;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class MedicoView extends javax.swing.JFrame {
     private JLabel labelFattoriDiRischio;
     private JCheckBox checkBoxPresenzaFarmaciConControindicazioni;
 
-    private MedicoController medicoController;
+    private final MedicoController medicoController;
     private ArrayList<Richiesta> richieste;
     private ArrayList<Richiesta> richiesteTotali;
     private ArrayList<String> richiesteNonPrescritte = new ArrayList<>();
@@ -165,9 +163,7 @@ public class MedicoView extends javax.swing.JFrame {
         }
 
         for (Richiesta r : temp) {
-            for (String s : r.getFarmaci()) {
-                stringaFarmaci += "<br>•" + s;
-            }
+            stringaFarmaci = r.getFarmaci().stream().map((s) -> "<br>•" + s).reduce(stringaFarmaci, String::concat);
             codric.add("<html>" + r.getCodiceRichiesta() + " " + r.getCognomePaziente() + " " + r.getNomePaziente() + " " + r.getPaziente() + "<table>" + stringaFarmaci + "<br><br>" + "<html>");
             stringaFarmaci = "";
 
@@ -178,10 +174,9 @@ public class MedicoView extends javax.swing.JFrame {
 
     public void impostaListaFarmaci() {
 
-        for (String f : Farmaco.getListaFarmaci(medicoController.getConnection())) {
+        Farmaco.getListaFarmaci(medicoController.getConnection()).stream().forEach((f) -> {
             listaFarmaci.add(f);
-
-        }
+        });
     }
 
     public JList<String> getLista() {
@@ -275,11 +270,8 @@ public class MedicoView extends javax.swing.JFrame {
 
         listaRichiestePrescrizione.addListSelectionListener(event -> selezioneNellaLista(event));
 
-        richiesteConsorziati.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listenerCheckBox(evt);
-            }
+        richiesteConsorziati.addActionListener((java.awt.event.ActionEvent evt) -> {
+            listenerCheckBox(evt);
         });
 
         scrollPanelistaRichiestePrescrizione.setViewportView(listaRichiestePrescrizione);
