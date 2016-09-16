@@ -4,7 +4,6 @@ package View;
 import SistemaPrescrizioniMain.Avvio;
 import controller.MedicoController;
 import controller.SegreteriaController;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -89,11 +88,8 @@ public class SegreteriaView extends javax.swing.JFrame {
         scrollPanePrescrizioniDaConsegnare.setViewportView(jListPrescrizioniDaConsegnare);
         pulsanteConsegnaPrescrizione.setText("Consegna Prescrizione");
 
-        pulsanteConsegnaPrescrizione.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                azioneConsegnaPrescrizione(evt);
-            }
+        pulsanteConsegnaPrescrizione.addActionListener((java.awt.event.ActionEvent evt) -> {
+            azioneConsegnaPrescrizione(evt);
         });
         
 
@@ -149,7 +145,7 @@ public class SegreteriaView extends javax.swing.JFrame {
         listaFarmaciLabel = new JLabel();
         labelErroreRichiesta = new JLabel();
         
-        listaFarmaciRichiesta = new JList<String>();
+        listaFarmaciRichiesta = new JList<>();
         pulsanteGenerazioneRichiesta.setText("Genera richiesta prescrizione");
         
         impostaListaRichieste();
