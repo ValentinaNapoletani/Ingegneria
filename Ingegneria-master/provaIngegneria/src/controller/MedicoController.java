@@ -41,9 +41,6 @@ public class MedicoController {
     public Medico getMedico(){
         return medico;
     }
-    //public void setMedicoview(MedicoView medicoView) { 
-     //   this.medicoView = medicoView;            
-   // }
        
    public Connection getConnection(){
         return c;

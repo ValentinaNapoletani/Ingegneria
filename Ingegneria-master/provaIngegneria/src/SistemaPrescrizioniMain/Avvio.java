@@ -8,7 +8,6 @@ package SistemaPrescrizioniMain;
 import View.LoginFarmacia;
 import View.LoginMedico;
 import View.LoginSegreteria;
-import View.MedicoView;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,7 +22,6 @@ public class Avvio extends javax.swing.JFrame {
     private LoginSegreteria ls;
     private LoginMedico lm;
     private LoginFarmacia lf;
-    private MedicoView mv;
     /**
      * Creates new form Avvio
      */
