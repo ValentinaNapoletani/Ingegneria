@@ -204,4 +204,9 @@ public class SegreteriaController {
     public SegreteriaView getSegreteriaView(){
         return segreteriaView;
     }
+    
+    public void updateMedicoView(){
+        if(login.getAvvio().getLoginMedico() != null)
+                    login.getAvvio().getLoginMedico().getMedicoController().getMedicoView().aggiornaLista1();
+    }
 }

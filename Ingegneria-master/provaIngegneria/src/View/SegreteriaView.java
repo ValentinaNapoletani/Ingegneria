@@ -261,8 +261,7 @@ public class SegreteriaView extends javax.swing.JFrame {
                 segreteriaController.inviaRichiestaPrescrizione(campoCodiceFiscale.getText(), listaFarmaciSelezionati());
                 listaFarmaciRichiesta.removeSelectionInterval(0, farmaci.size()-1);
                 labelErroreRichiesta.setText("Richiesta prescrizione generata");
-                if(avvio.getLoginMedico() != null)
-                    avvio.getLoginMedico().getMedicoController().getMedicoView().aggiornaLista1();
+                segreteriaController.updateMedicoView();
             }
             else{
                 labelErroreRichiesta.setText("Paziente non presente");
