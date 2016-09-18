@@ -144,9 +144,6 @@ public class Farmacia {
             }
         }
         else{
-            //System.out.println("Farmaco non presente nella farmacia oppure non ci sono abbastanza confezioni a disposizione, eseguo l'ordine");
-            //potrei calcolare la quantità da ordinare cosi: farmaciDaComprare - farmaciNellaFarmacia
-            //ordinaFarmaco(farmaco, quantita);
             return false;
         }
         return false;
