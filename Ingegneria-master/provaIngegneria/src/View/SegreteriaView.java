@@ -205,11 +205,13 @@ public class SegreteriaView extends javax.swing.JFrame {
      
     
     public void impostaListaRichieste(){
-        
+        prescrizioni = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
         listaPrescrizioniDaConsegnare=new ArrayList<>();
         prescrizioni.stream().forEach((r) -> {
             listaPrescrizioniDaConsegnare.add(r.getCodicePrescrizione()+ ". Paziente:  " + r.getPaziente() +" "+ r.getNomePaziente(c) +" "+ r.getCognomePaziente(c));
         });
+        jListPrescrizioniDaConsegnare.updateUI();
+        
     }
     
     public void impostaListaFarmaci(){     
@@ -236,7 +238,7 @@ public class SegreteriaView extends javax.swing.JFrame {
             for(int i=0;i<arr.length;i++){
                 segreteriaController.consegnaPrescrizione(MedicoController.oggettoSelezionato(arr[i],listaPrescrizioniDaConsegnare));
             }
-            prescrizioni = segreteriaController.prescrizioniDaConsegnareComePrescrizione();
+            
             impostaListaRichieste();
             for(int i=0;i<arr.length;i++){
                 arr[i]=-1;

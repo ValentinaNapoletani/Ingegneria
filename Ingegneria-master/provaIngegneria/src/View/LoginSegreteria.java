@@ -28,7 +28,7 @@ public class LoginSegreteria extends javax.swing.JFrame {
 
     private LoginSegreteria() {
         initComponents();
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
     
     public void setSegreteria(){
@@ -115,6 +115,10 @@ public class LoginSegreteria extends javax.swing.JFrame {
 
     public Avvio getAvvio() {
         return avvio;
+    }
+    
+    public SegreteriaController getSegreteriaController(){
+        return sc;
     }
 
     public boolean simulaPressioneBottone() {

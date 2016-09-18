@@ -23,16 +23,17 @@ public class LoginMedico extends javax.swing.JFrame {
     private Medico medico;
     private MedicoController mc;
     private static Connection c;
+    private Avvio avvio;
     /**
      * Creates new form prova2
      */
-    public LoginMedico(Connection c) {
+    public LoginMedico(Connection c, Avvio a) {
+        avvio=a;
         this.c=c; 
         medico=new Medico(c,null,null);
         mc=new MedicoController(c,medico,this);
         initComponents();
-                    
-        pack();
+                   
     }
     
     public void setErrore(String errore){
@@ -44,10 +45,7 @@ public class LoginMedico extends javax.swing.JFrame {
     }
     
     public boolean sostituto(){
-        if(checkBoxSostituto.isSelected())
-            return true;
-        else
-            return false;
+        return checkBoxSostituto.isSelected();
     }
     
     public void setMedico(){
@@ -192,4 +190,7 @@ public class LoginMedico extends javax.swing.JFrame {
         return campoPassword;
     }
 
+    public Avvio getAvvio() {
+        return avvio;
+    }
 }

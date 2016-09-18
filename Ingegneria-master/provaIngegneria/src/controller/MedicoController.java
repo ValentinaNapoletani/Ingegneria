@@ -418,6 +418,9 @@ public class MedicoController {
                 stmt3.setInt(2, codiceRichiesta);
                 stmt3.executeUpdate();
                 System.out.println("Prescrizione su richiesta effettuata");
+                if(login.getAvvio().getLoginSegreteria() != null){
+                    login.getAvvio().getLoginSegreteria().getSegreteriaController().getSegreteriaView().impostaListaRichieste();
+                }
             }
             else {
                 System.out.println("Paziente non presente");

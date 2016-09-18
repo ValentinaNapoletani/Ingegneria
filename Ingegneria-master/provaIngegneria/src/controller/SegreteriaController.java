@@ -19,6 +19,7 @@ public class SegreteriaController {
     private final Segreteria segreteria;
     private final LoginSegreteria login;
     private boolean autenticato;
+    private SegreteriaView segreteriaView;
     
     public SegreteriaController(Connection c,Segreteria segreteria,LoginSegreteria login){
         this.c=c;
@@ -78,8 +79,7 @@ public class SegreteriaController {
                 stmt = c.prepareStatement("INSERT INTO \"Richiesta\" (paziente,codice) VALUES (?, ? )");
                 stmt2 = c.prepareStatement("INSERT INTO \"farmacoInRichiesta\" (codicerichiesta,nomefarmaco) VALUES (?, ?)");
           
-                System.out.println(SegreteriaController.medicoDelPaziente(codiceFiscale,c));
-
+                
                 stmt.clearParameters();
                 stmt.setString(1, codiceFiscale);        
                 stmt.setInt(2, n);
@@ -167,7 +167,7 @@ public class SegreteriaController {
         if(autenticazione(codice)){
             login.setSegreteria();
             System .out. println (" Autenticato" );
-            SegreteriaView segreteriaView = new SegreteriaView(this, c, login.getAvvio());
+            segreteriaView = new SegreteriaView(this, c, login.getAvvio());
             segreteriaView.setResizable(false);
             segreteriaView.setVisible(true);
             login.dispose(); 
@@ -201,4 +201,7 @@ public class SegreteriaController {
         return autenticato;
     }
 
+    public SegreteriaView getSegreteriaView(){
+        return segreteriaView;
+    }
 }
