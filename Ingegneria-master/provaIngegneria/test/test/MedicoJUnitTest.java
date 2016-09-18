@@ -5,6 +5,7 @@
  */
 package test;
 
+import SistemaPrescrizioniMain.Avvio;
 import View.LoginMedico;
 import controller.MedicoController;
 import controller.SegreteriaController;
@@ -31,8 +32,8 @@ public class MedicoJUnitTest {
     @Test
     public void testPazientiPerFarmaco(){     
         
-        
-        LoginMedico login=new LoginMedico(connection);
+        Avvio avvio=new Avvio();
+        LoginMedico login=new LoginMedico(connection,avvio);
         Medico medico=new Medico(connection,"1",null);
         MedicoController mc=new MedicoController(connection,medico,login);
         
@@ -42,8 +43,8 @@ public class MedicoJUnitTest {
     @Test
     public void testPrescrizioneSuRichiesta(){     
         
-        
-        LoginMedico login=new LoginMedico(connection);
+        Avvio avvio=new Avvio();
+        LoginMedico login=new LoginMedico(connection,avvio);
         Medico medico=new Medico(connection,"1",null);
         MedicoController mc=new MedicoController(connection,medico,login);
              

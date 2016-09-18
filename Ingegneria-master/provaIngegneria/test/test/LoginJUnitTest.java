@@ -55,7 +55,8 @@ public class LoginJUnitTest {
     @Test
      public void testLoginMedicoFail() throws SQLException {
        
-        LoginMedico login=new LoginMedico(connection);
+        Avvio avvio=new Avvio();
+        LoginMedico login=new LoginMedico(connection,avvio);
         Medico medico=new Medico(connection,null,null);
         MedicoController mc=new MedicoController(connection,medico,login);
         login.getJTextField1().setText("10");

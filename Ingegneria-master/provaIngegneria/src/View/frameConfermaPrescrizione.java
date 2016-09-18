@@ -213,7 +213,7 @@ public final class frameConfermaPrescrizione extends JFrame {
             mv.getMedicoController().aggiornaDbConFarmaciContrastanti();
             premuto=false;
         }
-        mv.aggiornaLista1(); //non va ???
+        mv.aggiornaLista1(); 
         mv.deselezionaLista2();
         this.dispose();
     }
